@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4121048031150095647}
   - component: {fileID: 4121048031150095642}
   - component: {fileID: 4121048031150095643}
-  - component: {fileID: -8166435592380283101}
+  - component: {fileID: -3759462595853980901}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8166435592380283101
+--- !u!114 &-3759462595853980901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,10 +117,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4121048031150095646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63d5797c9888e214a8c4e3bc6936a470, type: 3}
+  m_Script: {fileID: 11500000, guid: acc238541eedc6d4aaeb63415cd70a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpawner: {fileID: 0}
+  bombSpawner: {fileID: 0}
   bombEffectPrefab: {fileID: 9184241070383507921, guid: f7bb32e20c4c1204ab94302eac76fe99, type: 3}
 --- !u!1 &4121048031451302519
 GameObject:

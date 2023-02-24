@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class BulletScript : NetworkBehaviour
-{
-    public BulletSpawner bulletSpawner;
-    public GameObject bombEffectPrefab;
 
+public class bombScript : NetworkBehaviour
+{
+    public bombSpawner bombSpawner;
+    public GameObject bombEffectPrefab;
     private void OnCollisionEnter(Collision collision)
     {
         if (!IsOwner) return;
@@ -15,7 +15,7 @@ public class BulletScript : NetworkBehaviour
         {
             ulong networkObjectID = GetComponent<NetworkObject>().NetworkObjectId;
             SpawnBombEffect();
-            bulletSpawner.DestroyServerRpc(networkObjectID);
+            bombSpawner.DestroyServerRpc(networkObjectID);
         }
     }
     private void SpawnBombEffect()
