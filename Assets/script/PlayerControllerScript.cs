@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerControllerScript : MonoBehaviour
+public class PlayerControllerScript : NetworkBehaviour
 {
     public float speed = 5.0f;
     public float rotationSpeed = 10.0f;
@@ -13,7 +14,6 @@ public class PlayerControllerScript : MonoBehaviour
     private Rigidbody rb;
     private bool running;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -64,6 +64,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!IsOwner) return;
         moveForward();
         turn();
     }

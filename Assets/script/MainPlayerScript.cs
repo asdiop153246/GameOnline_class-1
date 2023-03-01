@@ -133,15 +133,15 @@ public class MainPlayerScript : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if (IsOwner)
-        {
-            float translation = Input.GetAxis("Vertical") * speed;
-            float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
-            translation *= Time.deltaTime;
-            Quaternion turn = Quaternion.Euler(0f, rotation, 0f);
-            rb.MovePosition(rb.position + this.transform.forward * translation);
-            rb.MoveRotation(rb.rotation * turn);
-        }
+        //if (IsOwner)
+        //{
+        //    float translation = Input.GetAxis("Vertical") * speed;
+        //    float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
+        //    translation *= Time.deltaTime;
+        //    Quaternion turn = Quaternion.Euler(0f, rotation, 0f);
+        //    rb.MovePosition(rb.position + this.transform.forward * translation);
+        //    rb.MoveRotation(rb.rotation * turn);
+        //}
     }
 
     //For Name Tag --------------------------------
