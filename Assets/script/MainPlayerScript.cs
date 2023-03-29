@@ -53,7 +53,7 @@ public class MainPlayerScript : NetworkBehaviour
         nameLabel.transform.SetParent(canvas.transform);
 
         postX.OnValueChanged += (int previousData, int newValue) => {
-            Debug.Log("Owner ID =  " + OwnerClientId + " : post x =  " + postX.Value);
+            //Debug.Log("Owner ID =  " + OwnerClientId + " : post x =  " + postX.Value);
         };
 
         if (IsServer)
