@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using TMPro;
+using Unity.Netcode.Transports.UTP;
 //using QFSW.QC;
 
 public class LoginManagerScript : MonoBehaviour
@@ -11,6 +12,17 @@ public class LoginManagerScript : MonoBehaviour
     public GameObject loginPanel;
     public GameObject leaveButton;
     public GameObject scorePanel;
+
+    public string ipAddress = "127.0.0.1";
+    public TMP_InputField ipInputField;
+    UnityTransport transport;
+
+    private void setIpAddress()
+    {
+        transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        ipAddress = ipInputField.GetComponent<TMP_InputField>().text;
+        transport.ConnectionData.Address = ipAddress;
+    }
 
     private void Start()
     {
@@ -75,17 +87,16 @@ public class LoginManagerScript : MonoBehaviour
     {
         //throw new System.NotImplementedException();
     }
-
-    //private bool isApproveConnection = false;
-    //[Command()]
     public void Host()
     {
+        setIpAddress();
         NetworkManager.Singleton.ConnectionApprovalCallback = ApprovalCheck;
         NetworkManager.Singleton.StartHost();
     }
     
     public void Client()
     {
+        setIpAddress();
         string userName = userNameInput.GetComponent<TMP_InputField>().text;
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = 
