@@ -9,9 +9,14 @@ using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using Unity.Netcode;
+using System.Threading.Tasks;
 
-public class RelayManagerScript : MonoBehaviour
+public class RelayManagerScript : Singleton<RelayManagerScript>
 {
+    public UnityTransport Transport => 
+        NetworkManager.Singleton.GetComponent<UnityTransport>();
+    public bool IsRelayEnabled => 
+        Transport != null && Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
     private async void Start()
     {
         await UnityServices.InitializeAsync();
@@ -26,7 +31,7 @@ public class RelayManagerScript : MonoBehaviour
     }
 
     [Command]
-    public async void CreateRelay()
+    public async Task CreateRelay()
     {
         try
         {
@@ -35,7 +40,7 @@ public class RelayManagerScript : MonoBehaviour
 
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-            NetworkManager.Singleton.StartHost();
+            //NetworkManager.Singleton.StartHost();
             Debug.Log("Join code = " + joinCode);
         }
         catch (RelayServiceException e)
@@ -45,7 +50,7 @@ public class RelayManagerScript : MonoBehaviour
     }
 
     [Command]
-    public async void JoinRelay(string joinCode)
+    public async Task JoinRelay(string joinCode)
     {
         try
         {
@@ -54,7 +59,7 @@ public class RelayManagerScript : MonoBehaviour
 
             RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-            NetworkManager.Singleton.StartClient();
+            //NetworkManager.Singleton.StartClient();
         }
         catch (RelayServiceException e)
         {
