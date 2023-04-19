@@ -17,7 +17,7 @@ public class LobbyManagerScript : MonoBehaviour
             int maxPlayer = 5;
             CreateLobbyOptions options = new CreateLobbyOptions 
             {
-                IsPrivate = true,
+                IsPrivate = false,
             };
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer, options);
             hostLobby = lobby;
@@ -92,6 +92,20 @@ public class LobbyManagerScript : MonoBehaviour
         {
             await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode);
             Debug.Log("Joined Lobby by code : " + lobbyCode);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    [Command]
+    private async void QuickJoinLobby()
+    {
+        try
+        {
+            Lobby lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+            Debug.Log("Quick Joined Lobby: " + lobby.Name + "," + lobby.AvailableSlots);
         }
         catch (LobbyServiceException e)
         {
