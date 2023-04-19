@@ -8,6 +8,14 @@ using Unity.Services.Lobbies.Models;
 public class LobbyManagerScript : MonoBehaviour
 {
     private Lobby hostLobby;
+
+    private string playerName;
+    private void Start()
+    {
+        playerName = "pName" + Random.Range(1, 999);
+        Debug.Log("Player Name = " + playerName);
+    }
+
     [Command]
     private async void CreateLobby()
     {
@@ -18,6 +26,13 @@ public class LobbyManagerScript : MonoBehaviour
             CreateLobbyOptions options = new CreateLobbyOptions 
             {
                 IsPrivate = false,
+                Player = new Player
+                { 
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)}
+                    }
+                }
             };
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer, options);
             hostLobby = lobby;
@@ -90,12 +105,32 @@ public class LobbyManagerScript : MonoBehaviour
     {
         try
         {
-            await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions
+            {
+                Player = new Player
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)}
+                    }
+                }
+            };
+            Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
             Debug.Log("Joined Lobby by code : " + lobbyCode);
+
+            printPlayer(joinedLobby);
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
+        }
+    }
+
+    private void printPlayer(Lobby lobby)
+    {
+        foreach (Player player in lobby.Players)
+        {
+            Debug.Log("Players = " + player.Id + " : " + player.Data["PlayerName"].Value);
         }
     }
 
@@ -106,6 +141,7 @@ public class LobbyManagerScript : MonoBehaviour
         {
             Lobby lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
             Debug.Log("Quick Joined Lobby: " + lobby.Name + "," + lobby.AvailableSlots);
+            printPlayer(lobby);
         }
         catch (LobbyServiceException e)
         {
