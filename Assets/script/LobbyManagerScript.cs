@@ -41,12 +41,39 @@ public class LobbyManagerScript : MonoBehaviour
     {
         try
         {
-            QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
+            QueryLobbiesOptions options = new QueryLobbiesOptions
+            {
+                Count = 25,
+                Filters = new List<QueryFilter>
+                {
+                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0" , QueryFilter.OpOptions.GT)
+                }
+                ,
+                Order = new List<QueryOrder>
+                {
+                    new QueryOrder(false, QueryOrder.FieldOptions.Created)
+                }
+            };
+            QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(options);
             Debug.Log("Lobbies found : " + queryResponse.Results.Count);
             foreach (Lobby lobby in queryResponse.Results)
             {
                 Debug.Log("Lobby : " + lobby.Name + " , MaxPlayer = " + lobby.MaxPlayers);
             }
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+    [Command]
+    private async void JoinLobby()
+    {
+        try
+        {
+            QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
+            await Lobbies.Instance.JoinLobbyByIdAsync(queryResponse.Results[0].Id);
+            Debug.Log("Joined Lobby : " + queryResponse.Results[0].Name + "," + queryResponse.Results[0].AvailableSlots);
         }
         catch(LobbyServiceException e)
         {
