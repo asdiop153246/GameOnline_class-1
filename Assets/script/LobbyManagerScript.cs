@@ -7,6 +7,7 @@ using Unity.Services.Lobbies.Models;
 
 public class LobbyManagerScript : MonoBehaviour
 {
+    private Lobby hostLobby;
     [Command]
     private async void CreateLobby()
     {
@@ -15,6 +16,8 @@ public class LobbyManagerScript : MonoBehaviour
             string lobbyName = "MyLobby";
             int maxPlayer = 5;
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer);
+            hostLobby = lobby;
+            StartCoroutine(HeartBeatLobby(hostLobby.Id, 15));
             Debug.Log("Lobby is created : " + lobby.Name + " : " + lobby.MaxPlayers);
         }
         catch (LobbyServiceException e)
@@ -22,6 +25,17 @@ public class LobbyManagerScript : MonoBehaviour
             Debug.Log(e);
         }
     }
+
+    private static IEnumerator HeartBeatLobby(string lobbyId, float waitTime)
+    {
+        var delay = new WaitForSeconds(waitTime);
+        while (true)
+        {
+            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
+            yield return delay;
+        }
+    }
+
     [Command]
     private async void ListLobbies()
     {
