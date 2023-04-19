@@ -21,7 +21,7 @@ public class RelayManagerScript : Singleton<RelayManagerScript>
     private async void Start()
     {
         InitializationOptions options = new InitializationOptions();
-#if UNITY_EDITOR
+#if UNITY_EDITOR //ทำให้ Unity clones เป็นคนละเครื่องกัน
         options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
 #endif
         await UnityServices.InitializeAsync(options);
