@@ -9,7 +9,7 @@ public class Playercam : NetworkBehaviour
     void Start()
     {
         if (!IsOwner) return;
-        gameObject.SetActive(false);
+        Cam.SetActive(true);
     }
 
     // Update is called once per frame
