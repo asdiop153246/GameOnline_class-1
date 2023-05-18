@@ -20,6 +20,9 @@ public class LoginManagerScript : MonoBehaviour
     public TMP_InputField joinCodeInput;
     public string joinCode;
 
+    public List<GameObject> SpawnPoints;
+    int spawnedPoint = 2;
+
     private void setIpAddress()
     {
         transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
@@ -168,23 +171,13 @@ public class LoginManagerScript : MonoBehaviour
     {
         Vector3 spawnPos = Vector3.zero;
         Quaternion spawnRot = Quaternion.identity;
-        if (clientID == NetworkManager.Singleton.LocalClientId)
+        int randomNumber = Random.Range(0, 3);
+        while (randomNumber == spawnedPoint)
         {
-            spawnPos = new Vector3(-2, 0, 0); spawnRot = Quaternion.Euler(0, 135, 0);
+            randomNumber = Random.Range(0, 3);
         }
-        else
-        {
-            switch (NetworkManager.Singleton.ConnectedClients.Count)
-            {
-                case 1:
-                    spawnPos = new Vector3(0, 0, 0); spawnRot = Quaternion.Euler(0, 100, 0);
-                    break;
-                case 2:
-                    spawnPos = new Vector3(2, 0, 0); spawnRot = Quaternion.Euler(0, 80, 0);
-                    break;
-            }
-        }
-        response.Position = spawnPos; 
-        response.Rotation = spawnRot;
+        spawnedPoint = randomNumber;
+        spawnPos = new Vector3(SpawnPoints[spawnedPoint].transform.position.x, SpawnPoints[spawnedPoint].transform.position.y, SpawnPoints[spawnedPoint].transform.position.z);
+        response.Position = spawnPos; response.Rotation = spawnRot;
     }
 }
