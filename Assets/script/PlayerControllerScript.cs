@@ -29,6 +29,7 @@ public class PlayerControllerScript : NetworkBehaviour
     public Transform orientation;
     Vector3 moveDirection;
     Vector3 movement;
+    float cameraverticalRotation = 0f;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -68,21 +69,21 @@ public class PlayerControllerScript : NetworkBehaviour
             animator.SetBool("Running", false);
         }
     }
-    private void CamMovement() 
-    {
-        // New: Get the mouse movement input
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+    //private void CamMovement() 
+    //{
+    //    // New: Get the mouse movement input
+    //    float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+    //    float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // New: Rotate the player and the camera based on the mouse input
-        currentRotation.y += mouseX;
-        currentRotation.x -= mouseY;
-        currentRotation.x = Mathf.Clamp(currentRotation.x, -90f, 90f);
+    //    // New: Rotate the player and the camera based on the mouse input
+    //    cameraverticalRotation -= mouseY;
+    //    cameraverticalRotation = Mathf.Clamp(cameraverticalRotation, -90f, 90f);
+    //    transform.localEulerAngles = Vector3.right * cameraverticalRotation;
 
-        // New: Apply the rotation to the player and the camera
-        transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
-        orientation.localRotation = Quaternion.Euler(currentRotation.x, 0f, 0f);
-    }
+    //    // New: Apply the rotation to the player and the camera
+    //    transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
+    //    orientation.localRotation = Quaternion.Euler(currentRotation.x, 0f, 0f);
+    //}
     private void JumpInput() 
     {
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
@@ -126,7 +127,7 @@ public class PlayerControllerScript : NetworkBehaviour
         if (!IsOwner) return;
         moveForward();
         JumpInput();
-        CamMovement();
+        //CamMovement();
         //turn();
     }
 }

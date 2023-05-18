@@ -202,7 +202,6 @@ public class CharacterController : NetworkBehaviour
 
         return false;
     }
-
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
