@@ -18,10 +18,11 @@ public class PlayerControllerScript : NetworkBehaviour
     public float rotationSpeed = 10.0f;
     public float jumpCooldown;
     public float jumpForce;
+    public float RunSpeed = 8.0f;
     private Animator animator;
     private Rigidbody rb;
     private bool running;
-    private bool readyToJump;
+    private bool readyToJump = true;
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
@@ -33,6 +34,9 @@ public class PlayerControllerScript : NetworkBehaviour
     float cameraverticalRotation = 0f;
     void Start()
     {
+        if (!IsOwner) return;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
@@ -69,6 +73,10 @@ public class PlayerControllerScript : NetworkBehaviour
             running = false;
             animator.SetBool("Running", false);
         }
+        if (Input.GetKey(sprintKey))
+        {
+            rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
+        }
     }
     //private void CamMovement() 
     //{
@@ -87,7 +95,7 @@ public class PlayerControllerScript : NetworkBehaviour
     //}
     private void JumpInput() 
     {
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKey(jumpKey) && readyToJump == true)
         {
             readyToJump = false;
 

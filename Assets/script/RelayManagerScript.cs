@@ -10,7 +10,7 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using Unity.Netcode;
 using System.Threading.Tasks;
-using ParrelSync;
+//using ParrelSync;
 
 public class RelayManagerScript : Singleton<RelayManagerScript>
 {
@@ -22,7 +22,7 @@ public class RelayManagerScript : Singleton<RelayManagerScript>
     {
         InitializationOptions options = new InitializationOptions();
 #if UNITY_EDITOR //ทำให้ Unity clones เป็นคนละเครื่องกัน
-        options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
+        //options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
 #endif
         await UnityServices.InitializeAsync(options);
         if (!AuthenticationService.Instance.IsSignedIn)

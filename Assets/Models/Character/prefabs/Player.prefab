@@ -380,9 +380,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -455,7 +455,8 @@ MonoBehaviour:
   speed: 5
   rotationSpeed: 10
   jumpCooldown: 2
-  jumpForce: 5
+  jumpForce: 6.5
+  RunSpeed: 8
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
@@ -516,11 +517,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e01b238488cb2b5489d5943f4f2f7cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health:
+    m_InternalValue: 100
   maxHealth: 100
-  chipSpeed: 2
-  frontHealthBar: {fileID: 0}
-  backHealthBar: {fileID: 0}
-  HPBar: {fileID: 0}
+  Frame: {fileID: 0}
+  HealthBar: {fileID: 0}
+  BackHealthBar: {fileID: 0}
 --- !u!1001 &8496384795863487534
 PrefabInstance:
   m_ObjectHideFlags: 0
