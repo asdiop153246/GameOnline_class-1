@@ -171,10 +171,10 @@ public class LoginManagerScript : MonoBehaviour
     {
         Vector3 spawnPos = Vector3.zero;
         Quaternion spawnRot = Quaternion.identity;
-        int randomNumber = Random.Range(0, 3);
+        int randomNumber = Random.Range(0, 2);
         while (randomNumber == spawnedPoint)
         {
-            randomNumber = Random.Range(0, 3);
+            randomNumber = Random.Range(0, 2);
         }
         spawnedPoint = randomNumber;
         spawnPos = new Vector3(SpawnPoints[spawnedPoint].transform.position.x, SpawnPoints[spawnedPoint].transform.position.y, SpawnPoints[spawnedPoint].transform.position.z);
