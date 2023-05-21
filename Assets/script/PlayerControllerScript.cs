@@ -35,8 +35,8 @@ public class PlayerControllerScript : NetworkBehaviour
     void Start()
     {
         if (!IsOwner) return;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
