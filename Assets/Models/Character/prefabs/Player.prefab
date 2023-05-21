@@ -476,6 +476,7 @@ MonoBehaviour:
   scripts:
   - {fileID: 6605962441980350462}
   - {fileID: 6728099108138718287}
+  - {fileID: 271907005}
 --- !u!114 &8416183665076312939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,6 +520,7 @@ MonoBehaviour:
   chipSpeed: 2
   frontHealthBar: {fileID: 0}
   backHealthBar: {fileID: 0}
+  HPBar: {fileID: 0}
 --- !u!1001 &8496384795863487534
 PrefabInstance:
   m_ObjectHideFlags: 0

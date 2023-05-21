@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerHealth : MonoBehaviour
+using Unity.Netcode;
+public class PlayerHealth : NetworkBehaviour
 {
     private float health;
     private float lerptimer;
@@ -10,8 +11,16 @@ public class PlayerHealth : MonoBehaviour
     public float chipSpeed = 2f;
     public Image frontHealthBar;
     public Image backHealthBar;
+    public GameObject HPBar;
     void Start()
     {
+        if (!IsOwner) return;
+        HPBar = GameObject.FindGameObjectWithTag("HP");
+        GameObject FrontHP = GameObject.FindGameObjectWithTag("FrontHP");
+        GameObject BackHP = GameObject.FindGameObjectWithTag("BackHP");
+        frontHealthBar = FrontHP.GetComponent<Image>();
+        backHealthBar = BackHP.GetComponent<Image>();
+        HPBar.SetActive(true);
         health = maxHealth;
     }
 

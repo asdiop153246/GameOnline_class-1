@@ -26,6 +26,7 @@ public class PlayerControllerScript : NetworkBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
+    
     public Transform orientation;
     Vector3 moveDirection;
     Vector3 movement;
