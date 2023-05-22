@@ -8,8 +8,8 @@ public class EnemyAiTutorial : NetworkBehaviour
     public LayerMask groundMask, playerMask;
     public float patrolRange = 10f;
     public float sightRange = 20f;
-    public float attackRange = 4f;
-    public float timeBetweenAttacks = 1.3f;
+    public float attackRange = 5f;
+    public float timeBetweenAttacks = 1f;
     private bool isAttacking = false;
 
     private NetworkVariable<Vector3> walkPoint = new NetworkVariable<Vector3>(new Vector3());
@@ -37,8 +37,9 @@ public class EnemyAiTutorial : NetworkBehaviour
             }
             else
             {
-                // Player is within attack range, stop movement
+                // Player is within attack range, stop movement and look at player
                 agent.ResetPath();
+                transform.LookAt(playersInSightRange[0].transform);
 
                 // Attack player
                 AttackPlayer(playersInSightRange[0].gameObject);
