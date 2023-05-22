@@ -10,6 +10,7 @@ TagManager:
   - HP
   - FrontHP
   - BackHP
+  - Spear
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 

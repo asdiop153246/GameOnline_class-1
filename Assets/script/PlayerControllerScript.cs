@@ -19,6 +19,13 @@ public class PlayerControllerScript : NetworkBehaviour
     public float jumpCooldown;
     public float jumpForce;
     public float RunSpeed = 8.0f;
+    
+    [Header("Stamina")]
+    public float maxStamina = 100f;
+    public float staminaConsumptionRate = 10f;
+    public float staminaRegenRate = 5f;
+    private float stamina;
+
     private Animator animator;
     private Rigidbody rb;
     private bool running;
@@ -37,6 +44,7 @@ public class PlayerControllerScript : NetworkBehaviour
         if (!IsOwner) return;
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
+        stamina = maxStamina;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
@@ -73,7 +81,7 @@ public class PlayerControllerScript : NetworkBehaviour
             running = false;
             animator.SetBool("Running", false);
         }
-        if (Input.GetKey(sprintKey))
+        if (Input.GetKey(sprintKey) && stamina > 0)
         {
             rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
         }
@@ -116,24 +124,26 @@ public class PlayerControllerScript : NetworkBehaviour
         readyToJump = true;
     }
 
-    //void turn()
-    //{
-    //    float rotation = Input.GetAxis("Horizontal");
-    //    if (rotation != 0)
-    //    {
-    //        rotation *= rotationSpeed;
-    //        Quaternion turn = Quaternion.Euler(0f, rotation, 0f);
-    //        rb.MoveRotation(rb.rotation * turn);
-    //    }
-    //    else
-    //    {
-    //        rb.angularVelocity = Vector3.zero;
-    //    }
-    //}
+    private void Staminas()
+    {
+
+        if (Input.GetKey(sprintKey) && stamina > 0)
+        {
+            stamina -= staminaConsumptionRate * Time.deltaTime;
+        }
+        else if (stamina < maxStamina)
+        {
+            stamina += staminaRegenRate * Time.deltaTime;
+        }
+
+        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        Debug.Log(stamina);
+    }
 
     private void FixedUpdate()
     {
         if (!IsOwner) return;
+        Staminas();
         moveForward();
         JumpInput();
         //CamMovement();

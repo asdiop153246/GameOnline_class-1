@@ -12,6 +12,7 @@ public class LoginManagerScript : MonoBehaviour
     public GameObject loginPanel;
     public GameObject leaveButton;
     public GameObject scorePanel;
+    public GameObject Mainmenu;
 
     public string ipAddress = "127.0.0.1";
     public TMP_InputField ipInputField;
@@ -44,13 +45,13 @@ public class LoginManagerScript : MonoBehaviour
         {
             loginPanel.SetActive(false);
             leaveButton.SetActive(true);
-            scorePanel.SetActive(true);
+            Mainmenu.SetActive(false);
         }
         else 
         {
-            loginPanel.SetActive(true);
+            //loginPanel.SetActive(true);
             leaveButton.SetActive(false);
-            scorePanel.SetActive(false);
+            Mainmenu.SetActive(true);
         }
     }
 
@@ -118,6 +119,11 @@ public class LoginManagerScript : MonoBehaviour
             System.Text.Encoding.ASCII.GetBytes(userName); //String > Byte
 
         NetworkManager.Singleton.StartClient();
+    }
+    public void Play()
+    {
+        Mainmenu.SetActive(false);
+        loginPanel.SetActive(true);
     }
 
     private bool approveConnection(string clientData , string serverData)

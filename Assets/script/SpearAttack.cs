@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class SpearAttack : MonoBehaviour
+using Unity.Netcode;
+public class SpearAttack : NetworkBehaviour
 {
     public GameObject spearHitbox;
     public LayerMask enemyLayers;
@@ -11,7 +11,7 @@ public class SpearAttack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
             StartCoroutine(Attack());
         }
@@ -24,7 +24,7 @@ public class SpearAttack : MonoBehaviour
         spearHitbox.SetActive(true);  // Enable hitbox
 
         // Animation or delay for the attack
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         // End attack
         isAttacking = false;
@@ -37,8 +37,12 @@ public class SpearAttack : MonoBehaviour
 
         if (((1 << other.gameObject.layer) & enemyLayers) != 0)
         {
-            // Assuming the enemy has a script with a function called 'TakeDamage'
-            //other.GetComponent<Monster>().TakeDamage(1);
+            // Assuming the enemy has a PlayerHealth script
+            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.RequestTakeDamageServerRpc(40); // Deal 1 damage to the player
+            }
         }
     }
 }
