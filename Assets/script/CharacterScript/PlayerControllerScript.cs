@@ -84,14 +84,14 @@ public class PlayerControllerScript : NetworkBehaviour
                 //translation *= Time.fixedDeltaTime;
                 //rb.MovePosition(rb.position + this.transform.forward * translation);
 
-                if (!walking)
+                if (!running)
                 {
                     running = true;
                     animator.SetBool("Walk", true);
                 }
             }
         }
-        else if (walking)
+        else if (running)
         {
             running = false;
             animator.SetBool("Walk", false);

@@ -33,7 +33,7 @@ RectTransform:
   m_Children:
   - {fileID: 8045877112254452666}
   m_Father: {fileID: 8496384795635220036}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -187,14 +187,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3020669637085131913}
-  m_LocalRotation: {x: -0, y: -0.000000042607827, z: 0.000000013780912, w: 1}
-  m_LocalPosition: {x: 0.4300003, y: 1.3979998, z: 0.165}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.78526026, y: -0.029544143, z: -0.6025253, w: -0.1394875}
+  m_LocalPosition: {x: -0.022855988, y: 0.10970845, z: 0.0048276465}
+  m_LocalScale: {x: 0.6220553, y: 0.62205505, z: 0.62205505}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5917378938812975457}
-  m_Father: {fileID: 8496384795635220036}
-  m_RootOrder: 3
+  m_Father: {fileID: 6846055457953979471}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1000912490
 MonoBehaviour:
@@ -245,7 +245,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8496384795635220036}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &6458902970826574469
 Camera:
@@ -480,7 +480,6 @@ Transform:
   - {fileID: 8242574171629188037}
   - {fileID: 1728773691}
   - {fileID: 5639307536007812884}
-  - {fileID: 568624470816794574}
   - {fileID: 5838159100052639053}
   - {fileID: 1637082134}
   m_Father: {fileID: 0}
@@ -653,7 +652,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e65d4035c06ba47a4ffc3ac82aa851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - Layer: 0
+    OriginatingState: 1062958187
+    DestinationState: -731100560
+    TransitionDuration: 0.25
+    TriggerNameHash: 1952376142
+    TransitionIndex: 2
+  - Layer: 0
+    OriginatingState: -1215774743
+    DestinationState: -731100560
+    TransitionDuration: 0.25
+    TriggerNameHash: 1952376142
+    TransitionIndex: 2
+  - Layer: 0
+    OriginatingState: -669384200
+    DestinationState: -731100560
+    TransitionDuration: 0.25
+    TriggerNameHash: 1952376142
+    TransitionIndex: 2
   m_Animator: {fileID: 3814001647287031206}
 --- !u!114 &1129380843443383734
 MonoBehaviour:
@@ -1020,6 +1037,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!4 &6846055457953979471 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3092613801661532257, guid: 403085fd9f706ec46b25ece3e38a1dc3, type: 3}
+  m_PrefabInstance: {fileID: 8496384795863487534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8242574171629188037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 403085fd9f706ec46b25ece3e38a1dc3, type: 3}
