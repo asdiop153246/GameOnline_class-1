@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
@@ -21,10 +22,15 @@ public class PlayerControllerScript : NetworkBehaviour
     public float RunSpeed = 8.0f;
     
     [Header("Stamina")]
-    public float maxStamina = 100f;
     public float staminaConsumptionRate = 10f;
     public float staminaRegenRate = 5f;
-    private float stamina;
+    public NetworkVariable<float> Stamina = new NetworkVariable<float>(100f);
+    public NetworkVariable<float> maxStaminas = new NetworkVariable<float>(100f);
+    public Image StaminaBar;
+    private float lerptimer;
+    public float chipSpeed = 2f;
+    public Image BackStaminaBar;
+    private bool isInitialized = false;
 
     private Animator animator;
     private Rigidbody rb;
@@ -42,10 +48,16 @@ public class PlayerControllerScript : NetworkBehaviour
     public bool isCursorLocked;
     void Start()
     {
-        if (!IsOwner) return;
+        if (!IsOwner)
+        {
+            Destroy(StaminaBar);
+            Destroy(BackStaminaBar);
+            return;
+        };
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        stamina = maxStamina;
+        Stamina.Value = maxStaminas.Value;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
@@ -83,7 +95,7 @@ public class PlayerControllerScript : NetworkBehaviour
             running = false;
             animator.SetBool("Running", false);
         }
-        if (Input.GetKey(sprintKey) && stamina > 0)
+        if (Input.GetKey(sprintKey) && Stamina.Value > 0)
         {
             rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
         }
@@ -129,17 +141,17 @@ public class PlayerControllerScript : NetworkBehaviour
     private void Staminas()
     {
 
-        if (Input.GetKey(sprintKey) && stamina > 0)
+        if (Input.GetKey(sprintKey) && Stamina.Value > 0)
         {
-            stamina -= staminaConsumptionRate * Time.deltaTime;
+            Stamina.Value -= staminaConsumptionRate * Time.deltaTime;
         }
-        else if (stamina < maxStamina)
+        else if (Stamina.Value < maxStaminas.Value)
         {
-            stamina += staminaRegenRate * Time.deltaTime;
+            Stamina.Value += staminaRegenRate * Time.deltaTime;
         }
 
-        stamina = Mathf.Clamp(stamina, 0, maxStamina);
-        Debug.Log(stamina);
+        Stamina.Value = Mathf.Clamp(Stamina.Value, 0, maxStaminas.Value);
+        Debug.Log(Stamina.Value);
     }
     private void LockCursor()
     {
@@ -165,5 +177,29 @@ public class PlayerControllerScript : NetworkBehaviour
         moveForward();
         JumpInput();
         LockCursor();
+        UpdateStaminaUI();
+    }
+
+    public void UpdateStaminaUI()
+    {
+        float fillF = StaminaBar.fillAmount;
+        float fillB = BackStaminaBar.fillAmount;
+        float hFraction = Stamina.Value / maxStaminas.Value;
+        if (fillB > hFraction)
+        {
+            StaminaBar.fillAmount = hFraction;
+            BackStaminaBar.color = Color.red;
+            lerptimer += Time.deltaTime;
+            float percentComplete = lerptimer / chipSpeed;
+            BackStaminaBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
+        }
+        if (fillF < hFraction)
+        {
+            StaminaBar.fillAmount = hFraction;
+            BackStaminaBar.color = Color.blue;
+            lerptimer += Time.deltaTime;
+            float percentComplete = lerptimer / chipSpeed;
+            BackStaminaBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
+        }
     }
 }

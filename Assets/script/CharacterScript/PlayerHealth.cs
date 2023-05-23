@@ -37,6 +37,7 @@ public class PlayerHealth : NetworkBehaviour
         {
             RequestTakeDamageServerRpc(10);
         }
+        UpdateHealthUI();
     }
     public void UpdateHealthUI()
     {

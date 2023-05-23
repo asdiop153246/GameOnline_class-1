@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-
+using UnityEngine.UI;
+using TMPro;
 public class PickupSpear : NetworkBehaviour
 {
     public KeyCode pickUpKey = KeyCode.E;  // Change this to set a different pickup key
@@ -44,6 +45,7 @@ public class PickupSpear : NetworkBehaviour
         {
             isNearSpear = true;
             spear = other.gameObject;
+            Debug.Log("In Spear Area");
         }
     }
 

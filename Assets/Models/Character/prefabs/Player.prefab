@@ -296,7 +296,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7473532660779588485}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2109839416231085962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,14 +609,21 @@ MonoBehaviour:
   jumpCooldown: 2
   jumpForce: 6.5
   RunSpeed: 8
-  maxStamina: 100
   staminaConsumptionRate: 10
   staminaRegenRate: 10
+  Stamina:
+    m_InternalValue: 100
+  maxStaminas:
+    m_InternalValue: 100
+  StaminaBar: {fileID: 7576785421821423476}
+  chipSpeed: 2
+  BackStaminaBar: {fileID: 1243935609689989082}
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
   orientation: {fileID: 1728773691}
+  isCursorLocked: 0
 --- !u!114 &8829458871982292710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +807,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 124f6efcd61c4ba40a11a8fdb77e7617, type: 3}
+--- !u!114 &1243935609689989082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1243935610292356649, guid: 124f6efcd61c4ba40a11a8fdb77e7617, type: 3}
+  m_PrefabInstance: {fileID: 1709742579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7576785421821423476 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7576785423363389063, guid: 124f6efcd61c4ba40a11a8fdb77e7617, type: 3}
+  m_PrefabInstance: {fileID: 1709742579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8045877111480165918 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8045877112110858221, guid: 124f6efcd61c4ba40a11a8fdb77e7617, type: 3}
