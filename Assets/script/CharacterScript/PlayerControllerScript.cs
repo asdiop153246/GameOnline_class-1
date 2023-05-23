@@ -39,15 +39,17 @@ public class PlayerControllerScript : NetworkBehaviour
     Vector3 moveDirection;
     Vector3 movement;
     float cameraverticalRotation = 0f;
+    public bool isCursorLocked;
     void Start()
     {
         if (!IsOwner) return;
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         stamina = maxStamina;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
+        isCursorLocked = true;
     }
     private void Update()
     {
@@ -139,6 +141,22 @@ public class PlayerControllerScript : NetworkBehaviour
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         Debug.Log(stamina);
     }
+    private void LockCursor()
+    {
+        if (Input.GetKeyDown(KeyCode.P) && isCursorLocked == true)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            isCursorLocked = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.P) && isCursorLocked == false)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            isCursorLocked = true;
+        }
+
+    }
 
     private void FixedUpdate()
     {
@@ -146,7 +164,6 @@ public class PlayerControllerScript : NetworkBehaviour
         Staminas();
         moveForward();
         JumpInput();
-        //CamMovement();
-        //turn();
+        LockCursor();
     }
 }
