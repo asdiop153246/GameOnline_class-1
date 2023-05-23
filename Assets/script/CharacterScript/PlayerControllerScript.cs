@@ -34,6 +34,7 @@ public class PlayerControllerScript : NetworkBehaviour
 
     private Animator animator;
     private Rigidbody rb;
+    private bool walking;
     private bool running;
     private bool readyToJump = true;
     [Header("Ground Check")]
@@ -83,17 +84,17 @@ public class PlayerControllerScript : NetworkBehaviour
                 //translation *= Time.fixedDeltaTime;
                 //rb.MovePosition(rb.position + this.transform.forward * translation);
 
-                if (!running)
+                if (!walking)
                 {
                     running = true;
-                    animator.SetBool("Running", true);
+                    animator.SetBool("Walk", true);
                 }
             }
         }
-        else if (running)
+        else if (walking)
         {
             running = false;
-            animator.SetBool("Running", false);
+            animator.SetBool("Walk", false);
         }
         if (Input.GetKey(sprintKey) && Stamina.Value > 0)
         {
