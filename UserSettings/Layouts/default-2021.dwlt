@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -298,8 +298,8 @@ MonoBehaviour:
     y: 0
     width: 409
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 23}
   m_Panes:
   - {fileID: 23}
@@ -791,9 +791,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -126.89334, y: 28.745102, z: -24.41173}
+    m_Target: {x: -103.48345, y: 23.165295, z: 29.490347}
     speed: 2
-    m_Value: {x: -126.89334, y: 28.745102, z: -24.41173}
+    m_Value: {x: -103.48345, y: 23.165295, z: 29.490347}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -840,13 +840,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.1813827, y: 0.050162595, z: -0.03961975, w: -0.98155814}
+    m_Target: {x: 0.029808518, y: -0.9462371, z: 0.09142888, w: 0.30896738}
     speed: 2
-    m_Value: {x: -0.18134262, y: 0.050151512, z: -0.039610997, w: -0.98134124}
+    m_Value: {x: 0.029670255, y: -0.94666487, z: 0.09147015, w: 0.30753642}
   m_Size:
-    m_Target: 2.0246332
+    m_Target: 16.456556
     speed: 2
-    m_Value: 2.0246332
+    m_Value: 16.456556
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1021,24 +1021,24 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 5}
+      scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: dc55fffff87ffffffa7ffffff49dffff6ca4ffff70a4ffff90a4ffff22abffff84abffff8abaffff8cc7ffffa0c7ffff62d6ffff36fbffff9a8e000062bb000034ce00006ae2000096e20000d0e2000088f60000
+      m_ExpandedIDs: e2f9ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Quantum Console
+        m_OriginalName: Quantum Console
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -3776
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -1089,22 +1089,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/script/CharacterScript
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/script/CharacterScript
+  - Assets/Prefabs
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\Admin\Documents\GitHub\GameOnline_class
+  m_LastProjectPath: E:\KMUTT\Unity\ProjectTar
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 175}
-    m_SelectedIDs: 42a60000
-    m_LastClickedID: 42562
-    m_ExpandedIDs: 000000004aa500004ea5000050a500002aa6000038a60000a6a70000aea7000006a8000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: c6a80000
+    m_LastClickedID: 43206
+    m_ExpandedIDs: 00000000f2a70000f4a70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1132,7 +1132,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004aa500004ca500004ea5000050a50000
+    m_ExpandedIDs: 00000000f2a70000f4a70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1163,18 +1163,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: prefabs
-      m_OriginalName: prefabs
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 63576
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:
@@ -1187,7 +1187,7 @@ MonoBehaviour:
     m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
-  m_DirectoriesAreaWidth: 177
+  m_DirectoriesAreaWidth: 208
 --- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52
