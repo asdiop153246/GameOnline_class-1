@@ -457,7 +457,6 @@ GameObject:
   - component: {fileID: 8416183665076312939}
   - component: {fileID: 1129380843443383734}
   - component: {fileID: 271907005}
-  - component: {fileID: 4560016860293036859}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -611,10 +610,8 @@ MonoBehaviour:
   RunSpeed: 8
   staminaConsumptionRate: 10
   staminaRegenRate: 10
-  Stamina:
-    m_InternalValue: 100
-  maxStaminas:
-    m_InternalValue: 100
+  stamina: 100
+  maxStamina: 100
   StaminaBar: {fileID: 7576785421821423476}
   chipSpeed: 2
   BackStaminaBar: {fileID: 1243935609689989082}
@@ -706,20 +703,6 @@ MonoBehaviour:
   HealthBar: {fileID: 8045877111969793967}
   chipSpeed: 2
   BackHealthBar: {fileID: 8045877111480165918}
---- !u!114 &4560016860293036859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8496384795635220035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 355aa079dc33da8429a3e2f30c29fb91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pickUpKey: 101
-  rightHand: {fileID: 568624470816794574}
 --- !u!1001 &297705442
 PrefabInstance:
   m_ObjectHideFlags: 0
