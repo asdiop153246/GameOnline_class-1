@@ -8,12 +8,15 @@ public class EnemyAiTutorial : NetworkBehaviour
     public LayerMask groundMask, playerMask;
     public float patrolRange = 10f;
     public float sightRange = 20f;
-    public float attackRange = 5f;
-    public float timeBetweenAttacks = 1f;
+    public float attackRange = 3f;
+    public float timeBetweenAttacks = 2f;
     private bool isAttacking = false;
-
+    public GameObject hitbox;
     private NetworkVariable<Vector3> walkPoint = new NetworkVariable<Vector3>(new Vector3());
     private bool walkPointSet = false;
+    public float attackDamage = 15f;
+    private NetworkVariable<Vector3> position = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<Quaternion> rotation = new NetworkVariable<Quaternion>(new Quaternion());
 
     void Start()
     {
@@ -53,6 +56,17 @@ public class EnemyAiTutorial : NetworkBehaviour
                 agent.SetDestination(walkPoint.Value);
             }
         }
+        if (IsServer)
+        {
+            position.Value = transform.position;
+            rotation.Value = transform.rotation;
+        }
+        // Update position and rotation on the clients
+        else
+        {
+            transform.position = position.Value;
+            transform.rotation = rotation.Value;
+        }
     }
 
     private void SearchWalkPoint()
@@ -74,6 +88,7 @@ public class EnemyAiTutorial : NetworkBehaviour
         if (isAttacking) return;
 
         // Attack code here...
+        hitbox.SetActive(true);
         Debug.Log("Attacking player!");
 
         isAttacking = true;
@@ -82,6 +97,7 @@ public class EnemyAiTutorial : NetworkBehaviour
 
     private void ResetAttack()
     {
+        hitbox.SetActive(false);
         isAttacking = false;
     }
 }

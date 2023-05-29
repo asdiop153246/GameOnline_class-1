@@ -12,6 +12,7 @@ TagManager:
   - BackHP
   - Spear
   - Bed
+  - Enemy
   layers:
   - Default
   - TransparentFX
