@@ -72,13 +72,24 @@ public class PlayerHealth : NetworkBehaviour
         if (!IsServer) return;  // Only the server can damage the player
         Health.Value -= damage;
         Health.Value = Mathf.Max(Health.Value, 0);  // Prevent health from going below 0
+        if (Health.Value <= 0)
+        {
+            Die();
+        }
+        Debug.Log(Health.Value);
     }
+
 
     public void RestoreHealth(float amount)
     {
         if (!IsServer) return;  // Only the server can heal the player
         Health.Value += amount;
         Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  // Prevent health from going above max
+    }
+    private void Die()
+    {
+        // Call Respawn from PlayerSpawnScript
+        GetComponent<PlayerSpawnScript>().Respawn();
     }
 }
 
