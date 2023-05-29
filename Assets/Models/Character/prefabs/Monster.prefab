@@ -91,7 +91,7 @@ MonoBehaviour:
   Health:
     m_InternalValue: 100
   maxHealth:
-    m_InternalValue: 100
+    m_InternalValue: 50
   Frame: {fileID: 0}
   HealthBar: {fileID: 0}
   chipSpeed: 2
