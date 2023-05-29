@@ -20,12 +20,12 @@ public class PlayerControllerScript : NetworkBehaviour
     public float jumpCooldown;
     public float jumpForce;
     public float RunSpeed = 8.0f;
-    
+
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
     public float staminaRegenRate = 5f;
-    public NetworkVariable<float> Stamina = new NetworkVariable<float>(100f);
-    public NetworkVariable<float> maxStaminas = new NetworkVariable<float>(100f);
+    [SerializeField] private float stamina = 100f;
+    [SerializeField] private float maxStamina = 100f;
     public Image StaminaBar;
     private float lerptimer;
     public float chipSpeed = 2f;
@@ -41,13 +41,16 @@ public class PlayerControllerScript : NetworkBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
-    
+
     public Transform orientation;
     Vector3 moveDirection;
     Vector3 movement;
     float cameraverticalRotation = 0f;
     public bool isCursorLocked;
-    void Start()
+
+    private bool isSprinting = false;
+
+    private void Start()
     {
         if (!IsOwner)
         {
@@ -58,134 +61,124 @@ public class PlayerControllerScript : NetworkBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Stamina.Value = maxStaminas.Value;
+        stamina = maxStamina;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         running = false;
         isCursorLocked = true;
     }
+
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-    }
-    void moveForward()
-    {
         float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
-        movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        //moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
-        if (Mathf.Abs(verticalInput) > 0.01f)
-        {
-            // move forward only
-            if (verticalInput > 0.01f)
-            {
-                //float translation = verticalInput * speed;
-                //translation *= Time.fixedDeltaTime;
-                //rb.MovePosition(rb.position + this.transform.forward * translation);
-
-                if (!running)
-                {
-                    running = true;
-                    animator.SetBool("Walk", true);
-                }
-            }
-        }
-        else if (running)
-        {
-            running = false;
-            animator.SetBool("Walk", false);
-        }
-        if (Input.GetKey(sprintKey) && Stamina.Value > 0)
-        {
-            rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
-        }
-    }
-    //private void CamMovement() 
-    //{
-    //    // New: Get the mouse movement input
-    //    float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-    //    float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-    //    // New: Rotate the player and the camera based on the mouse input
-    //    cameraverticalRotation -= mouseY;
-    //    cameraverticalRotation = Mathf.Clamp(cameraverticalRotation, -90f, 90f);
-    //    transform.localEulerAngles = Vector3.right * cameraverticalRotation;
-
-    //    // New: Apply the rotation to the player and the camera
-    //    transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
-    //    orientation.localRotation = Quaternion.Euler(currentRotation.x, 0f, 0f);
-    //}
-    private void JumpInput() 
-    {
-        if (Input.GetKey(jumpKey) && readyToJump == true)
-        {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-    }
-    private void Jump()
-    {
-        // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-
-    private void Staminas()
-    {
-
-        if (Input.GetKey(sprintKey) && Stamina.Value > 0)
-        {
-            Stamina.Value -= staminaConsumptionRate * Time.deltaTime;
-        }
-        else if (Stamina.Value < maxStaminas.Value)
-        {
-            Stamina.Value += staminaRegenRate * Time.deltaTime;
-        }
-
-        Stamina.Value = Mathf.Clamp(Stamina.Value, 0, maxStaminas.Value);
-        Debug.Log(Stamina.Value);
-    }
-    private void LockCursor()
-    {
-        if (Input.GetKeyDown(KeyCode.P) && isCursorLocked == true)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            isCursorLocked = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.P) && isCursorLocked == false)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            isCursorLocked = true;
-        }
-
+        //walking = Mathf.Abs(verticalInput) > 0.01f;
+        //running = Input.GetKey(sprintKey) && !walking;
     }
 
     private void FixedUpdate()
     {
         if (!IsOwner) return;
-        Staminas();
-        moveForward();
+
+        MoveForward();
         JumpInput();
         LockCursor();
+        UpdateStamina();
+    }
+
+    private void MoveForward()
+    {
+        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
+        movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
+
+        if (walking)
+        {
+            if (!animator.GetBool("Walk"))
+            {
+                animator.SetBool("Walk", true);
+                animator.SetBool("Run", false);
+            }
+        }
+        else if (running)
+        {
+            if (!animator.GetBool("Run"))
+            {
+                animator.SetBool("Run", true);
+                animator.SetBool("Walk", false);
+            }
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
+        }
+
+        if (Input.GetKey(sprintKey) && stamina > 0)
+        {
+            rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
+        }
+    }
+
+    private void JumpInput()
+    {
+        if (Input.GetKey(jumpKey) && readyToJump)
+        {
+            readyToJump = false;
+            Jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }
+
+    private void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void ResetJump()
+    {
+        readyToJump = true;
+    }
+
+    private void UpdateStamina()
+    {
+        if (Input.GetKey(sprintKey) && stamina > 0)
+        {
+            stamina -= staminaConsumptionRate * Time.deltaTime;
+        }
+        else if (stamina < maxStamina)
+        {
+            stamina += staminaRegenRate * Time.deltaTime;
+        }
+
+        stamina = Mathf.Clamp(stamina, 0, maxStamina);
         UpdateStaminaUI();
     }
 
-    public void UpdateStaminaUI()
+    private void LockCursor()
+    {
+        if (Input.GetKeyDown(KeyCode.P) && isCursorLocked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            isCursorLocked = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.P) && !isCursorLocked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            isCursorLocked = true;
+        }
+    }
+
+    private void UpdateStaminaUI()
     {
         float fillF = StaminaBar.fillAmount;
         float fillB = BackStaminaBar.fillAmount;
-        float hFraction = Stamina.Value / maxStaminas.Value;
+        float hFraction = stamina / maxStamina;
+
         if (fillB > hFraction)
         {
             StaminaBar.fillAmount = hFraction;
@@ -194,6 +187,7 @@ public class PlayerControllerScript : NetworkBehaviour
             float percentComplete = lerptimer / chipSpeed;
             BackStaminaBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
         }
+
         if (fillF < hFraction)
         {
             StaminaBar.fillAmount = hFraction;

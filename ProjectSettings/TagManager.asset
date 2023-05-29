@@ -11,6 +11,7 @@ TagManager:
   - FrontHP
   - BackHP
   - Spear
+  - Bed
   layers:
   - Default
   - TransparentFX

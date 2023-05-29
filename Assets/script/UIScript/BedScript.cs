@@ -4,72 +4,60 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
 using TMPro;
+
 public class BedScript : NetworkBehaviour
 {
     public Image screenOverlay;
     public TextMeshProUGUI message;
-    public TextMeshProUGUI instructionMessage;  // New instruction text variable
     public float sleepTransitionTime = 1.0f;
-    public BoxCollider bedCollider;
 
-    private NetworkVariable<int> sleepingClients = new NetworkVariable<int>(0);
-    private NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
-    private bool isNearBed = false;
+    private bool isPlayerNearBed = false;
+    private bool isSleeping = false;
+    private int dayCount = 1;
 
-    // This is the ServerRpc method that clients will call when they start sleeping
-    [ServerRpc]
-    public void StartSleepingServerRpc(ServerRpcParams rpcParams = default)
+    private void Update()
     {
-        sleepingClients.Value++;
+        if (!IsLocalPlayer)
+            return;
 
-        // If all clients are sleeping, start the sleep process
-        if (sleepingClients.Value >= NetworkManager.Singleton.ConnectedClients.Count)
+        if (isPlayerNearBed && Input.GetKeyDown(KeyCode.E) && !isSleeping)
         {
             StartCoroutine(Sleep());
         }
     }
 
-    [ClientRpc]
-    public void SleepClientRpc(ClientRpcParams rpcParams = default)
-    {
-        StartCoroutine(Sleep());
-    }
-
-    private void Update()
-    {
-        // Only local player can trigger the sleep action
-        if (!IsLocalPlayer) return;
-
-        // Check for the 'E' key press to start sleeping, but only if the player is near the bed
-        if (isNearBed && Input.GetKeyDown(KeyCode.E))
-        {
-            StartSleepingServerRpc();
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
-        // Check if it's a player that entered the bed's collider
-        if (other.gameObject.CompareTag("Player") && other.GetComponent<NetworkObject>().IsLocalPlayer)
+        if (!IsLocalPlayer)
+            return;
+
+        if (other.CompareTag("Player"))
         {
-            isNearBed = true;
-            instructionMessage.text = "Press E to sleep"; // Update instruction
+            isPlayerNearBed = true;
+            // Display instruction to sleep
+            // For example, you can enable a UI element or show a message
+            Debug.Log("Press 'E' to sleep");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if it's a player that left the bed's collider
-        if (other.gameObject.CompareTag("Player") && other.GetComponent<NetworkObject>().IsLocalPlayer)
+        if (!IsLocalPlayer)
+            return;
+
+        if (other.CompareTag("Player"))
         {
-            isNearBed = false;
-            instructionMessage.text = ""; // Clear instruction
+            isPlayerNearBed = false;
+            // Hide the instruction to sleep
+            // For example, you can disable a UI element or clear the message
+            Debug.Log("You moved away from the bed");
         }
     }
 
-    IEnumerator Sleep()
+    private IEnumerator Sleep()
     {
-        // Display the current day first
-        message.text = "Day " + dayCount.Value;
+        // Set sleeping state to prevent multiple sleep sequences
+        isSleeping = true;
 
         // Gradually darken the screen
         float transition = 0;
@@ -80,18 +68,15 @@ public class BedScript : NetworkBehaviour
             yield return null;
         }
 
-        // Wait for a moment
+        // Wait for a moment (e.g., display the current day)
+        message.text = "Day " + dayCount;
         yield return new WaitForSeconds(2);
 
-        if (IsServer)
-        {
-            // Increase the day count and display the new day
-            dayCount.Value++;
-        }
+        // Increase the day count
+        dayCount++;
 
-        message.text = "Next Day: " + dayCount.Value;
-
-        // Wait for a moment with the new day message visible
+        // Wait for a moment (e.g., display the new day)
+        message.text = "Day " + dayCount;
         yield return new WaitForSeconds(2);
 
         // Gradually lighten the screen
@@ -103,14 +88,8 @@ public class BedScript : NetworkBehaviour
             yield return null;
         }
 
-        // Hide the message
+        // Hide the message and reset sleeping state
         message.text = "";
-
-        if (IsServer)
-        {
-            // Reset sleeping clients count
-            sleepingClients.Value = 0;
-        }
+        isSleeping = false;
     }
 }
-
