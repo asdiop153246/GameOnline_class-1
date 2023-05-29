@@ -9,7 +9,7 @@ public class GameManager : NetworkBehaviour
     public GameObject sleepCanvas;
     public TextMeshProUGUI sleepText;
     private Dictionary<NetworkBehaviour, bool> playersInArea = new Dictionary<NetworkBehaviour, bool>();
-
+    private NetworkVariable<int> Days = new NetworkVariable<int>(1);
     public void PlayerEnterArea(NetworkBehaviour player)
     {
         if (!IsServer) return;
@@ -56,7 +56,8 @@ public class GameManager : NetworkBehaviour
     void SleepClientRpc()
     {
         sleepCanvas.SetActive(true);
-        sleepText.text = "The current day is " + System.DateTime.Now.DayOfWeek.ToString();
+        sleepText.text = "The current day is " + Days.Value;
+        Days.Value++;
     }
 
     [ClientRpc]

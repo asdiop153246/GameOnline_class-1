@@ -41,7 +41,7 @@ public class SpearAttack : NetworkBehaviour
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.RequestTakeDamageServerRpc(40); // Deal 1 damage to the player
+                playerHealth.RequestTakeDamageServerRpc(25); // Deal 1 damage to the player
             }
         }
     }
