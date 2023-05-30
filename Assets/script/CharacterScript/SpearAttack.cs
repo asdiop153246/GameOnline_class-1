@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class SpearAttack : NetworkBehaviour
 {
-
+    public PlayerControllerScript playerController;
     public int attackDamage = 25;  // Adjust this to your desired damage amount.
     public float attackDelay = 1f; // Delay between attacks in seconds. Adjust as necessary.
     public bool isAttacking = false;
@@ -13,10 +13,11 @@ public class SpearAttack : NetworkBehaviour
     public Animator animator;
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canAttack)  // 0 is for the left mouse button
+        if (Input.GetMouseButtonDown(0) && canAttack && playerController.stamina > 0) // Check if the player has enough stamina to attack
         {
             isAttacking = true;
             animator.SetTrigger("Stab");
+            playerController.UseStamina(20); // Use 10 stamina per attack. Adjust this value as needed
             StartCoroutine(AttackDelay());
         }
     }

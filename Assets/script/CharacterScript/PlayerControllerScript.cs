@@ -24,7 +24,7 @@ public class PlayerControllerScript : NetworkBehaviour
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
     public float staminaRegenRate = 5f;
-    [SerializeField] private float stamina = 100f;
+    [SerializeField] public float stamina = 100f;
     [SerializeField] private float maxStamina = 100f;
     public Image StaminaBar;
     private float lerptimer;
@@ -123,9 +123,10 @@ public class PlayerControllerScript : NetworkBehaviour
 
     private void JumpInput()
     {
-        if (Input.GetKey(jumpKey) && readyToJump)
+        if (Input.GetKey(jumpKey) && readyToJump && stamina > 0)
         {
             readyToJump = false;
+            stamina -= 20;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -196,5 +197,11 @@ public class PlayerControllerScript : NetworkBehaviour
             float percentComplete = lerptimer / chipSpeed;
             BackStaminaBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
         }
+    }
+    public void UseStamina(float amount)
+    {
+        stamina -= amount;
+        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        UpdateStaminaUI();
     }
 }
