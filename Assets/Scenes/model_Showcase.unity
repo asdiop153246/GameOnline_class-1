@@ -508,6 +508,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1195176936}
     m_Modifications:
+    - target: {fileID: -9005896606481034440, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 248f86a0d8ec3544d992f13bb829c086, type: 2}
     - target: {fileID: -8679921383154817045, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -568,13 +572,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5707579876904031512, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 248f86a0d8ec3544d992f13bb829c086, type: 2}
     - target: {fileID: -3852341972610935857, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -2450849009015537254, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7f682df371910f4ca3ab63afb70bba2, type: 2}
+    - target: {fileID: 623444577097220072, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b313af7b40fba041a0ca0e1b0f9bf3f, type: 2}
     - target: {fileID: 919132149155446097, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
       propertyPath: m_Name
-      value: islandMart
+      value: Mart
       objectReference: {fileID: 0}
     - target: {fileID: 2818311790955848466, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
       propertyPath: m_Layer
@@ -588,6 +604,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5957324105240511500, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b313af7b40fba041a0ca0e1b0f9bf3f, type: 2}
     - target: {fileID: 5981722475187972325, guid: 4972218e423c91f41b5259a0f87c02c2, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2469,7 +2489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1195176936}
   m_Layer: 0
-  m_Name: islandMart
+  m_Name: Mart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
