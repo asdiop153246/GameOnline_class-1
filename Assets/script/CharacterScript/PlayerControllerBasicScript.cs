@@ -41,8 +41,6 @@ public class PlayerControllerBasicScript : MonoBehaviour
     float cameraverticalRotation = 0f;
     public bool isCursorLocked;
 
-    private bool isSprinting = false;
-
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
