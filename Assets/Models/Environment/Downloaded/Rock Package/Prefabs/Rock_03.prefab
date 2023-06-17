@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4000013739457460}
   - component: {fileID: 33000011005273530}
   - component: {fileID: 23000012150228588}
+  - component: {fileID: 1091509176275284295}
   m_Layer: 0
   m_Name: Rock_03_LOD2
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1091509176275284295
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010874394890}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300004, guid: 48320e7576ce0664eb501ebbd6c815da, type: 3}
 --- !u!1 &1000011949594382
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013308252972}
   - component: {fileID: 205000011883594630}
+  - component: {fileID: -835571297311116023}
   m_Layer: 0
   m_Name: Rock_03
   m_TagString: Untagged
@@ -128,8 +144,8 @@ LODGroup:
   serializedVersion: 2
   m_LocalReferencePoint: {x: -0.04103172, y: -0.04789567, z: 0.08643508}
   m_Size: 3.4534183
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
   - screenRelativeHeight: 0.60094124
@@ -144,7 +160,21 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23000012150228588}
+  m_Enabled: 0
+--- !u!64 &-835571297311116023
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011949594382}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &1000012074862460
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +186,7 @@ GameObject:
   - component: {fileID: 4000014131611552}
   - component: {fileID: 33000010916069652}
   - component: {fileID: 23000014287857050}
+  - component: {fileID: 3686634474793389411}
   m_Layer: 0
   m_Name: Rock_03_LOD1
   m_TagString: Untagged
@@ -228,6 +259,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3686634474793389411
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012074862460}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: 48320e7576ce0664eb501ebbd6c815da, type: 3}
 --- !u!1 &1000013742746218
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +284,7 @@ GameObject:
   - component: {fileID: 4000011255812436}
   - component: {fileID: 33000010629808600}
   - component: {fileID: 23000012513637330}
+  - component: {fileID: 7748822637596071135}
   m_Layer: 0
   m_Name: Rock_03_LOD0
   m_TagString: Untagged
@@ -311,3 +357,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7748822637596071135
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013742746218}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300006, guid: 48320e7576ce0664eb501ebbd6c815da, type: 3}
