@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2373.058, g: 2821.914, b: 3336.33, a: 1}
+  m_IndirectSpecularColor: {r: 6712.451, g: 7982, b: 9437.047, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -231,21 +231,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 975493251}
     m_Modifications:
-    - target: {fileID: 227726908325048030, guid: e1d0e029c6bb49e49b48c885c9d6fcfd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -12.44
-      objectReference: {fileID: 0}
     - target: {fileID: 3183907271125958216, guid: e1d0e029c6bb49e49b48c885c9d6fcfd, type: 3}
       propertyPath: m_Name
       value: island_Cafe
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341760564844956927, guid: e1d0e029c6bb49e49b48c885c9d6fcfd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.44
-      objectReference: {fileID: 0}
-    - target: {fileID: 5730475126481048266, guid: e1d0e029c6bb49e49b48c885c9d6fcfd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.11287761
       objectReference: {fileID: 0}
     - target: {fileID: 6641948487476014500, guid: e1d0e029c6bb49e49b48c885c9d6fcfd, type: 3}
       propertyPath: m_RootOrder
