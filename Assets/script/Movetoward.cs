@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class Movetoward : NetworkBehaviour
 {
-    public float speed = 2.0f;
+    public float speed = 5.0f;
     public Transform target;
     public Transform target2; // Second destination
     public GameObject monsterPrefab; // Add your monster prefab here
