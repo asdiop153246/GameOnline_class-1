@@ -10,8 +10,8 @@ public class LoginManagerScript : MonoBehaviour
 {
     public TMP_InputField userNameInput;
     public GameObject loginPanel;
-    public GameObject leaveButton;
-    public GameObject scorePanel;
+    //public GameObject leaveButton;
+    //public GameObject scorePanel;
     public GameObject Mainmenu;
 
     public string ipAddress = "127.0.0.1";
@@ -44,13 +44,13 @@ public class LoginManagerScript : MonoBehaviour
         if (isUserLogin)
         {
             loginPanel.SetActive(false);
-            leaveButton.SetActive(true);
+            //leaveButton.SetActive(true);
             Mainmenu.SetActive(false);
         }
         else 
         {
             //loginPanel.SetActive(true);
-            leaveButton.SetActive(false);
+            //leaveButton.SetActive(false);
             Mainmenu.SetActive(true);
         }
     }
