@@ -15,8 +15,8 @@ using TMPro;
 
 public class RelayManagerScript : Singleton<RelayManagerScript>
 {
-    public GameObject codeRoomUI;
-    public TextMeshProUGUI codeRoom;
+    //public GameObject codeRoomUI;
+    //public TextMeshProUGUI codeRoom;
     public UnityTransport Transport => 
         NetworkManager.Singleton.GetComponent<UnityTransport>();
     public bool IsRelayEnabled => 
@@ -49,8 +49,8 @@ public class RelayManagerScript : Singleton<RelayManagerScript>
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
             //NetworkManager.Singleton.StartHost();
-            codeRoomUI.SetActive(true);
-            codeRoom.text = joinCode;
+            //codeRoomUI.SetActive(true);
+            //codeRoom.text = joinCode;
             Debug.Log("Join code = " + joinCode);
         }
         catch (RelayServiceException e)
