@@ -76,7 +76,7 @@ public class PlayerControllerBasicScript : MonoBehaviour
         movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
         rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
 
-        if (movement.x > 0 || movement.y > 0 || movement.z > 0)
+        if (movement.x != 0 || movement.y != 0 || movement.z != 0)
         {
             animator.SetBool("Walk", true);
         }
