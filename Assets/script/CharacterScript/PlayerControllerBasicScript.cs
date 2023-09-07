@@ -55,24 +55,32 @@ public class PlayerControllerBasicScript : MonoBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        //float verticalInput = Input.GetAxis("Vertical");
+        float verticalInput = Input.GetAxis("Vertical");
+        checkMovement();
         //walking = Mathf.Abs(verticalInput) > 0.01f;
         //running = Input.GetKey(sprintKey) && !walking;
     }
 
     private void FixedUpdate()
     {
-        checkMovement();
         MoveForward();
         JumpInput();
         LockCursor();
         UpdateStamina();
     }
+    private void checkMovement()
+    {
+        float verticalInput = Input.GetAxis("Vertical");
+        if (Mathf.Abs(verticalInput) > 0.01f)
+        {
+            //walking = 
+        }
+    }
     private void MoveForward()
     {
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
-        Debug.Log("walking =" + walking);
+
         movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
         rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
 
@@ -90,18 +98,7 @@ public class PlayerControllerBasicScript : MonoBehaviour
             rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
         }
     }
-    private void checkMovement()
-    {
 
-        if (movement.x != 0 || movement.y != 0 || movement.z != 0)
-        {
-            walking = true;
-        }
-        else
-        {
-            walking = false;
-        }
-    }
     private void JumpInput()
     {
         if (Input.GetKey(jumpKey) && readyToJump && stamina > 0)

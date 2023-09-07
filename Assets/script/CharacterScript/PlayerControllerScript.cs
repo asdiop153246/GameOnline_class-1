@@ -118,15 +118,15 @@ public class PlayerControllerScript : NetworkBehaviour
         if (Input.GetKey(sprintKey) && stamina > 0)
         {
             rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
-            if (walking == true)
-            {
-                animator.SetBool("Run", true);
-                animator.SetBool("Walk", false);
-            }
-            else
-            {
-                animator.SetBool("Run", false);
-            }
+            //if (walking == true)
+            //{
+            //    animator.SetBool("Run", true);
+            //    animator.SetBool("Walk", false);
+            //}
+            //else
+            //{
+            //    animator.SetBool("Run", false);
+            //}
         }
     }
 
