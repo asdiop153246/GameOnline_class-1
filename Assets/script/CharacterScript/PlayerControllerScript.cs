@@ -71,7 +71,7 @@ public class PlayerControllerScript : NetworkBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        float verticalInput = Input.GetAxis("Vertical");
+        //float verticalInput = Input.GetAxis("Vertical");
         //walking = Mathf.Abs(verticalInput) > 0.01f;
         //running = Input.GetKey(sprintKey) && !walking;
     }
@@ -79,35 +79,34 @@ public class PlayerControllerScript : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!IsOwner) return;
-
+        checkMovement();
         MoveForward();
         JumpInput();
         LockCursor();
         UpdateStamina();
     }
+    private void checkMovement() 
+    {
 
+        if (movement.x != 0 || movement.y != 0 || movement.z != 0)
+        {
+            walking = true;
+        }
+        else
+        {
+            walking = false;
+        }
+    }
     private void MoveForward()
     {
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
         movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
         rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
-
-        if (walking)
+        Debug.Log("walking =" + walking);
+         if (walking == true)
         {
-            if (!animator.GetBool("Walk"))
-            {
-                animator.SetBool("Walk", true);
-                animator.SetBool("Run", false);
-            }
-        }
-        else if (running)
-        {
-            if (!animator.GetBool("Run"))
-            {
-                animator.SetBool("Run", true);
-                animator.SetBool("Walk", false);
-            }
+            animator.SetBool("Walk", true);
         }
         else
         {
@@ -115,9 +114,19 @@ public class PlayerControllerScript : NetworkBehaviour
             animator.SetBool("Run", false);
         }
 
+
         if (Input.GetKey(sprintKey) && stamina > 0)
         {
             rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
+            if (walking == true)
+            {
+                animator.SetBool("Run", true);
+                animator.SetBool("Walk", false);
+            }
+            else
+            {
+                animator.SetBool("Run", false);
+            }
         }
     }
 
