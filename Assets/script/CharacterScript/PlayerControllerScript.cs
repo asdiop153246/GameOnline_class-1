@@ -121,7 +121,7 @@ public class PlayerControllerScript : NetworkBehaviour
             if (walking == true)
             {
                 animator.SetBool("Run", true);
-                animator.SetBool("Walk", false);
+                //animator.SetBool("Walk", false);
             }
             else
             {
