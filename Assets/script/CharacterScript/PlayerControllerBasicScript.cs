@@ -56,7 +56,7 @@ public class PlayerControllerBasicScript : MonoBehaviour
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         float verticalInput = Input.GetAxis("Vertical");
-        checkMovement();
+        //checkMovement();
         //walking = Mathf.Abs(verticalInput) > 0.01f;
         //running = Input.GetKey(sprintKey) && !walking;
     }
@@ -68,14 +68,14 @@ public class PlayerControllerBasicScript : MonoBehaviour
         LockCursor();
         UpdateStamina();
     }
-    private void checkMovement()
-    {
-        float verticalInput = Input.GetAxis("Vertical");
-        if (Mathf.Abs(verticalInput) > 0.01f)
-        {
-            //walking = 
-        }
-    }
+    //private void checkMovement()
+    //{
+    //    float verticalInput = Input.GetAxis("Vertical");
+    //    if (Mathf.Abs(verticalInput) > 0.01f)
+    //    {
+    //        //walking = 
+    //    }
+    //}
     private void MoveForward()
     {
         float verticalInput = Input.GetAxis("Vertical");
