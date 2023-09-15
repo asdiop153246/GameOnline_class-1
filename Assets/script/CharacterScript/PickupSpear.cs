@@ -1,62 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.UI;
-using TMPro;
+
 public class PickupSpear : NetworkBehaviour
 {
     public KeyCode pickUpKey = KeyCode.E;  // Change this to set a different pickup key
-    public Transform rightHand;  // Set this in the inspector to your RightHand object
-    private bool isNearSpear = false;
-    private GameObject spear;
+    public bool isNearSpear = false;
+    private GameObject Pspear;
+    public bool HaveSpear = false;
 
-    void Update()
+    private void Update()
     {
-        // Check if the player is near the spear and the pickup key is pressed
-        if (IsOwner && isNearSpear && Input.GetKeyDown(pickUpKey))
+        if (!IsOwner)
+            return;
+
+        if (isNearSpear == true && Input.GetKeyDown(pickUpKey))
         {
-            // Request to pick up the spear
-            RequestPickUpSpearServerRpc();
+            Debug.Log("Attempting to pick up spear");
+            PickUpSpearClientRpc();
+        }
+    }
+    [ClientRpc]
+    void PickUpSpearClientRpc()
+    {
+        if (HaveSpear)
+        {
+            Debug.Log("already Have spear");
+            return;
+        }
+           
+
+        if (isNearSpear == true && Pspear != null)
+        {
+            Debug.Log("Picked up spear");
+            HaveSpear = true;
         }
     }
 
-    [ServerRpc]
-    void RequestPickUpSpearServerRpc()
+    private void OnTriggerEnter(Collider other)
     {
-        PickUpSpearServer();
-    }
+        if (!IsOwner)
+            return;
 
-    void PickUpSpearServer()
-    {
-        if (spear != null)
-        {
-            // Attach the spear to the player
-            spear.transform.SetParent(rightHand);
-            spear.transform.localPosition = Vector3.zero;  // Position at the origin of the hand
-            spear.transform.localRotation = Quaternion.identity;  // Reset rotation
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        // Check if the player is entering the spear's trigger
-        if (other.gameObject.CompareTag("Spear"))
+        if (other.CompareTag("PSpear"))
         {
             isNearSpear = true;
-            spear = other.gameObject;
+            Pspear = other.gameObject;
             Debug.Log("In Spear Area");
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        // Check if the player is leaving the spear's trigger
-        if (other.gameObject.CompareTag("Spear"))
+        if (!IsOwner)
+            return;
+
+        if (other.CompareTag("PSpear"))
         {
             isNearSpear = false;
-            spear = null;
+            Pspear = null;
         }
     }
 }
-

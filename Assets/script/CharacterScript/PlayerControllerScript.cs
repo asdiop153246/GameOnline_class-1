@@ -103,7 +103,7 @@ public class PlayerControllerScript : NetworkBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
         rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
-        Debug.Log("walking =" + walking);
+        //Debug.Log("walking =" + walking);
          if (walking == true)
         {
             animator.SetBool("Walk", true);
