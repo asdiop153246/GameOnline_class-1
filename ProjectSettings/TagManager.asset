@@ -14,6 +14,7 @@ TagManager:
   - Bed
   - Enemy
   - LoginManager
+  - PSpear
   layers:
   - Default
   - TransparentFX
