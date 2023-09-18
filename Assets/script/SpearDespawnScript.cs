@@ -4,15 +4,24 @@ using UnityEngine;
 using Unity.Netcode;
 public class SpearDespawnScript : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    bool hasPlayer = false;
+    private void OnTriggerEnter(Collider other)
     {
-        
+        PlayerControllerScript player = other.GetComponent<PlayerControllerScript>();
+        if (player != null)
+        {
+            // Player entered the collider area
+            Debug.Log("Player entered the area!");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        
+        PlayerControllerScript player = other.GetComponent<PlayerControllerScript>();
+        if (player != null && Input.GetKeyDown(KeyCode.E))
+        {
+            // Player pressed E while inside the collider area
+            Debug.Log("Player pressed E!");
+        }
     }
 }
