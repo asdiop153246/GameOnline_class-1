@@ -22,6 +22,14 @@ public class SpearDespawnScript : NetworkBehaviour
         {
             // Player pressed E while inside the collider area
             Debug.Log("Player pressed E!");
+            StartCoroutine(Waittime());
+            // Request destruction of the object
+            //GetComponent<NetworkDestroy>().RequestDestroy();
         }
+    }
+    IEnumerator Waittime ()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<NetworkDestroy>().RequestDestroy();
     }
 }
