@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 public class SpearDespawnScript : NetworkBehaviour
 {
-    bool hasPlayer = false;
+    public bool hasPlayer = false;
     private void OnTriggerEnter(Collider other)
     {
         PlayerControllerScript player = other.GetComponent<PlayerControllerScript>();

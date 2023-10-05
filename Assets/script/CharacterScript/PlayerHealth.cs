@@ -37,6 +37,10 @@ public class PlayerHealth : NetworkBehaviour
         {
             RequestTakeDamageServerRpc(10);
         }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            RequestRestoreHealthServerRpc(10);
+        }
         UpdateHealthUI();
     }
     public void UpdateHealthUI()
@@ -47,7 +51,7 @@ public class PlayerHealth : NetworkBehaviour
         if (fillB > hFraction)
         {
             HealthBar.fillAmount = hFraction;
-            BackHealthBar.color = Color.red;
+            BackHealthBar.color = Color.white;
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             BackHealthBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
@@ -55,7 +59,7 @@ public class PlayerHealth : NetworkBehaviour
         if (fillF < hFraction)
         {
             HealthBar.fillAmount = hFraction;
-            BackHealthBar.color = Color.green;
+            BackHealthBar.color = Color.white;
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             BackHealthBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
@@ -66,6 +70,11 @@ public class PlayerHealth : NetworkBehaviour
     public void RequestTakeDamageServerRpc(float damage)
     {
         TakeDamage(damage);
+    }
+    [ServerRpc]
+    public void RequestRestoreHealthServerRpc(float health)
+    {
+        RestoreHealth(health);
     }
     public void TakeDamage(float damage)
     {
@@ -79,11 +88,10 @@ public class PlayerHealth : NetworkBehaviour
         Debug.Log(Health.Value);
     }
 
-
-    public void RestoreHealth(float amount)
+    public void RestoreHealth(float health)
     {
         if (!IsServer) return;  // Only the server can heal the player
-        Health.Value += amount;
+        Health.Value += health;
         Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  // Prevent health from going above max
     }
     private void Die()
@@ -93,93 +101,4 @@ public class PlayerHealth : NetworkBehaviour
     }
 }
 
-
-
-
-
-//private float health;
-//private float lerptimer;
-//public float maxHealth = 100f;
-//public float chipSpeed = 2f;
-//public Image frontHealthBar;
-//public Image backHealthBar;
-//public GameObject HPBar;
-//private bool hasInitialized = false;
-//void Start()
-//{
-//    HPBar = GameObject.FindGameObjectWithTag("HP");
-//    GameObject FrontHP = GameObject.FindGameObjectWithTag("FrontHP");
-//    GameObject BackHP = GameObject.FindGameObjectWithTag("BackHP");
-//    frontHealthBar = FrontHP.GetComponent<Image>();
-//    backHealthBar = BackHP.GetComponent<Image>();
-//    if (!IsOwner) return;
-//    HPBar.SetActive(true);
-//    health = maxHealth;
-//}
-
-//// Update is called once per frame
-//void Update()
-//{
-//    if (!hasInitialized && IsOwner)
-//    {
-//        HPBar = GameObject.FindGameObjectWithTag("HP");
-//        GameObject FrontHP = GameObject.FindGameObjectWithTag("FrontHP");
-//        GameObject BackHP = GameObject.FindGameObjectWithTag("BackHP");
-
-//        if (HPBar != null && FrontHP != null && BackHP != null)
-//        {
-//            frontHealthBar = FrontHP.GetComponent<Image>();
-//            backHealthBar = BackHP.GetComponent<Image>();
-//            HPBar.SetActive(true);
-//            hasInitialized = true;
-//        }
-
-//        // Initialize health at the first time
-//        health = maxHealth;
-//    }
-//    health = Mathf.Clamp(health, 0, maxHealth);
-//    UpdateHealthUI();
-//    if (Input.GetKeyDown(KeyCode.G))
-//    {
-//        TakeDamage(Random.Range(5, 10));
-//    }
-//    if (Input.GetKeyDown(KeyCode.H))
-//    {
-//        RestoreHealth(Random.Range(5, 10));
-//    }
-//}
-
-//public void UpdateHealthUI()
-//{
-//    float fillF = frontHealthBar.fillAmount;
-//    float fillB = backHealthBar.fillAmount;
-//    float hFraction = health / maxHealth;
-//    if (fillB > hFraction)
-//    {
-//        frontHealthBar.fillAmount = hFraction;
-//        backHealthBar.color = Color.red;
-//        lerptimer += Time.deltaTime;
-//        float percentComplete = lerptimer / chipSpeed;
-//        backHealthBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
-//    }
-//    if (fillF < hFraction)
-//    {
-//        frontHealthBar.fillAmount = hFraction;
-//        backHealthBar.color = Color.green;
-//        lerptimer += Time.deltaTime;
-//        float percentComplete = lerptimer / chipSpeed;
-//        backHealthBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
-//    }
-//}
-//public void TakeDamage(float damage)
-//{
-//    health -= damage;
-//    lerptimer = 0f;
-
-//}
-//public void RestoreHealth(float healamount)
-//{
-//    health += healamount;
-//    lerptimer = 0f;
-//}
 

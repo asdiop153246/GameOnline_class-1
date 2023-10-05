@@ -8,13 +8,24 @@ public class NavigationBaker : MonoBehaviour
     [SerializeField]
     private NavMeshSurface surface;
 
-    [SerializeField]
-    private Transform objectToRotation;
+    //[SerializeField]
+    //private Transform objectToRotation;
 
     // Update is called once per frame
     void Update()
     {
-        objectToRotation.localRotation = Quaternion.Euler(new Vector3(0, 15 * Time.deltaTime, 0) + objectToRotation.localRotation.eulerAngles);
+        //objectToRotation.localRotation = Quaternion.Euler(new Vector3(0, 15 * Time.deltaTime, 0) + objectToRotation.localRotation.eulerAngles);
         surface.BuildNavMesh();
+        //StartCoroutine(Delays(10));
+        
     }
+    //IEnumerator Delays (float seconds)
+    //{
+        
+    //    objectToRotation.localRotation = Quaternion.Euler(new Vector3(0, 15 * Time.deltaTime, 0) + objectToRotation.localRotation.eulerAngles);
+    //    surface.BuildNavMesh();
+    //    yield return new WaitForSeconds(10);
+
+    //}
+    
 }
