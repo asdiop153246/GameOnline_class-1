@@ -8,7 +8,7 @@ public class NetworkDestroy : NetworkBehaviour
     void DestroyObjectServerRpc()
     {
         // Destroy the object on all clients
-        NetworkObject.Destroy(gameObject);
+        NetworkObject.Despawn(gameObject);
     }
 
     public void RequestDestroy()

@@ -8,7 +8,7 @@ public class EquipItems : NetworkBehaviour
     public PickupSpear Havespear; // Changed the type to PickupSpear
     public bool Isequip = false;
     [SerializeField]
-    GameObject Spear;
+    public GameObject Spear;
 
     void Start()
     {
