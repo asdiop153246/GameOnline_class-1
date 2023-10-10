@@ -60,14 +60,14 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         sunLight.transform.forward = -sunDirection;
         UpdateLightColor(timeRatio); // Added this line to update the light color based on time of day
 
-        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)
     {
         currentDayTime = newTime;
         UpdateSunPosition();
-        Debug.Log($"Day Time Changed - Old Time: {oldTime}, New Time: {newTime}");
+        //Debug.Log($"Day Time Changed - Old Time: {oldTime}, New Time: {newTime}");
     }
 
     private void UpdateLightColor(float timeRatio)

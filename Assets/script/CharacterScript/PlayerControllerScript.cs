@@ -36,12 +36,16 @@ public class PlayerControllerScript : NetworkBehaviour
     private Rigidbody rb;
     private bool walking;
     private bool running;
+    public bool canJump = true;
     private bool readyToJump = true;
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
-
+    
+    public bool isSwimming;
+    public float swimSpeed = 4;
+    public Transform target;
     public Transform orientation;
     Vector3 moveDirection;
     Vector3 movement;
@@ -99,40 +103,58 @@ public class PlayerControllerScript : NetworkBehaviour
     }
     private void MoveForward()
     {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
-        movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
-        //Debug.Log("walking =" + walking);
-         if (walking == true)
+        if (isSwimming != true)
         {
-            animator.SetBool("Walk", true);
-        }
-        else
-        {
-            animator.SetBool("Walk", false);
-            animator.SetBool("Run", false);
-        }
-
-
-        if (Input.GetKey(sprintKey) && stamina > 0)
-        {
-            rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
+            if (rb.useGravity != true)
+            {
+                rb.useGravity = true;
+            }
+            float verticalInput = Input.GetAxis("Vertical");
+            float horizontalInput = Input.GetAxis("Horizontal");
+            movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
+            //Debug.Log("walking =" + walking);
             if (walking == true)
             {
-                animator.SetBool("Run", true);
-                //animator.SetBool("Walk", false);
+                animator.SetBool("Walk", true);
             }
             else
             {
+                animator.SetBool("Walk", false);
                 animator.SetBool("Run", false);
+            }
+
+
+            if (Input.GetKey(sprintKey) && stamina > 0)
+            {
+                rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
+                if (walking == true)
+                {
+                    animator.SetBool("Run", true);
+                    //animator.SetBool("Walk", false);
+                }
+                else
+                {
+                    animator.SetBool("Run", false);
+                }
+            }
+        }
+        else
+        {
+            if(Input.GetAxisRaw("Vertical") > 0)
+            {
+                transform.position += target.forward * swimSpeed * Time.deltaTime;
+            }
+            if (Input.GetAxisRaw("Vertical") < 0)
+            {
+                transform.position -= target.forward * swimSpeed * Time.deltaTime;
             }
         }
     }
 
     private void JumpInput()
     {
-        if (Input.GetKey(jumpKey) && readyToJump && stamina > 0)
+        if (Input.GetKey(jumpKey) && readyToJump && stamina > 0 && canJump == true)
         {
             readyToJump = false;
             stamina -= 20;
@@ -212,5 +234,10 @@ public class PlayerControllerScript : NetworkBehaviour
         stamina -= amount;
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         UpdateStaminaUI();
+    }
+    public void ResetVector()
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 }

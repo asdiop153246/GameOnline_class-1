@@ -15,6 +15,7 @@ TagManager:
   - Enemy
   - LoginManager
   - PSpear
+  - EyeLevel
   layers:
   - Default
   - TransparentFX
