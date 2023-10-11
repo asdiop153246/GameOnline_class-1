@@ -5,20 +5,22 @@ using Unity.Netcode;
 
 public class EquipItems : NetworkBehaviour
 {
-    public PickupSpear Havespear; // Changed the type to PickupSpear
+    public PickupSpear Havespear;
     public bool Isequip = false;
     [SerializeField]
-    public GameObject Spear;
+    public NetworkObject Spear; // Changed GameObject to NetworkObject
 
     void Start()
     {
         if (!IsOwner) return;
         Havespear = this.GetComponent<PickupSpear>();
+        Spear.gameObject.SetActive(false); // Ensure spear is inactive at the start
     }
 
     void Update()
     {
-        
+        if (!IsOwner) return; // Ensure only the owner can execute the following code
+
         if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q) && !Isequip)
         {
             Debug.Log("Trying to equip spear");
@@ -34,21 +36,26 @@ public class EquipItems : NetworkBehaviour
     [ServerRpc]
     public void RequestEquipSpearServerRpc()
     {
-        EquipSpear();
+        EquipSpearClientRpc();
     }
+
     [ServerRpc]
     public void RequestUnEquipSpearServerRpc()
     {
-        UnEquipSpear();
+        UnEquipSpearClientRpc();
     }
-    public void EquipSpear()
+
+    [ClientRpc]
+    public void EquipSpearClientRpc()
     {
-        Spear.SetActive(true);
+        Spear.gameObject.SetActive(true);
         Isequip = true;
     }
-    public void UnEquipSpear()
+
+    [ClientRpc]
+    public void UnEquipSpearClientRpc()
     {
-        Spear.SetActive(false);
+        Spear.gameObject.SetActive(false);
         Isequip = false;
     }
 }
