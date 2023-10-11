@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
-
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 public class NetworkedDayNightCycle : NetworkBehaviour
 {
     [Header("Settings")]
@@ -15,6 +16,15 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     [Header("Components")]
     [SerializeField] private Light sunLight;
 
+    //[Header("Skybox")]
+    //[SerializeField] private HDRISky hdriSky;
+    //[SerializeField] private Volume GlobalVolume;
+    //[SerializeField] private Cubemap DaySkybox;
+    //[SerializeField] private Cubemap SunsetSkybox;
+    //[SerializeField] private Cubemap NightSkybox;
+    
+
+
     private float currentDayTime;
     private NetworkVariable<float> networkDayTime = new NetworkVariable<float>();
 
@@ -23,15 +33,19 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         
         
             StartCoroutine(UpdateTime());
-        
-
         networkDayTime.OnValueChanged += OnDayTimeChanged;
+        //if (!GlobalVolume.profile.TryGet(out hdriSky))
+        //{
+        //    Debug.LogError("HDRISky not found in the Volume Profile.");
+        //}
+        
     }
 
     private void Update()
     {
         if (IsServer)
         {
+            //networkDayTime.OnValueChanged += OnDayTimeChanged;
             UpdateSunPosition();
         }
     }
@@ -72,73 +86,48 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     private void UpdateLightColor(float timeRatio)
     {
+        
+        
         // Assuming 0-0.25 is night, 0.25-0.75 is day, and 0.75-1 is night again.
         if (timeRatio > 0.25f && timeRatio < 0.75f)
         {
             // Day time
             float dayRatio = (timeRatio - 0.25f) / 0.5f;
             sunLight.color = Color.Lerp(nightColor, dayColor, dayRatio);
+            
         }
         else
         {
             // Night time
             float nightRatio = timeRatio < 0.25f ? timeRatio / 0.25f : (timeRatio - 0.75f) / 0.25f;
             sunLight.color = Color.Lerp(dayColor, nightColor, nightRatio);
+            
         }
+        //UpdateHDRI(timeRatio);
     }
-    //public float dayDuration = 10f;
-    //public Light sun;
-    //public Color dayColor;
-    //public Color nightColor;
-
-    //private NetworkVariable<float> timeOfDay = new NetworkVariable<float>(0f);
-
-    //private bool isDay = true;
-
-    //private void Start()
+    //private void UpdateHDRI(float timeRatio)
     //{
-    //    if (!IsServer)
+    //    if (hdriSky == null) return;
+
+    //    // Assuming 0-0.25 is night, 0.25-0.75 is day, and 0.75-1 is night again.
+    //    if (timeRatio > 0.25f && timeRatio < 0.75f)
     //    {
-    //        // Disable the script on non-server clients
-    //        enabled = false;
+    //        // It's day time
+    //        hdriSky.hdriSky.overrideState = true;
+    //        hdriSky.hdriSky.value = NightSkybox;
     //    }
-    //}
-
-    //private void Update()
-    //{
-    //    // Update the time of day based on the server's synchronized value
-    //    float normalizedTime = timeOfDay.Value / dayDuration;
-
-    //    // Check if it's time to transition between day and night
-    //    if (normalizedTime >= 1f)
+    //    else
     //    {
-    //        // Invert the day/night state
-    //        isDay = !isDay;
-
-    //        // Reset the time of day
-    //        timeOfDay.Value = 0f;
-
-    //        // Transition to the appropriate state
-    //        if (isDay)
-    //        {
-    //            SetDay();
-    //        }
-    //        else
-    //        {
-    //            SetNight();
-    //        }
+    //        // It's night time
+    //        hdriSky.hdriSky.overrideState = true;
+    //        hdriSky.hdriSky.value = DaySkybox;
     //    }
-    //}
 
-    //private void SetDay()
-    //{
-    //    // Set the sun color to represent daytime
-    //    sun.color = dayColor;
-    //}
-
-    //private void SetNight()
-    //{
-    //    // Set the sun color to represent nighttime
-    //    sun.color = nightColor;
+    //    // Force an update of the visual environment
+    //    VisualEnvironment visualEnvironment = GlobalVolume.GetComponent<VisualEnvironment>();
+    //    if (visualEnvironment != null)
+    //    {
+    //        visualEnvironment.skyType.value = (int)SkyType.HDRI;
+    //    }
     //}
 }

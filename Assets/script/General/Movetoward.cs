@@ -12,6 +12,7 @@ public class Movetoward : NetworkBehaviour
 
     public Transform currentTarget;
     private bool isWaiting = false;
+    private bool isFlooding = false;
 
     private void Start()
     {
@@ -40,14 +41,13 @@ public class Movetoward : NetworkBehaviour
             {
                 StartCoroutine(WaitAndMove(5));
             }
-            
+            if (currentTarget == target2 && Vector3.Distance(transform.position, currentTarget.position) < 0.001f)
+            {
+                DespawnIsland();
+            }
         }
     }
-    //[ServerRpc]
-    //void MovetoTargetServerRPC()
-    //{
-    //    MoveToTarget();
-    //}
+
     private void MoveToTarget()
     {
         if (currentTarget != null)
@@ -76,9 +76,27 @@ public class Movetoward : NetworkBehaviour
     {
         currentTarget = currentTarget == target1 ? target2 : target1;
 
+        //if (currentTarget == target2)
+        //{
+        //    DespawnIsland();
+        //}
+
         if (currentTarget == null)
         {
             Debug.LogError("The new current target is not assigned.");
+        }
+    }
+
+    private void DespawnIsland()
+    {
+        if (GetComponent<NetworkObject>())
+        {
+            GetComponent<NetworkObject>().Despawn();
+            Debug.Log("Island despawned");
+        }
+        else
+        {
+            Debug.LogError("No NetworkObject component found on the island.");
         }
     }
 
@@ -86,10 +104,27 @@ public class Movetoward : NetworkBehaviour
     {
         if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
         {
+            Transform parentTransform = transform.parent;  // Get the parent of the current GameObject
+
+            if (parentTransform != null)
+            {
+                Debug.Log("Parent detected: " + parentTransform.name);
+            }
+            else
+            {
+                Debug.Log("No parent detected.");
+            }
+
             foreach (var spawnPoint in monsterSpawnPoints)
             {
                 var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
                 monster.GetComponent<NetworkObject>().Spawn();
+
+                if (parentTransform != null)  // Check if a parent exists
+                {
+                    monster.transform.SetParent(parentTransform);  // Set the spawned monster's parent to the parent of the current GameObject
+                    Debug.Log("Monster parent set to: " + monster.transform.parent.name);
+                }
             }
         }
         else
