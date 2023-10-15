@@ -15,7 +15,7 @@ public class PickupSpear : NetworkBehaviour
 
         if (isNearSpear && Input.GetKeyDown(pickUpKey))
         {
-            Debug.Log("Attempting to pick up spear");
+            Debug.Log("Client: Attempting to pick up spear");
             TryPickUpSpearServerRpc();
         }
     }
@@ -23,30 +23,40 @@ public class PickupSpear : NetworkBehaviour
     [ServerRpc]
     void TryPickUpSpearServerRpc()
     {
+        Debug.Log("Server: Received pick up request");
+
         if (HaveSpear)
         {
-            Debug.Log("Already have spear");
+            Debug.Log("Server: Already have a spear");
             return;
         }
 
         if (isNearSpear && Pspear != null)
         {
-            Debug.Log("Picked up spear");
+            Debug.Log("Server: Picking up spear");
             HaveSpear = true;
 
-            // If necessary, communicate the new game state to all clients
+            // Communicate the new game state to all clients
             PickUpSpearClientRpc();
+        }
+        else
+        {
+            Debug.Log("Server: Cannot pick up - isNearSpear: " + isNearSpear + ", Pspear: " + Pspear);
         }
     }
 
     [ClientRpc]
     void PickUpSpearClientRpc()
     {
-        // Update the game state on all clients
-        // (For example, make the spear disappear)
+        Debug.Log("Client: Received confirmation to pick up spear");
+
         if (Pspear != null)
         {
             Destroy(Pspear);
+        }
+        else
+        {
+            Debug.Log("Client: Pspear is null");
         }
     }
 

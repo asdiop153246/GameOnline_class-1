@@ -11,10 +11,15 @@ public class SpearAttack : NetworkBehaviour
     public bool isAttacking = false;
     public bool canAttack = true;
     public Animator animator;
+    private void Start()
+    {
+        if (!IsOwner) return;
+    }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canAttack && playerController.stamina > 0) // Check if the player has enough stamina to attack
+        if (Input.GetMouseButtonDown(0) && canAttack && playerController.stamina > 20) // Check if the player has enough stamina to attack
         {
+
             isAttacking = true;
             animator.SetTrigger("Stab");
             playerController.UseStamina(20); // Use 10 stamina per attack. Adjust this value as needed
