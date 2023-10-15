@@ -17,6 +17,11 @@ public class RelayManagerScript : Singleton<RelayManagerScript>
 {
     //public GameObject codeRoomUI;
     //public TextMeshProUGUI codeRoom;
+    private string joinCode;
+    public string JoinCode
+    {
+        get { return joinCode; }
+    }
     public UnityTransport Transport => 
         NetworkManager.Singleton.GetComponent<UnityTransport>();
     public bool IsRelayEnabled => 
@@ -44,7 +49,7 @@ public class RelayManagerScript : Singleton<RelayManagerScript>
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
-            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);

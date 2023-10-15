@@ -1,18 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RoomCodeScript : MonoBehaviour
+using UnityEngine.UI;
+using Unity.Netcode;
+using TMPro;
+public class RoomCodeScript : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TextMeshProUGUI codeText;
+    [SerializeField] private GameObject uiGameObject;
+    private void Start()
     {
-        
+        if (codeText == null)
+        {
+            Debug.LogError("Code Text is not assigned.");
+            return;
+        }
+
+        if (uiGameObject == null)
+        {
+            Debug.LogError("UI GameObject is not assigned.");
+            return;
+        }
+
+        if (!IsLocalPlayer)
+        {
+            uiGameObject.SetActive(false);
+            return;
+        }
+
+        if (RelayManagerScript.Instance != null)
+        {
+            string joinCode = RelayManagerScript.Instance.JoinCode;
+            codeText.text = joinCode;
+            Debug.Log("Join code in RoomCodeScript: " + joinCode);
+        }
+        else
+        {
+            Debug.LogError("RelayManagerScript instance is null.");
+        }
+
+        // Initially set the UI to be inactive
+        uiGameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        // Only allow the local player to toggle the UI
+        if (IsLocalPlayer && Input.GetKeyDown(KeyCode.O))
+        {
+            // Toggle the active state of the UI GameObject
+            uiGameObject.SetActive(!uiGameObject.activeSelf);
+        }
     }
 }

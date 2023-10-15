@@ -87,7 +87,6 @@ public class EnemyAiTutorial : NetworkBehaviour
     {
         if (isAttacking) return;
 
-        // Attack code here...
         hitbox.SetActive(true);
         Debug.Log("Attacking player!");
 
