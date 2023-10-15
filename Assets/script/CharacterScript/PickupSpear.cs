@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 public class PickupSpear : NetworkBehaviour
 {
-    public KeyCode pickUpKey = KeyCode.E;  // Change this to set a different pickup key
+    public KeyCode pickUpKey = KeyCode.E;
     public bool isNearSpear = false;
     private GameObject Pspear;
     public bool HaveSpear = false;
@@ -13,26 +13,40 @@ public class PickupSpear : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        if (isNearSpear == true && Input.GetKeyDown(pickUpKey))
+        if (isNearSpear && Input.GetKeyDown(pickUpKey))
         {
             Debug.Log("Attempting to pick up spear");
-            PickUpSpearClientRpc();
+            TryPickUpSpearServerRpc();
         }
     }
-    [ClientRpc]
-    void PickUpSpearClientRpc()
+
+    [ServerRpc]
+    void TryPickUpSpearServerRpc()
     {
         if (HaveSpear)
         {
-            Debug.Log("already Have spear");
+            Debug.Log("Already have spear");
             return;
         }
-           
 
-        if (isNearSpear == true && Pspear != null)
+        if (isNearSpear && Pspear != null)
         {
             Debug.Log("Picked up spear");
             HaveSpear = true;
+
+            // If necessary, communicate the new game state to all clients
+            PickUpSpearClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    void PickUpSpearClientRpc()
+    {
+        // Update the game state on all clients
+        // (For example, make the spear disappear)
+        if (Pspear != null)
+        {
+            Destroy(Pspear);
         }
     }
 
