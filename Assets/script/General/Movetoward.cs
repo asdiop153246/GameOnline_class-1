@@ -9,6 +9,8 @@ public class Movetoward : NetworkBehaviour
     [SerializeField] private Transform target2;
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Transform[] monsterSpawnPoints;
+    private Vector3 target1Position;
+    private Vector3 target2Position;
 
     public Transform currentTarget;
     private bool isWaiting = false;
@@ -18,15 +20,17 @@ public class Movetoward : NetworkBehaviour
     {
         //if (IsServer)
         //{
-            if (target1 != null)
-            {
-                currentTarget = target1;
-            }
-            else
-            {
-                Debug.LogError("Target1 is not assigned.");
-                return;
-            }
+        if (target1 != null && target2 != null)
+        {
+            target1Position = target1.position;  // Store global coordinates
+            target2Position = target2.position;  // Store global coordinates
+            currentTarget = target1;
+        }
+        else
+        {
+            Debug.LogError("Targets are not assigned.");
+            return;
+        }
         //}
     }
 
@@ -34,14 +38,18 @@ public class Movetoward : NetworkBehaviour
     {
         if (IsServer && !isWaiting)
         {
-            //MovetoTargetServerRPC();
             MoveToTarget();
 
-            if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.position) < 0.001f)
+            Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;
+
+            // Check if the island is close enough to the target position
+            if (Vector3.Distance(transform.position, targetPosition) < 1f)  // Increased the threshold
             {
                 StartCoroutine(WaitAndMove(5));
             }
-            if (currentTarget == target2 && Vector3.Distance(transform.position, currentTarget.position) < 0.001f)
+
+            // If it is close enough to target2, despawn the island
+            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f)  // Increased the threshold
             {
                 DespawnIsland();
             }
@@ -52,8 +60,9 @@ public class Movetoward : NetworkBehaviour
     {
         if (currentTarget != null)
         {
+            Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;  // Use stored global coordinates
             var step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, step);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
         else
         {
@@ -74,12 +83,16 @@ public class Movetoward : NetworkBehaviour
 
     private void SwitchTarget()
     {
-        currentTarget = currentTarget == target1 ? target2 : target1;
-
-        //if (currentTarget == target2)
-        //{
-        //    DespawnIsland();
-        //}
+        if (currentTarget == target1)
+        {
+            currentTarget = target2;
+            Debug.Log("Switched to Target 2");
+        }
+        else
+        {
+            currentTarget = target1;
+            Debug.Log("Switched to Target 1");
+        }
 
         if (currentTarget == null)
         {
