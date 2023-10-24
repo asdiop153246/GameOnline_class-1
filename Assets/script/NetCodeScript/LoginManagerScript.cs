@@ -13,6 +13,8 @@ public class LoginManagerScript : MonoBehaviour
     //public GameObject leaveButton;
     //public GameObject scorePanel;
     public GameObject Mainmenu;
+    public GameObject Hostmenu;
+    public GameObject Clientmenu;
 
     public string ipAddress = "127.0.0.1";
     public TMP_InputField ipInputField;
@@ -128,8 +130,20 @@ public class LoginManagerScript : MonoBehaviour
 
     public void BackToMainMenu()
     {
-        Mainmenu.SetActive(true);
         loginPanel.SetActive(false);
+        Mainmenu.SetActive(true);
+    }
+
+    public void GoToHost()
+    {
+        Clientmenu.SetActive(false);
+        Hostmenu.SetActive(true);
+    }
+
+    public void GoToJoin()
+    {
+        Hostmenu.SetActive(false);
+        Clientmenu.SetActive(true);
     }
 
     private bool approveConnection(string clientData , string serverData)
