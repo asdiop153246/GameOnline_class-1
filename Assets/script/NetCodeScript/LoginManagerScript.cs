@@ -126,6 +126,12 @@ public class LoginManagerScript : MonoBehaviour
         loginPanel.SetActive(true);
     }
 
+    public void BackToMainMenu()
+    {
+        Mainmenu.SetActive(true);
+        loginPanel.SetActive(false);
+    }
+
     private bool approveConnection(string clientData , string serverData)
     {
         bool isApprove = System.String.Equals(clientData.Trim(), serverData.Trim()) ? false : true;
