@@ -12,24 +12,28 @@ public class EquipItems : NetworkBehaviour
 
     void Start()
     {
-        if (!IsOwner) return;
+        
         Havespear = this.GetComponent<PickupSpear>();
         Spear.gameObject.SetActive(false); // Ensure spear is inactive at the start
     }
 
     void Update()
     {
-        if (!IsOwner) return; // Ensure only the owner can execute the following code
+        if (!IsOwner)
+            return; // Ensure only the owner can process the input.
 
-        if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q) && !Isequip)
+        if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("Trying to equip spear");
-            RequestEquipSpearServerRpc();
-        }
-        else if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q) && Isequip)
-        {
-            Debug.Log("Trying to unequip spear");
-            RequestUnEquipSpearServerRpc();
+            if (!Isequip)
+            {
+                Debug.Log("Trying to equip spear");
+                RequestEquipSpearServerRpc();
+            }
+            else
+            {
+                Debug.Log("Trying to unequip spear");
+                RequestUnEquipSpearServerRpc();
+            }
         }
     }
 

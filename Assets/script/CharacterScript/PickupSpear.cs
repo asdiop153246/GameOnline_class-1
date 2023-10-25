@@ -10,10 +10,7 @@ public class PickupSpear : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsOwner)
-            return;
-
-        if (isNearSpear && Input.GetKeyDown(pickUpKey))
+        if (isNearSpear && Input.GetKeyDown(pickUpKey) && !HaveSpear)
         {
             Debug.Log("Client: Attempting to pick up spear");
             TryPickUpSpearServerRpc();
@@ -21,63 +18,45 @@ public class PickupSpear : NetworkBehaviour
     }
 
     [ServerRpc]
-    void TryPickUpSpearServerRpc()
+    void TryPickUpSpearServerRpc(ServerRpcParams rpcParams = default)
     {
-        Debug.Log("Server: Received pick up request");
-
-        if (HaveSpear)
-        {
-            Debug.Log("Server: Already have a spear");
-            return;
-        }
-
         if (isNearSpear && Pspear != null)
         {
             Debug.Log("Server: Picking up spear");
             HaveSpear = true;
 
-            // Communicate the new game state to all clients
-            PickUpSpearClientRpc();
-        }
-        else
-        {
-            Debug.Log("Server: Cannot pick up - isNearSpear: " + isNearSpear + ", Pspear: " + Pspear);
+            NetworkObject networkObj = Pspear.GetComponent<NetworkObject>();
+            if (networkObj)
+            {
+                networkObj.Despawn();
+            }
+            Destroy(Pspear);
+
+            PickUpSpearClientRpc(rpcParams.Receive.SenderClientId);
         }
     }
 
     [ClientRpc]
-    void PickUpSpearClientRpc()
+    void PickUpSpearClientRpc(ulong clientId)
     {
-        Debug.Log("Client: Received confirmation to pick up spear");
-
-        if (Pspear != null)
+        if (NetworkManager.Singleton.LocalClientId == clientId)
         {
-            Destroy(Pspear);
-        }
-        else
-        {
-            Debug.Log("Client: Pspear is null");
+            HaveSpear = true;
+            isNearSpear = false;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner)
-            return;
-
         if (other.CompareTag("PSpear"))
         {
             isNearSpear = true;
             Pspear = other.gameObject;
-            Debug.Log("In Spear Area");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!IsOwner)
-            return;
-
         if (other.CompareTag("PSpear"))
         {
             isNearSpear = false;

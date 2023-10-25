@@ -43,14 +43,14 @@ public class Movetoward : NetworkBehaviour
 
             Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;
 
-            // Check if the island is close enough to the target position
-            if (Vector3.Distance(transform.position, targetPosition) < 1f)  // Increased the threshold
+            // Check if the island is close to the target position
+            if (Vector3.Distance(transform.position, targetPosition) < 1f) 
             {
-                StartCoroutine(WaitAndMove(5));
+                StartCoroutine(WaitAndMove(60));
             }
 
-            // If it is close enough to target2, despawn the island
-            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f)  // Increased the threshold
+            // If it is close to target2, despawn the island
+            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f) 
             {
                 DespawnIsland();
             }
@@ -61,7 +61,7 @@ public class Movetoward : NetworkBehaviour
     {
         if (currentTarget != null)
         {
-            Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;  // Use stored global coordinates
+            Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position; 
             var step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }

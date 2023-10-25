@@ -30,11 +30,13 @@ public class IslandSpawnScript : NetworkBehaviour
 
         // Randomly select an island prefab
         int randomIndex = Random.Range(0, islandPrefabs.Length);
+        Debug.Log("Currentlly island = "+ randomIndex);
+        
         if (randomIndex == 0)
         {
             var island = Instantiate(islandPrefabs[randomIndex], spawnPosition1, Quaternion.identity);
             island.GetComponent<NetworkObject>().Spawn();
-            
+
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -46,12 +48,28 @@ public class IslandSpawnScript : NetworkBehaviour
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
         }
-        else if(randomIndex == 1)
+        else if (randomIndex == 1)
         {
             var island = Instantiate(islandPrefabs[randomIndex], spawnPosition2, Quaternion.identity);
             island.GetComponent<NetworkObject>().Spawn();
             island.transform.Rotate(Vector3.up, 182.15f);
-            
+
+            var navMeshSurface = island.GetComponent<NavMeshSurface>();
+            if (navMeshSurface != null)
+            {
+                navMeshSurface.BuildNavMesh();
+                Debug.Log("NavMesh built at runtime.");
+            }
+            else
+            {
+                Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
+            }
+        }
+        else if (randomIndex == 2)
+        {
+            var island = Instantiate(islandPrefabs[randomIndex], spawnPosition3, Quaternion.identity);
+            island.GetComponent<NetworkObject>().Spawn();
+
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -67,8 +85,58 @@ public class IslandSpawnScript : NetworkBehaviour
 
 
 
-        // Instantiate and spawn the island over the network at the specific position
 
+//switch(randomIndex)
+        //{
+        //    case 0:
+        //        var island = Instantiate(islandPrefabs[randomIndex], spawnPosition1, Quaternion.identity);
+        //        island.GetComponent<NetworkObject>().Spawn();
+
+        //        var navMeshSurface = island.GetComponent<NavMeshSurface>();
+        //        if (navMeshSurface != null)
+        //        {
+        //            navMeshSurface.BuildNavMesh();
+        //            Debug.Log("NavMesh built at runtime.");
+        //        }
+        //        else
+        //        {
+        //            Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
+        //        }
+        //        break;
+        //    case 1:
+        //        island = Instantiate(islandPrefabs[randomIndex], spawnPosition2, Quaternion.identity);
+        //        island.GetComponent<NetworkObject>().Spawn();
+        //        island.transform.Rotate(Vector3.up, 182.15f);
+
+        //        navMeshSurface = island.GetComponent<NavMeshSurface>();
+        //        if (navMeshSurface != null)
+        //        {
+        //            navMeshSurface.BuildNavMesh();
+        //            Debug.Log("NavMesh built at runtime.");
+        //        }
+        //        else
+        //        {
+        //            Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
+        //        }
+        //        break;
+        //    case 2:
+        //        island = Instantiate(islandPrefabs[randomIndex], spawnPosition3, Quaternion.identity);
+        //        island.GetComponent<NetworkObject>().Spawn();               
+
+        //        navMeshSurface = island.GetComponent<NavMeshSurface>();
+        //        if (navMeshSurface != null)
+        //        {
+        //            navMeshSurface.BuildNavMesh();
+        //            Debug.Log("NavMesh built at runtime.");
+        //        }
+        //        else
+        //        {
+        //            Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
+        //        }
+        //        break;
+
+
+        //}
 
     }
 }
