@@ -11,6 +11,7 @@ public class Movetoward : NetworkBehaviour
     [SerializeField] private Transform[] monsterSpawnPoints;
     private Vector3 target1Position;
     private Vector3 target2Position;
+    private float stoppingDistance;
 
     public Transform currentTarget;
     private bool isWaiting = false;
