@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 2848756888568956520}
   - component: {fileID: 4370647944198387820}
   - component: {fileID: 6118250973440743428}
+  - component: {fileID: 8921998784100260432}
+  - component: {fileID: 223974235}
   m_Layer: 6
   m_Name: Monster
   m_TagString: Enemy
@@ -156,6 +158,40 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!95 &8921998784100260432
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924439643053029929}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: b9ecfad714d53c445b841ab0f2eddf69, type: 3}
+  m_Controller: {fileID: 9100000, guid: 478c8ea46fee3eb42857b6b1cc7f449b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &223974235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924439643053029929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 8921998784100260432}
 --- !u!1 &8332322043649281613
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,8 +528,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ecfad714d53c445b841ab0f2eddf69, type: 3}
+--- !u!95 &3472131456075585368 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b9ecfad714d53c445b841ab0f2eddf69, type: 3}
+  m_PrefabInstance: {fileID: 7009264032584100553}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7408230060217699618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b9ecfad714d53c445b841ab0f2eddf69, type: 3}
   m_PrefabInstance: {fileID: 7009264032584100553}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7891574635627927448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b9ecfad714d53c445b841ab0f2eddf69, type: 3}
+  m_PrefabInstance: {fileID: 7009264032584100553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1128536942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7891574635627927448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 3472131456075585368}
