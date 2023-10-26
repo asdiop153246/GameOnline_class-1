@@ -4,33 +4,33 @@ using Unity.Netcode;
 public class PickupSpear : NetworkBehaviour
 {
     public KeyCode pickUpKey = KeyCode.E;
-    public bool isNearSpear = false;
     private GameObject Pspear;
     public bool HaveSpear = false;
 
     private void Update()
     {
-        if (isNearSpear && Input.GetKeyDown(pickUpKey) && !HaveSpear)
+        if (Input.GetKeyDown(pickUpKey) && !HaveSpear && IsLookingAtSpear())
         {
             Debug.Log("Client: Attempting to pick up spear");
-            TryPickUpSpearServerRpc();
+            NetworkObject spearNetworkObject = Pspear.GetComponent<NetworkObject>();
+            if (spearNetworkObject)
+            {
+                TryPickUpSpearServerRpc(spearNetworkObject.NetworkObjectId);
+            }
         }
     }
 
     [ServerRpc]
-    void TryPickUpSpearServerRpc(ServerRpcParams rpcParams = default)
+    void TryPickUpSpearServerRpc(ulong spearNetworkObjectId, ServerRpcParams rpcParams = default)
     {
-        if (isNearSpear && Pspear != null)
+        NetworkObject targetSpear = NetworkManager.Singleton.SpawnManager.SpawnedObjects[spearNetworkObjectId];
+        if (targetSpear != null)
         {
             Debug.Log("Server: Picking up spear");
-            HaveSpear = true;
 
-            NetworkObject networkObj = Pspear.GetComponent<NetworkObject>();
-            if (networkObj)
-            {
-                networkObj.Despawn();
-            }
-            Destroy(Pspear);
+            HaveSpear = true;
+            targetSpear.Despawn();
+            Destroy(targetSpear.gameObject);
 
             PickUpSpearClientRpc(rpcParams.Receive.SenderClientId);
         }
@@ -42,25 +42,23 @@ public class PickupSpear : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == clientId)
         {
             HaveSpear = true;
-            isNearSpear = false;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool IsLookingAtSpear()
     {
-        if (other.CompareTag("PSpear"))
-        {
-            isNearSpear = true;
-            Pspear = other.gameObject;
-        }
-    }
+        RaycastHit hit;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("PSpear"))
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
         {
-            isNearSpear = false;
-            Pspear = null;
+            if (hit.collider.CompareTag("PSpear") && hit.distance < 3f)
+            {
+                Pspear = hit.collider.gameObject;
+                Debug.Log("Looking at Spear");
+                return true;
+            }
         }
+
+        return false;
     }
 }

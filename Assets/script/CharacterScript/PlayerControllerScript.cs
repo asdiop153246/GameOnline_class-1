@@ -114,6 +114,8 @@ public class PlayerControllerScript : NetworkBehaviour
             movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
             rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
             //Debug.Log("walking =" + walking);
+            animator.SetBool("Swim", false);
+            animator.SetBool("TreadingSwim", false);
             if (walking == true)
             {
                 animator.SetBool("Walk", true);
@@ -141,14 +143,25 @@ public class PlayerControllerScript : NetworkBehaviour
         }
         else
         {
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
             if(Input.GetAxisRaw("Vertical") > 0)
             {
+                animator.SetBool("Swim", true);
+                animator.SetBool("TreadingSwim", false);
                 transform.position += target.forward * swimSpeed * Time.deltaTime;
             }
             if (Input.GetAxisRaw("Vertical") < 0)
             {
+                animator.SetBool("Swim", true);
+                animator.SetBool("TreadingSwim", false);
                 transform.position -= target.forward * swimSpeed * Time.deltaTime;
             }
+            if (Input.GetAxisRaw("Vertical") == 0)
+            {
+                animator.SetBool("Swim", false);
+                animator.SetBool("TreadingSwim", true);
+            }          
         }
     }
 
@@ -167,6 +180,7 @@ public class PlayerControllerScript : NetworkBehaviour
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        animator.SetTrigger("Jump");
     }
 
     private void ResetJump()
