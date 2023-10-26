@@ -12,7 +12,7 @@ public class MonsterHitbox : NetworkBehaviour
             var playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                float attackDamage = parentMonster.GetComponent<EnemyAiTutorial>().attackDamage;
+                float attackDamage = parentMonster.GetComponent<EnemyAi>().attackDamage;
                 playerHealth.RequestTakeDamageServerRpc(attackDamage);
             }
         }

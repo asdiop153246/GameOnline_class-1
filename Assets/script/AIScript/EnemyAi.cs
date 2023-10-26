@@ -2,14 +2,16 @@
 using UnityEngine.AI;
 using Unity.Netcode;
 
-public class EnemyAiTutorial : NetworkBehaviour
+[RequireComponent(typeof(Animator))]
+public class EnemyAi : NetworkBehaviour
 {
     public NavMeshAgent agent;
+    private Animator animator;
     public LayerMask groundMask, playerMask;
     public float patrolRange = 10f;
     public float sightRange = 20f;
     public float attackRange = 3f;
-    public float timeBetweenAttacks = 2f;
+    public float timeBetweenAttacks = 3f;
     private bool isAttacking = false;
     public GameObject hitbox;
     private NetworkVariable<Vector3> walkPoint = new NetworkVariable<Vector3>(new Vector3());
@@ -21,12 +23,13 @@ public class EnemyAiTutorial : NetworkBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         if (!IsServer) return;
-
+        animator.SetBool("Walk", false);
         // Check if player is in sight range
         Collider[] playersInSightRange = Physics.OverlapSphere(transform.position, sightRange, playerMask);
         if (playersInSightRange.Length != 0)
@@ -37,11 +40,14 @@ public class EnemyAiTutorial : NetworkBehaviour
             if (playerDistance > attackRange)
             {
                 agent.SetDestination(playersInSightRange[0].transform.position);
+                animator.SetBool("Walk", true);
+                
             }
             else
             {
                 // Player is within attack range, stop movement and look at player
                 agent.ResetPath();
+                animator.SetBool("Walk", false);
                 transform.LookAt(playersInSightRange[0].transform);
 
                 // Attack player
@@ -54,6 +60,7 @@ public class EnemyAiTutorial : NetworkBehaviour
             if (walkPointSet)
             {
                 agent.SetDestination(walkPoint.Value);
+                animator.SetBool("Walk", true);
             }
         }
         if (IsServer)
@@ -89,6 +96,7 @@ public class EnemyAiTutorial : NetworkBehaviour
 
         hitbox.SetActive(true);
         Debug.Log("Attacking player!");
+        animator.SetTrigger("Punch");
 
         isAttacking = true;
         Invoke(nameof(ResetAttack), timeBetweenAttacks);

@@ -75,9 +75,6 @@ public class PlayerControllerScript : NetworkBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        //float verticalInput = Input.GetAxis("Vertical");
-        //walking = Mathf.Abs(verticalInput) > 0.01f;
-        //running = Input.GetKey(sprintKey) && !walking;
     }
 
     private void FixedUpdate()
@@ -113,8 +110,7 @@ public class PlayerControllerScript : NetworkBehaviour
             float horizontalInput = Input.GetAxis("Horizontal");
             movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
             rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
-            //Debug.Log("walking =" + walking);
-            animator.SetBool("Swim", false);
+            //animator.SetBool("Swim", false);
             animator.SetBool("TreadingSwim", false);
             if (walking == true)
             {
@@ -147,14 +143,14 @@ public class PlayerControllerScript : NetworkBehaviour
             animator.SetBool("Run", false);
             if(Input.GetAxisRaw("Vertical") > 0)
             {
-                animator.SetBool("Swim", true);
-                animator.SetBool("TreadingSwim", false);
+                //animator.SetBool("Swim", true);
+                animator.SetBool("TreadingSwim", true);
                 transform.position += target.forward * swimSpeed * Time.deltaTime;
             }
             if (Input.GetAxisRaw("Vertical") < 0)
             {
-                animator.SetBool("Swim", true);
-                animator.SetBool("TreadingSwim", false);
+                //animator.SetBool("Swim", true);
+                animator.SetBool("TreadingSwim", true);
                 transform.position -= target.forward * swimSpeed * Time.deltaTime;
             }
             if (Input.GetAxisRaw("Vertical") == 0)

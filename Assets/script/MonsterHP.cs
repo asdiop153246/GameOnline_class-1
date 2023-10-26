@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
+[RequireComponent(typeof(Animator))]
 public class MonsterHP : NetworkBehaviour
 {
     public int maxHealth = 100;
+    private Animator animator;
     public NetworkVariable<int> currentHealth = new NetworkVariable<int>
         (100,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
     private void Start()
     {
         currentHealth.Value = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
     [ServerRpc]
@@ -32,6 +35,7 @@ public class MonsterHP : NetworkBehaviour
 
         if (currentHealth.Value <= 0)
         {
+            animator.SetTrigger("Die");
             Die();
         }
     }
