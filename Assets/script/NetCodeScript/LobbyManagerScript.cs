@@ -22,7 +22,7 @@ public class LobbyManagerScript : MonoBehaviour
         try
         {
             string lobbyName = "MyLobby";
-            int maxPlayer = 5;
+            int maxPlayer = 2;
             CreateLobbyOptions options = new CreateLobbyOptions 
             {
                 IsPrivate = false,

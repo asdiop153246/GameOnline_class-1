@@ -10,8 +10,9 @@ public class EnemyAi : NetworkBehaviour
     public LayerMask groundMask, playerMask;
     public float patrolRange = 10f;
     public float sightRange = 20f;
-    public float attackRange = 3f;
+    public float attackRange = 2f;
     public float timeBetweenAttacks = 3f;
+    public float MoveSpeed = 5f;
     private bool isAttacking = false;
     public GameObject hitbox;
     private NetworkVariable<Vector3> walkPoint = new NetworkVariable<Vector3>(new Vector3());
@@ -24,6 +25,7 @@ public class EnemyAi : NetworkBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        SetMovementSpeed(MoveSpeed);
     }
 
     void Update()
@@ -74,8 +76,15 @@ public class EnemyAi : NetworkBehaviour
             transform.position = position.Value;
             transform.rotation = rotation.Value;
         }
-    }
 
+    }
+    public void SetMovementSpeed(float newSpeed)
+    {
+        if (agent != null)
+        {
+            agent.speed = newSpeed;
+        }
+    }
     private void SearchWalkPoint()
     {
         // Calculate random point in range

@@ -42,22 +42,27 @@ public class MonsterHP : NetworkBehaviour
 
     private void Die()
     {
-        // Notify the clients that this monster is dead
         DieClientRpc();
-
-        // Perform death logic on the server
-        // For example, destroy the monster object
         if (IsServer)
         {
             NetworkObject.Destroy(gameObject);
         }
     }
 
-    // Notify clients of the monster's death
     [ClientRpc]
     private void DieClientRpc()
     {
-        // Clients perform their own death logic here, for example:
         gameObject.SetActive(false);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!IsServer)
+            return;
+
+        if (other.gameObject.CompareTag("DeadZone"))
+        {
+            Debug.Log("monster hit deadzone");
+            Die();  
+        }
     }
 }

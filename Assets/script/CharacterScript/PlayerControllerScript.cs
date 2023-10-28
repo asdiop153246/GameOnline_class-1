@@ -23,6 +23,7 @@ public class PlayerControllerScript : NetworkBehaviour
 
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
+    public float swimConsumptionRate = 7f;
     public float staminaRegenRate = 5f;
     [SerializeField] public float stamina = 100f;
     [SerializeField] private float maxStamina = 100f;
@@ -123,7 +124,7 @@ public class PlayerControllerScript : NetworkBehaviour
             }
 
 
-            if (Input.GetKey(sprintKey) && stamina > 0)
+            if (Input.GetKey(sprintKey) && stamina > 5)
             {
                 rb.MovePosition(transform.position + movement * RunSpeed * Time.deltaTime);
                 if (walking == true)
@@ -146,24 +147,33 @@ public class PlayerControllerScript : NetworkBehaviour
                 //animator.SetBool("Swim", true);
                 animator.SetBool("TreadingSwim", true);
                 transform.position += target.forward * swimSpeed * Time.deltaTime;
+                stamina -= swimConsumptionRate * Time.deltaTime;
+                stamina = Mathf.Clamp(stamina, 0, maxStamina);
+                UpdateStaminaUI();
             }
             if (Input.GetAxisRaw("Vertical") < 0)
             {
                 //animator.SetBool("Swim", true);
                 animator.SetBool("TreadingSwim", true);
                 transform.position -= target.forward * swimSpeed * Time.deltaTime;
+                stamina -= swimConsumptionRate * Time.deltaTime;
+                stamina = Mathf.Clamp(stamina, 0, maxStamina);
+                UpdateStaminaUI();
             }
             if (Input.GetAxisRaw("Vertical") == 0)
             {
                 animator.SetBool("Swim", false);
                 animator.SetBool("TreadingSwim", true);
+                stamina -= swimConsumptionRate * Time.deltaTime;
+                stamina = Mathf.Clamp(stamina, 0, maxStamina);
+                UpdateStaminaUI();
             }          
         }
     }
 
     private void JumpInput()
     {
-        if (Input.GetKey(jumpKey) && readyToJump && stamina > 0 && canJump == true)
+        if (Input.GetKey(jumpKey) && readyToJump && stamina > 20 && canJump == true)
         {
             readyToJump = false;
             stamina -= 20;

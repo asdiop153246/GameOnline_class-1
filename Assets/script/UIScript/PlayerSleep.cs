@@ -50,43 +50,5 @@ public class PlayerSleep : NetworkBehaviour
     
     
     
-    //int days = 1;
-    //bool isNearBed = false;
-    //public GameObject sleepCanvas; // Assign in inspector
-    //public TextMeshProUGUI sleepText; // Assign in inspector
 
-    //void Update()
-    //{
-    //    if (isNearBed && Input.GetKeyDown(KeyCode.E))
-    //    {
-    //        StartCoroutine(Sleep());
-    //    }
-    //}
-
-    //private IEnumerator Sleep()
-    //{
-    //    sleepCanvas.SetActive(true);
-    //    sleepText.text = "The current day is day" +" "+ days;
-    //    yield return new WaitForSeconds(5);
-    //    sleepCanvas.SetActive(false);
-    //    sleepText.text = "";
-    //    days++;
-    //}
-
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Player"))
-    //    {
-    //        Debug.Log("Player Enter Bed");
-    //        isNearBed = true;
-    //    }
-    //}
-
-    //void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Player"))
-    //    {
-    //        isNearBed = false;
-    //    }
-    //}
 

@@ -26,6 +26,8 @@ public class LoginManagerScript : MonoBehaviour
     public List<GameObject> SpawnPoints;
     int spawnedPoint = 2;
 
+    //int playerCount = NetworkManager.Singleton.ConnectedClientsList.Count;
+
     private void setIpAddress()
     {
         transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
@@ -40,7 +42,10 @@ public class LoginManagerScript : MonoBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += HandleServerDisconnected;
         SetUIVisible(false);
     }
-
+    public int GetCurrentPlayerCount()
+    {
+        return NetworkManager.Singleton.ConnectedClientsList.Count;
+    }
     private void SetUIVisible(bool isUserLogin)
     {
         if (isUserLogin)
