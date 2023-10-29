@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class EquipItems : NetworkBehaviour
 {
-    public PickupSpear Havespear;
+    public InteractionScript Havespear;
     public bool Isequip = false;
     [SerializeField]
     public NetworkObject Spear; // Changed GameObject to NetworkObject
@@ -13,7 +13,7 @@ public class EquipItems : NetworkBehaviour
     void Start()
     {
         
-        Havespear = this.GetComponent<PickupSpear>();
+        Havespear = this.GetComponent<InteractionScript>();
         Spear.gameObject.SetActive(false); // Ensure spear is inactive at the start
     }
 

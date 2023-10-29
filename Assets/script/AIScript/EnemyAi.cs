@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 using Unity.Netcode;
 
@@ -18,6 +19,11 @@ public class EnemyAi : NetworkBehaviour
     private NetworkVariable<Vector3> walkPoint = new NetworkVariable<Vector3>(new Vector3());
     private bool walkPointSet = false;
     public float attackDamage = 15f;
+    private bool hasPlayerBeenSpotted = false;
+    public float dashSpeed = 20f;
+    public float dashDuration = 1f;
+    public float extraDashDistance = 1f;
+    public float windUpDuration = 1.5f;
     private NetworkVariable<Vector3> position = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     private NetworkVariable<Quaternion> rotation = new NetworkVariable<Quaternion>(new Quaternion());
 
@@ -37,6 +43,12 @@ public class EnemyAi : NetworkBehaviour
         if (playersInSightRange.Length != 0)
         {
             float playerDistance = Vector3.Distance(transform.position, playersInSightRange[0].transform.position);
+            if (!hasPlayerBeenSpotted)
+            {
+                hasPlayerBeenSpotted = true;
+                StartCoroutine(DashAttack(playersInSightRange[0].transform.position));
+                return;
+            }
 
             // If player is within sight range but outside of attack range
             if (playerDistance > attackRange)
@@ -87,7 +99,6 @@ public class EnemyAi : NetworkBehaviour
     }
     private void SearchWalkPoint()
     {
-        // Calculate random point in range
         float randomZ = Random.Range(-patrolRange, patrolRange);
         float randomX = Random.Range(-patrolRange, patrolRange);
 
@@ -103,17 +114,50 @@ public class EnemyAi : NetworkBehaviour
     {
         if (isAttacking) return;
 
+        agent.isStopped = true;
+        
         hitbox.SetActive(true);
         Debug.Log("Attacking player!");
         animator.SetTrigger("Punch");
 
         isAttacking = true;
+
         Invoke(nameof(ResetAttack), timeBetweenAttacks);
     }
+    private IEnumerator DashAttack(Vector3 targetPosition)
+    {
+        Vector3 directionToPlayer = (targetPosition - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        yield return new WaitForSeconds(0.5f);
+        agent.isStopped = true;
+        animator.SetTrigger("Dash");
+        yield return new WaitForSeconds(windUpDuration);
 
+        float startTime = Time.time;
+
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        Vector3 finalTargetPosition = targetPosition + direction * extraDashDistance;
+
+        while (Time.time < startTime + dashDuration)
+        {
+            
+            agent.velocity = direction * dashSpeed;
+            hitbox.SetActive(true);
+            yield return null;
+        }
+
+        agent.velocity = Vector3.zero;
+        agent.isStopped = false;
+        hitbox.SetActive(false);
+
+    }
     private void ResetAttack()
     {
+        hitbox.GetComponent<MonsterHitbox>().ResetHitList();
         hitbox.SetActive(false);
         isAttacking = false;
+
+        agent.isStopped = false;
     }
 }

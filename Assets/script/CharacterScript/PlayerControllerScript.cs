@@ -15,11 +15,11 @@ public class PlayerControllerScript : NetworkBehaviour
     public Transform cam;
     private Vector3 currentRotation;
     public float mouseSensitivity = 2.0f;
-    public float speed = 5.0f;
+    public float speed = 3.5f;
     public float rotationSpeed = 10.0f;
     public float jumpCooldown;
     public float jumpForce;
-    public float RunSpeed = 8.0f;
+    public float RunSpeed = 7.0f;
 
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
@@ -52,7 +52,7 @@ public class PlayerControllerScript : NetworkBehaviour
     Vector3 movement;
     float cameraverticalRotation = 0f;
     public bool isCursorLocked;
-
+    public bool canMove = true;
     private bool isSprinting = false;
 
     private void Start()
@@ -81,6 +81,7 @@ public class PlayerControllerScript : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!IsOwner) return;
+        if (!canMove) return;
         checkMovement();
         MoveForward();
         JumpInput();

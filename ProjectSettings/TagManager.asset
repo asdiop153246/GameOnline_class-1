@@ -16,6 +16,8 @@ TagManager:
   - LoginManager
   - PSpear
   - EyeLevel
+  - HomeCore
+  - OtherCore
   layers:
   - Default
   - TransparentFX

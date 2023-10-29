@@ -8,6 +8,8 @@ public class MoveCamera : NetworkBehaviour
     public float mouseSensitivity = 2f;
     float cameraVerticalRotation = 0f;
     bool lockedCursor = true;
+    public bool canRotate = true;
+
     private void Start()
     {
         if (!IsOwner) return;
@@ -17,6 +19,7 @@ public class MoveCamera : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (canRotate) { 
         float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
@@ -24,7 +27,12 @@ public class MoveCamera : NetworkBehaviour
         cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation;
 
-        player.Rotate(Vector3.up * inputX);     
+        player.Rotate(Vector3.up * inputX);
+    }
+        else
+        {
+            return;
+        }
 
     }
 }
