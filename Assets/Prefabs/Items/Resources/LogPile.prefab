@@ -276,9 +276,11 @@ GameObject:
   - component: {fileID: 159002998278553299}
   - component: {fileID: -8577147417716865879}
   - component: {fileID: -733629405384142082}
+  - component: {fileID: 8225446229331869938}
+  - component: {fileID: 6417356603932301238}
   m_Layer: 8
   m_Name: LogPile
-  m_TagString: Untagged
+  m_TagString: Woods
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -290,9 +292,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67315729301786797}
-  m_LocalRotation: {x: -0, y: 0.017918685, z: -0, w: 0.9998395}
+  m_LocalRotation: {x: 0, y: 0.017914802, z: 0, w: 0.99983954}
   m_LocalPosition: {x: 45.08, y: 12.78, z: 23.04}
-  m_LocalScale: {x: 1.9016, y: 1.9016, z: 1.9016}
+  m_LocalScale: {x: 1.9016002, y: 1.9016, z: 1.9016002}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 71099978861257655}
@@ -370,3 +372,29 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &8225446229331869938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67315729301786797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe7ea1f78d30e0948830d532a39c9a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPickups: 3
+--- !u!65 &6417356603932301238
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67315729301786797}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.8998888, y: 1, z: 4.5485992}
+  m_Center: {x: 0.19101462, y: 0, z: 0.17919102}

@@ -3972,10 +3972,11 @@ GameObject:
   - component: {fileID: 8416183665076312939}
   - component: {fileID: 1129380843443383734}
   - component: {fileID: 271907005}
-  - component: {fileID: 956393007}
   - component: {fileID: 7532727666176547822}
   - component: {fileID: 6317562078715141195}
   - component: {fileID: 6067268307260793054}
+  - component: {fileID: 5916412658624309670}
+  - component: {fileID: 7555386294843435198}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -4160,11 +4161,12 @@ MonoBehaviour:
   - {fileID: 6605962441980350462}
   - {fileID: 6728099108138718287}
   - {fileID: 271907005}
-  - {fileID: 956393007}
+  - {fileID: 7555386294843435198}
   - {fileID: 1129380843443383734}
   - {fileID: 6067268307260793054}
   - {fileID: 6317562078715141195}
   - {fileID: 7532727666176547822}
+  - {fileID: 5916412658624309670}
 --- !u!114 &8416183665076312939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4213,20 +4215,6 @@ MonoBehaviour:
   HealthBar: {fileID: 228096461}
   chipSpeed: 2
   BackHealthBar: {fileID: 2003708681}
---- !u!114 &956393007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8496384795635220035}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 355aa079dc33da8429a3e2f30c29fb91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pickUpKey: 101
-  HaveSpear: 0
 --- !u!114 &7532727666176547822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4271,9 +4259,79 @@ MonoBehaviour:
   interactKey: 101
   HaveSpear: 0
   isOpeningUI: 0
+  notificationText: {fileID: 2010706549567347679}
+  notificationPanel: {fileID: 8518653682617993062}
   cameraControl: {fileID: 6966656224375759667}
   HomeCoreUI: {fileID: 2517248502068795088}
   playerMovement: {fileID: 6605962441980350462}
+  HomeCoreScript: {fileID: 7555386294843435198}
+--- !u!114 &5916412658624309670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496384795635220035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fd9df94382fb14f8c6df1abdfebeed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraControl: {fileID: 6966656224375759667}
+  items:
+  - name: Wood
+    icon: {fileID: 21300000, guid: 562caa7fd3887fb41832bccdcbfa7165, type: 3}
+    amount: 0
+  - name: Rope
+    icon: {fileID: 21300000, guid: 908330e798043ef4990f95cd945e1097, type: 3}
+    amount: 0
+  - name: Raft
+    icon: {fileID: 21300000, guid: 1b37a650efb1d4843bc38df40ef696ca, type: 3}
+    amount: 0
+  - name: Food
+    icon: {fileID: 21300000, guid: e9036f26f6f8e61448ecee970548df9f, type: 3}
+    amount: 0
+  - name: Water
+    icon: {fileID: 21300000, guid: f4af2987e0710834fbc6f304b22acd03, type: 3}
+    amount: 0
+  - name: Cola
+    icon: {fileID: 21300000, guid: 9a7c3774cbabb2e44aa57dd638649533, type: 3}
+    amount: 0
+  - name: Spear
+    icon: {fileID: 21300000, guid: c5607f10828934a4f9874382b99008ce, type: 3}
+    amount: 0
+  inventoryUI: {fileID: 590700637}
+  itemImages:
+  - {fileID: 9001586390088938359}
+  - {fileID: 2097643774084948643}
+  - {fileID: 5570970613548600324}
+  - {fileID: 9184253905948925259}
+  - {fileID: 3608446529638825590}
+  - {fileID: 4666331777252764930}
+  - {fileID: 5199368683153201385}
+  itemAmountTexts:
+  - {fileID: 4784489732533355518}
+  - {fileID: 9133429907450215977}
+  - {fileID: 2003508150899923987}
+  - {fileID: 8812632101612076389}
+  - {fileID: 6306836942475044593}
+  - {fileID: 2539947852177717484}
+--- !u!114 &7555386294843435198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496384795635220035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2c2885e1721942b3f66e3b97b6b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HomeCoreUI: {fileID: 2517248502068795088}
+  isOpeningUI: 0
+  playerMovement: {fileID: 6605962441980350462}
+  cameraControl: {fileID: 6966656224375759667}
 --- !u!1 &8518653682617993062
 GameObject:
   m_ObjectHideFlags: 0
@@ -4367,8 +4425,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
