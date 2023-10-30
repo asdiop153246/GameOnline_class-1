@@ -27,7 +27,7 @@ public class ResourcesScript : NetworkBehaviour
         
         if (resourceType != ResourceType.Wood)
         {
-            maxPickups = 1;
+            maxPickups = 2;
         }
     }
 
