@@ -4275,6 +4275,7 @@ MonoBehaviour:
   HomeCoreUI: {fileID: 2517248502068795088}
   playerMovement: {fileID: 6605962441980350462}
 <<<<<<< HEAD
+<<<<<<< HEAD
   HomeCoreScript: {fileID: 7555386294843435198}
 --- !u!114 &5916412658624309670
 MonoBehaviour:
@@ -4343,6 +4344,8 @@ MonoBehaviour:
   isOpeningUI: 0
   playerMovement: {fileID: 6605962441980350462}
   cameraControl: {fileID: 6966656224375759667}
+=======
+>>>>>>> parent of 24f0abf (Inventory system 70%)
 =======
 >>>>>>> parent of 24f0abf (Inventory system 70%)
 --- !u!1 &8518653682617993062
