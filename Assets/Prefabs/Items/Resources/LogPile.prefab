@@ -276,8 +276,8 @@ GameObject:
   - component: {fileID: 159002998278553299}
   - component: {fileID: -8577147417716865879}
   - component: {fileID: -733629405384142082}
-  - component: {fileID: 8225446229331869938}
   - component: {fileID: 6417356603932301238}
+  - component: {fileID: 4713171007938033894}
   m_Layer: 8
   m_Name: LogPile
   m_TagString: Woods
@@ -372,19 +372,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!114 &8225446229331869938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67315729301786797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe7ea1f78d30e0948830d532a39c9a6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxPickups: 3
 --- !u!65 &6417356603932301238
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -398,3 +385,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.8998888, y: 1, z: 4.5485992}
   m_Center: {x: 0.19101462, y: 0, z: 0.17919102}
+--- !u!114 &4713171007938033894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67315729301786797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558e06c270cc4f3458b2baaf2127bf16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 0
+  maxPickups: 4
+  amountPerPickup: 1

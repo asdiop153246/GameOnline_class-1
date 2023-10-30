@@ -10,7 +10,7 @@ public class InteractionScript : NetworkBehaviour
     private GameObject HomeCore;
     private GameObject currentWood;
     private GameObject currentFood;
-
+    private GameObject currentResource;
     public bool HaveSpear = false;
     public bool isOpeningUI = false;
     public TextMeshProUGUI notificationText;
@@ -19,6 +19,7 @@ public class InteractionScript : NetworkBehaviour
     public GameObject HomeCoreUI;
     public PlayerControllerScript playerMovement;
     public HomeCoreScript HomeCoreScript;
+    
 
     private void Update()
     {
@@ -44,19 +45,11 @@ public class InteractionScript : NetworkBehaviour
             HomeCoreScript.CloseHomeCoreUI();
         }
 
-        if (Input.GetKeyDown(interactKey) && IsLookingAtWood())
+        ResourcesScript.ResourceType? resourceType = IsLookingAtResource();
+        if (Input.GetKeyDown(interactKey) && resourceType.HasValue)
         {
-            Debug.Log("Client: Attempting to pick up wood");
-            TryPickUpWoodServerRpc();
-        }
-        if (Input.GetKeyDown(interactKey) && IsLookingAtFood())
-        {
-            NetworkObject foodNetworkObject = currentFood.GetComponent<NetworkObject>();
-            Debug.Log("Client: Attempting to pick up Food");
-            if (foodNetworkObject)
-            {
-                TryPickUpFoodServerRpc(foodNetworkObject.NetworkObjectId);
-            }
+            Debug.Log($"Client: Attempting to pick up {resourceType.Value}");
+            TryPickUpResourceServerRpc(currentResource.GetComponent<NetworkObject>().NetworkObjectId, resourceType.Value);
         }
     }
 
@@ -118,98 +111,47 @@ public class InteractionScript : NetworkBehaviour
 
         return false;
     }
-    private bool IsLookingAtWood()
+    private ResourcesScript.ResourceType? IsLookingAtResource()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(transform.position, transform.forward, out hit) && hit.distance < 3f)
         {
-            if (hit.collider.CompareTag("Woods") && hit.distance < 3f)
+            ResourcesScript resourceScript = hit.collider.gameObject.GetComponent<ResourcesScript>();
+            if (resourceScript)
             {
-                currentWood = hit.collider.gameObject;
-                Debug.Log("Looking at Woods");
-                return true;
+                currentResource = hit.collider.gameObject;
+                return resourceScript.resourceType;
             }
         }
 
-        return false;
+        return new ResourcesScript.ResourceType?();
     }
-    private bool IsLookingAtFood()
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
-        {
-            if (hit.collider.CompareTag("Food") && hit.distance < 3f)
-            {
-                currentFood = hit.collider.gameObject;
-                Debug.Log("Looking at Woods");
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     [ServerRpc]
-    void TryPickUpWoodServerRpc(ServerRpcParams rpcParams = default)
+    void TryPickUpResourceServerRpc(ulong resourceNetworkObjectId, ResourcesScript.ResourceType resourceType, ServerRpcParams rpcParams = default)
     {
-        Debug.Log("Server: Attempting to pick up wood");
-        WoodResourceScript woodResource = currentWood.GetComponent<WoodResourceScript>();
-        Debug.Log("Server: Wood can be picked up? " + woodResource.CanBePickedUp());
-        if (woodResource.CanBePickedUp())
+        Debug.Log($"Server: Attempting to pick up {resourceType}");
+        NetworkObject targetResource = NetworkManager.Singleton.SpawnManager.SpawnedObjects[resourceNetworkObjectId];
+        ResourcesScript resourceScript = targetResource.GetComponent<ResourcesScript>();
+
+        if (resourceScript && resourceScript.CanBePickedUp())
         {
             InventoryScript inventory = GetComponent<InventoryScript>();
-            int randomWoodAmount = Random.Range(1, 3);
             if (inventory != null)
             {
-                woodResource.PickUp();
-                inventory.IncreaseWoodCount(randomWoodAmount);
-                PickUpWoodClientRpc();
+                resourceScript.PickUp();
+                switch (resourceType)
+                {
+                    case ResourcesScript.ResourceType.Wood:
+                        inventory.IncreaseWoodCount(resourceScript.amountPerPickup);
+                        break;
+                    case ResourcesScript.ResourceType.Food:
+                        inventory.IncreaseFoodCount(resourceScript.amountPerPickup);
+                        break;                    
+                        // ... [Handle other resource types]
+                }             
             }
         }
     }
-    [ServerRpc]
-    void TryPickUpFoodServerRpc(ulong foodNetworkObjectId,ServerRpcParams rpcParams = default)
-    {
-            Debug.Log("Server: Attempting to pick up Food");
-            NetworkObject targetfood = NetworkManager.Singleton.SpawnManager.SpawnedObjects[foodNetworkObjectId];
-            InventoryScript inventory = GetComponent<InventoryScript>();
-            if (targetfood != null && inventory != null)
-            {
-            Debug.Log("Server: Picking up Food");
-            inventory.IncreaseFoodCount(1);
-            targetfood.Despawn();
-            Destroy(targetfood.gameObject);
 
-            //PickUpSpearClientRpc(rpcParams.Receive.SenderClientId);
-            }
-            
-    }
-
-    [ClientRpc]
-    void PickUpWoodClientRpc()
-    {
-        
-    }
-
-    //private void OpenHomeCoreUI()
-    //{
-    //    HomeCoreUI.SetActive(true); 
-    //    isOpeningUI = true;
-    //    playerMovement.canMove = false;
-    //    cameraControl.canRotate = false;
-    //    Cursor.lockState = CursorLockMode.None;
-    //    Cursor.visible = true;
-    //}
-
-    //private void CloseHomeCoreUI()
-    //{
-    //    HomeCoreUI.SetActive(false); 
-    //    isOpeningUI = false;
-    //    playerMovement.canMove = true;
-    //    cameraControl.canRotate = true;
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //    Cursor.visible = false;
-    //}
 }

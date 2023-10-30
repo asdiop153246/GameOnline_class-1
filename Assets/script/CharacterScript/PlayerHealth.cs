@@ -66,23 +66,25 @@ public class PlayerHealth : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void RequestTakeDamageServerRpc(float damage)
     {
         TakeDamage(damage);
     }
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void RequestRestoreHealthServerRpc(float health)
     {
         RestoreHealth(health);
     }
     public void TakeDamage(float damage)
     {
-        if (!IsServer) return;  // Only the server can damage the player
+        if (!IsServer) return;  
         Health.Value -= damage;
-        Health.Value = Mathf.Max(Health.Value, 0);  // Prevent health from going below 0
+        Health.Value = Mathf.Max(Health.Value, 0);
+        Debug.Log("Current Health: " + Health.Value);
         if (Health.Value <= 0)
         {
+            Debug.Log("Player should die now");
             Die();
         }
         Debug.Log(Health.Value);
@@ -90,14 +92,19 @@ public class PlayerHealth : NetworkBehaviour
 
     public void RestoreHealth(float health)
     {
-        if (!IsServer) return;  // Only the server can heal the player
+        if (!IsServer) return;  
         Health.Value += health;
-        Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  // Prevent health from going above max
+        Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  
     }
     private void Die()
     {
-        // Call Respawn from PlayerSpawnScript
+        NotifyClientOfDeathClientRpc();
         GetComponent<PlayerSpawnScript>().Respawn();
+    }
+    [ClientRpc]
+    private void NotifyClientOfDeathClientRpc()
+    {
+        
     }
 }
 

@@ -34,6 +34,7 @@ public class PlayerSpawnScript : NetworkBehaviour
     //1 Client Send to Server
     public void Respawn()
     {
+        Debug.Log("Client requesting respawn");
         RespawnServerRpc();
     }
 
@@ -41,6 +42,7 @@ public class PlayerSpawnScript : NetworkBehaviour
     [ServerRpc]
     private void RespawnServerRpc()
     {
+        Debug.Log("Server processing respawn");
         RespawnClientRpc(GetRandPos());
     }
 
@@ -48,15 +50,16 @@ public class PlayerSpawnScript : NetworkBehaviour
     [ClientRpc]
     private void RespawnClientRpc(Vector3 spawnPos)
     {
+        Debug.Log("Client received respawn RPC with position: " + spawnPos);
         StartCoroutine(RespawnCoroutine(spawnPos));
     }
     IEnumerator RespawnCoroutine(Vector3 spawnPos)
     {
+        Debug.Log("Starting respawn coroutine with position: " + spawnPos);
         SetPlayerState(false);
         transform.position = spawnPos;
         yield return new WaitForSeconds(3);
         SetPlayerState(true);
-        // Reset player's health
         GetComponent<PlayerHealth>().Health.Value = GetComponent<PlayerHealth>().maxHealth.Value;
     }
 }

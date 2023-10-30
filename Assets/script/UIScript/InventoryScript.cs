@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-
+using System.Linq;
 
 [System.Serializable]
 public class Item
@@ -20,9 +20,27 @@ public class InventoryScript : NetworkBehaviour
     [Header("UI References")]
     public GameObject inventoryUI;
     public List<UnityEngine.UI.Image> itemImages; 
-    public List<TMPro.TextMeshProUGUI> itemAmountTexts; 
+    public List<TMPro.TextMeshProUGUI> itemAmountTexts;
+
+    public NetworkVariable<int> woodCount = new NetworkVariable<int>();
+    public NetworkVariable<int> foodCount = new NetworkVariable<int>();
+    public NetworkVariable<int> spearCount = new NetworkVariable<int>();
+
+    private void Start()
+    {
+        if (IsOwner)  
+        {
+            woodCount.OnValueChanged += OnWoodCountChanged;
+            spearCount.OnValueChanged += OnSpearCountChanged;
+            foodCount.OnValueChanged += OnFoodCountChanged;
+        }
+    }
     private void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        };
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
@@ -52,10 +70,19 @@ public class InventoryScript : NetworkBehaviour
     }
     public void UpdateInventoryUI()
     {
+        if (!IsOwner)
+            return;
+        Debug.Log("Updating inventory UI for client: " + NetworkManager.Singleton.LocalClientId);
         for (int i = 0; i < items.Count; i++)
         {
-            
-            itemImages[i].sprite = items[i].icon;
+            if (i >= itemImages.Count)
+            {
+                Debug.LogWarning("Not enough item images to match item count!");
+                break;
+            }
+            var currentItem = items[i];
+            var currentImage = itemImages[i];
+            currentImage.sprite = currentItem.icon;
 
             if (items[i].amount > 0)
             {
@@ -64,7 +91,7 @@ public class InventoryScript : NetworkBehaviour
                 itemAmountTexts[i].gameObject.SetActive(true);
 
                 var tempColor = itemImages[i].color;
-                //tempColor.a = 1f;
+                
                 tempColor = new Color32(255, 255, 255, 255);
                 itemImages[i].color = tempColor;
             }
@@ -74,7 +101,7 @@ public class InventoryScript : NetworkBehaviour
                 itemAmountTexts[i].gameObject.SetActive(false);
 
                 var tempColor = itemImages[i].color;
-                //tempColor.a = 0.3f;
+                
                 tempColor = new Color32(255, 255, 255, 20);
                 itemImages[i].color = tempColor;
             }
@@ -83,32 +110,44 @@ public class InventoryScript : NetworkBehaviour
             itemImages[i].gameObject.SetActive(items[i].icon != null);
         }
     }
-    public void IncreaseWoodCount(int amount)
+    private void OnWoodCountChanged(int oldCount, int newCount)
     {
-        
         if (items[0].name == "Wood")
         {
-            items[0].amount += amount;
-            UpdateInventoryUI();
+            items[0].amount = newCount;
         }
+        UpdateInventoryUI();
+    }
+    private void OnSpearCountChanged(int oldCount, int newCount)
+    {
+        if (items[6].name == "Spear")
+        {
+            items[6].amount = newCount;
+        }
+        UpdateInventoryUI();
+    }
+    private void OnFoodCountChanged(int oldCount, int newCount)
+    {
+        if (items[3].name == "Food")
+        {
+            items[3].amount += newCount;
+            
+        }
+        UpdateInventoryUI();
+    }
+    public void IncreaseWoodCount(int amount)
+    {
+        woodCount.Value += amount;
     }
     public void IncreaseFoodCount(int amount)
     {
 
-        if (items[3].name == "Food")
-        {
-            items[3].amount += amount;
-            UpdateInventoryUI();
-        }
+        foodCount.Value += amount;
     }
     public void IncreaseSpearCount(int amount)
     {
 
-        if (items[6].name == "Spear")
-        {
-            items[6].amount += amount;
-            UpdateInventoryUI();
-        }
+        spearCount.Value += amount;
     }
 
 }

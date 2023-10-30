@@ -8,28 +8,27 @@ public class MonsterHP : NetworkBehaviour
 {
     public int maxHealth = 100;
     private Animator animator;
-    public NetworkVariable<int> currentHealth = new NetworkVariable<int>
-        (100,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentHealth = new NetworkVariable<int>();
 
     private void Start()
     {
+        Debug.Log("MonsterHP object owned by: " + NetworkObject.OwnerClientId);
         currentHealth.Value = maxHealth;
         animator = GetComponent<Animator>();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void RequestTakeDamageServerRpc(int damage, ServerRpcParams rpcParams = default)
     {
-        if (!IsServer)
-            return;
-
+        
+        Debug.Log("Request to damage monster received");
         TakeDamage(damage);
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
-        if (!IsServer)
-            return;
+        //if (!IsServer)
+        //    return;
 
         currentHealth.Value -= damage;
 
