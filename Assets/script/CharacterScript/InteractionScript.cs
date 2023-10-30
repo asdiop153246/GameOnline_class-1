@@ -65,7 +65,6 @@ public class InteractionScript : NetworkBehaviour
             HaveSpear = true;
             targetSpear.Despawn();
             Destroy(targetSpear.gameObject);
-
             PickUpSpearClientRpc(rpcParams.Receive.SenderClientId);
         }
     }
@@ -148,7 +147,7 @@ public class InteractionScript : NetworkBehaviour
                     case ResourcesScript.ResourceType.Food:
                         inventory.IncreaseFoodCount(resourceScript.amountPerPickup);
                         break;                    
-                        // ... [Handle other resource types]
+                        
                 }             
             }
         }
