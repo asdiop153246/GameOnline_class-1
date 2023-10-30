@@ -32,7 +32,6 @@ public class PlayerControllerScript : NetworkBehaviour
     public float chipSpeed = 2f;
     public Image BackStaminaBar;
     private bool isInitialized = false;
-    public GameObject PlayerUI;
 
     private Animator animator;
     private Rigidbody rb;
@@ -60,7 +59,8 @@ public class PlayerControllerScript : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            //PlayerUI.SetActive(false);
+            Destroy(StaminaBar);
+            Destroy(BackStaminaBar);
             return;
         };
 

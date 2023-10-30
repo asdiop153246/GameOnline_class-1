@@ -4133,7 +4133,6 @@ MonoBehaviour:
   StaminaBar: {fileID: 7911530268110457399}
   chipSpeed: 2
   BackStaminaBar: {fileID: 1620825798624432340}
-  PlayerUI: {fileID: 2082638592}
   canJump: 1
   playerHeight: 2
   whatIsGround:
@@ -4341,6 +4340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HomeCoreUI: {fileID: 2517248502068795088}
+  isOpeningUI: 0
   playerMovement: {fileID: 6605962441980350462}
   cameraControl: {fileID: 6966656224375759667}
 =======
