@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8345675179418533431
+--- !u!1 &4601531565221700946
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,54 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3964315016011659949}
-  - component: {fileID: 2073046942599057953}
-  - component: {fileID: -3386013342548367425}
-  - component: {fileID: -3329915699949861492}
-  - component: {fileID: 7335031086721188322}
-  m_Layer: 0
-  m_Name: foodCan
+  - component: {fileID: 4600073657669126004}
+  - component: {fileID: 4018075111936422230}
+  - component: {fileID: 5396812267240105729}
+  - component: {fileID: 7366705968169181769}
+  - component: {fileID: 9105231539252088089}
+  m_Layer: 8
+  m_Name: FoodCan
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!4 &3964315016011659949
+--- !u!4 &4600073657669126004
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345675179418533431}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 4601531565221700946}
+  m_LocalRotation: {x: 0, y: 0.017914802, z: 0, w: 0.99983954}
+  m_LocalPosition: {x: 13.29, y: 13.48, z: 35.31}
+  m_LocalScale: {x: 1.9016002, y: 1.9016, z: 1.9016002}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6687632711605440358}
+  - {fileID: 4951156895871914965}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2073046942599057953
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345675179418533431}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0032668, y: 0.9485979, z: 0.81061554}
-  m_Center: {x: -0.00096154213, y: 0.07061434, z: 0.04049301}
---- !u!114 &-3386013342548367425
+  m_LocalEulerAnglesHint: {x: 0, y: 2.053, z: 0}
+--- !u!114 &4018075111936422230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345675179418533431}
+  m_GameObject: {fileID: 4601531565221700946}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
@@ -65,28 +52,13 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &-3329915699949861492
+--- !u!114 &5396812267240105729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345675179418533431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558e06c270cc4f3458b2baaf2127bf16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resourceType: 2
-  maxPickups: 4
-  amountPerPickup: 1
---- !u!114 &7335031086721188322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345675179418533431}
+  m_GameObject: {fileID: 4601531565221700946}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
@@ -106,12 +78,42 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!1001 &6576812337535854733
+--- !u!65 &7366705968169181769
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4601531565221700946}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6213644, y: 1.2288748, z: 0.6777225}
+  m_Center: {x: 0.013982736, y: -0.22824591, z: -0.04670918}
+--- !u!114 &9105231539252088089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4601531565221700946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558e06c270cc4f3458b2baaf2127bf16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 2
+  maxPickups: 4
+  currentPickups:
+    m_InternalValue: 0
+  amountPerPickup: 1
+--- !u!1001 &4844944711327593534
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 3964315016011659949}
+    m_TransformParent: {fileID: 4600073657669126004}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_RootOrder
@@ -119,15 +121,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 1.3146822
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5
+      value: 1.3146824
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5
+      value: 1.3146822
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -143,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99983954
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -151,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.017914802
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -175,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_Name
-      value: foodCan
+      value: foodCan (2)
       objectReference: {fileID: 0}
     - target: {fileID: 9181683226690783094, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -183,8 +185,8 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 716d7097bc70dd24abe056e900d0ee66, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
---- !u!4 &6687632711605440358 stripped
+--- !u!4 &4951156895871914965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 03655b04652a69143a8edf38890ffa7c, type: 3}
-  m_PrefabInstance: {fileID: 6576812337535854733}
+  m_PrefabInstance: {fileID: 4844944711327593534}
   m_PrefabAsset: {fileID: 0}

@@ -25,6 +25,10 @@ public class InventoryScript : NetworkBehaviour
     public NetworkVariable<int> woodCount = new NetworkVariable<int>();
     public NetworkVariable<int> foodCount = new NetworkVariable<int>();
     public NetworkVariable<int> spearCount = new NetworkVariable<int>();
+    public NetworkVariable<int> waterCount = new NetworkVariable<int>();
+    public NetworkVariable<int> colaCount = new NetworkVariable<int>();
+    public NetworkVariable<int> ropeCount = new NetworkVariable<int>();
+
 
     private void Start()
     {
@@ -33,6 +37,9 @@ public class InventoryScript : NetworkBehaviour
             woodCount.OnValueChanged += OnWoodCountChanged;
             spearCount.OnValueChanged += OnSpearCountChanged;
             foodCount.OnValueChanged += OnFoodCountChanged;
+            waterCount.OnValueChanged += OnWaterCountChanged;
+            colaCount.OnValueChanged += OnColaCountChanged;
+            ropeCount.OnValueChanged += OnRopeCountChanged;
         }
     }
     private void Update()
@@ -135,19 +142,55 @@ public class InventoryScript : NetworkBehaviour
         }
         UpdateInventoryUI();
     }
+    private void OnWaterCountChanged(int oldCount, int newCount)
+    {
+        if (items[4].name == "Water")
+        {
+            items[4].amount += newCount;
+
+        }
+        UpdateInventoryUI();
+    }
+    private void OnColaCountChanged(int oldCount, int newCount)
+    {
+        if (items[5].name == "Cola")
+        {
+            items[5].amount += newCount;
+
+        }
+        UpdateInventoryUI();
+    }
+    private void OnRopeCountChanged(int oldCount, int newCount)
+    {
+        if (items[1].name == "Rope")
+        {
+            items[1].amount += newCount;
+
+        }
+        UpdateInventoryUI();
+    }
     public void IncreaseWoodCount(int amount)
     {
         woodCount.Value += amount;
     }
     public void IncreaseFoodCount(int amount)
     {
-
         foodCount.Value += amount;
     }
     public void IncreaseSpearCount(int amount)
     {
-
         spearCount.Value += amount;
     }
-
+    public void IncreaseWaterCount(int amount)
+    {
+        waterCount.Value += amount;
+    }
+    public void IncreaseColaCount(int amount)
+    {
+        colaCount.Value += amount;
+    }
+    public void IncreaseRopeCount(int amount)
+    {
+        ropeCount.Value += amount;
+    }
 }

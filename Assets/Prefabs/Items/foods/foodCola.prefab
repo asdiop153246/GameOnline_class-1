@@ -63,8 +63,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.2984084, y: 0.37314254, z: 0.2926581}
-  m_Center: {x: -0.006112784, y: 0.1368458, z: -0.0031052828}
+  m_Size: {x: 0.2984084, y: 1.5522255, z: 0.2926581}
+  m_Center: {x: -0.006112784, y: -0.45269567, z: -0.0031052828}
 --- !u!114 &7270231026519547745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceType: 4
   maxPickups: 4
+  currentPickups:
+    m_InternalValue: 0
   amountPerPickup: 1
 --- !u!114 &5333930689694381558
 MonoBehaviour:

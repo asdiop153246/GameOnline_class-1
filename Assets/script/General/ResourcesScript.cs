@@ -16,7 +16,7 @@ public class ResourcesScript : NetworkBehaviour
 
     public ResourceType resourceType;
     public int maxPickups = 4; //For wood
-    private NetworkVariable<int> currentPickups = new NetworkVariable<int>(0);
+    public NetworkVariable<int> currentPickups = new NetworkVariable<int>(0);
     public int amountPerPickup = 1; 
 
     public delegate void ResourcePickedUpAction(ResourceType type, int amount);
@@ -27,7 +27,7 @@ public class ResourcesScript : NetworkBehaviour
         
         if (resourceType != ResourceType.Wood)
         {
-            maxPickups = 2;
+            maxPickups = 1;
         }
     }
 
@@ -41,8 +41,11 @@ public class ResourcesScript : NetworkBehaviour
         if (IsServer)
         {
             currentPickups.Value++;
+            if (resourceType == ResourceType.Wood)
+            {
+                amountPerPickup = Random.Range(1, 4);
+            }
 
-            
             if (currentPickups.Value >= maxPickups)
             {
                 DespawnResource();

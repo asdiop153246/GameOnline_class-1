@@ -4752,6 +4752,10 @@ MonoBehaviour:
     m_InternalValue: 0
   spearCount:
     m_InternalValue: 0
+  waterCount:
+    m_InternalValue: 0
+  colaCount:
+    m_InternalValue: 0
 --- !u!114 &7555386294843435198
 MonoBehaviour:
   m_ObjectHideFlags: 0

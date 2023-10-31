@@ -120,6 +120,8 @@ public class InteractionScript : NetworkBehaviour
             if (resourceScript)
             {
                 currentResource = hit.collider.gameObject;
+                Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
+                Debug.Log("Detected resource: " + resourceScript.resourceType);
                 return resourceScript.resourceType;
             }
         }
@@ -139,15 +141,30 @@ public class InteractionScript : NetworkBehaviour
             if (inventory != null)
             {
                 resourceScript.PickUp();
+                Debug.Log("Resource to pick up: " + resourceType);
                 switch (resourceType)
                 {
                     case ResourcesScript.ResourceType.Wood:
                         inventory.IncreaseWoodCount(resourceScript.amountPerPickup);
+                        Debug.Log("Increasing inventory for: " + resourceType);
                         break;
                     case ResourcesScript.ResourceType.Food:
                         inventory.IncreaseFoodCount(resourceScript.amountPerPickup);
-                        break;                    
-                        
+                        Debug.Log("Increasing inventory for: " + resourceType);
+                        break;
+                    case ResourcesScript.ResourceType.Water:
+                        inventory.IncreaseWaterCount(resourceScript.amountPerPickup);
+                        Debug.Log("Increasing inventory for: " + resourceType);
+                        break;
+                    case ResourcesScript.ResourceType.Cola:
+                        inventory.IncreaseColaCount(resourceScript.amountPerPickup);
+                        Debug.Log("Increasing inventory for: " + resourceType);
+                        break;
+                    case ResourcesScript.ResourceType.Rope:
+                        inventory.IncreaseRopeCount(resourceScript.amountPerPickup);
+                        Debug.Log("Increasing inventory for: " + resourceType);
+                        break;
+
                 }             
             }
         }
