@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -626,9 +626,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 402.42792, y: -16.740908, z: 38.32743}
+    m_Target: {x: -22.25813, y: 19.9931, z: 75.54381}
     speed: 2
-    m_Value: {x: 402.42792, y: -16.740908, z: 38.32743}
+    m_Value: {x: -22.25813, y: 19.9931, z: 75.54381}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -675,17 +675,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.12923533, y: -0.44105998, z: -0.0658255, w: -0.88602793}
+    m_Target: {x: -0.13316855, y: -0.6698049, z: 0.12194917, w: -0.72068006}
     speed: 2
-    m_Value: {x: 0.12919566, y: -0.44092458, z: -0.06580529, w: -0.88575596}
+    m_Value: {x: -0.13312703, y: -0.6695961, z: 0.12191115, w: -0.7204554}
   m_Size:
     m_Target: 0.8660254
     speed: 2
-    m_Value: 10
+    m_Value: 0.8660254
   m_Ortho:
-    m_Target: 1
+    m_Target: 0
     speed: 2
-    m_Value: 1
+    m_Value: 0
   m_CameraSettings:
     m_Speed: 2
     m_SpeedNormalized: 1
@@ -983,23 +983,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 4a240000
       m_LastClickedID: 0
-      m_ExpandedIDs: 2076fdff8cb4fdffeaf0fdff0ef1fdff58f2fdff94d8ffffded9ffffcaf8ffffd8f9ffff18faffff1cfaffff46faffff36fbffffd08b0000988d0000f89f00007aa10000
+      m_ExpandedIDs: 36fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Target
-        m_OriginalName: Target
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -166748
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -1050,22 +1050,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/island
+    - Assets/script/General
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs/island
+  - Assets/script/General
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Admin\Documents\GitHub\GameOnline_class
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 157}
-    m_SelectedIDs: 1e110100
-    m_LastClickedID: 69918
-    m_ExpandedIDs: 000000000a1101000c1101000e11010010110100121101001411010016110100181101001a1101001e110100201101002211010024110100981201009e12010000ca9a3b
+    m_SelectedIDs: ac120100
+    m_LastClickedID: 70316
+    m_ExpandedIDs: 00000000121101001411010016110100181101001a1101001c1101001e11010020110100221101002411010026110100281101002a1101002c1101002e11010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1093,7 +1093,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000a1101000c1101000e11010010110100121101001411010016110100181101001a1101001c1101001e110100201101002211010024110100
+    m_ExpandedIDs: 00000000121101001411010016110100181101001a1101001c1101001e11010020110100221101002411010026110100281101002a1101002c1101002e110100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1124,15 +1124,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 8e000100d6210900f0b10400725f0500
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PlayerBedInteraction
-      m_OriginalName: PlayerBedInteraction
+      m_Name: CharacterScript
+      m_OriginalName: CharacterScript
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 2004
+      m_UserData: 70314
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0

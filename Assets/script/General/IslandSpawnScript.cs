@@ -28,7 +28,7 @@ public class IslandSpawnScript : NetworkBehaviour
             return;
         }
 
-        int randomIndex = 0;//Random.Range(0, islandPrefabs.Length);
+        int randomIndex = Random.Range(0, islandPrefabs.Length);
         Debug.Log("Currentlly island = "+ randomIndex);
         
         if (randomIndex == 0)
