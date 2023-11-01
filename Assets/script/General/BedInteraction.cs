@@ -12,9 +12,13 @@ public class BedInteraction : NetworkBehaviour
     public TextMeshProUGUI message;
     public float sleepTransitionTime = 1.0f;
 
+    [Header("Island Spawning")]
+    public IslandSpawnScript islandSpawnScript;
+
     private HashSet<NetworkBehaviour> playersInCollider = new HashSet<NetworkBehaviour>();
     private NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
     private bool isSleeping = false;
+
 
     private void Start()
     {
@@ -28,7 +32,10 @@ public class BedInteraction : NetworkBehaviour
             NetworkBehaviour enteringPlayer = other.gameObject.GetComponent<NetworkBehaviour>();
             if (enteringPlayer != null)
             {
+
                 playersInCollider.Add(enteringPlayer);
+                Debug.Log($"Total players in collider: {playersInCollider.Count}");
+                Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");                
                 Debug.Log($"{enteringPlayer.gameObject.name} entered. Press 'E' to sleep.");
             }
         }
@@ -42,6 +49,8 @@ public class BedInteraction : NetworkBehaviour
             if (exitingPlayer != null)
             {
                 playersInCollider.Remove(exitingPlayer);
+                Debug.Log($"Total players in collider: {playersInCollider.Count}");
+                Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");
                 Debug.Log($"{exitingPlayer.gameObject.name} left the sleeping area.");
             }
         }
@@ -49,49 +58,27 @@ public class BedInteraction : NetworkBehaviour
 
     private void Update()
     {
-        if (playersInCollider.Contains(this) && Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            // Check if all players in the server are in the collider
-            if (AreAllPlayersInCollider())
-            {
-                StartCoroutine(Sleep());
-            }
-            else
-            {
-                Debug.Log("Waiting for all players to be in bed.");
-            }
+            PlayerWantsToSleepServerRpc();
         }
+
     }
 
     private IEnumerator Sleep()
     {
         Debug.Log("In sleep function");
         isSleeping = true;
-        Color originalColor = screenOverlay.color;
-
-        for (float transition = 0; transition < sleepTransitionTime; transition += Time.deltaTime)
-        {
-            screenOverlay.color = Color.Lerp(originalColor, Color.black, transition / sleepTransitionTime);
-            yield return null;
-        }
-
-        AdvanceDay();
-
-        for (float transition = 0; transition < sleepTransitionTime; transition += Time.deltaTime)
-        {
-            screenOverlay.color = Color.Lerp(Color.black, originalColor, transition / sleepTransitionTime);
-            yield return null;
-        }
-
+        AdvanceDay();      
         message.text = "";
         isSleeping = false;
+        islandSpawnScript.SpawnIsland();
+        yield return null;
     }
 
     private void AdvanceDay()
     {
-        message.text = "Day " + dayCount.Value++;
-        sleepCanvas.gameObject.SetActive(true); // Activating the canvas when sleeping
-        StartCoroutine(DisplayDayCount());
+        IncrementDayServerRpc();
     }
 
     private IEnumerator DisplayDayCount()
@@ -99,11 +86,50 @@ public class BedInteraction : NetworkBehaviour
         yield return new WaitForSeconds(2);
         message.text = "Day " + dayCount.Value;
         yield return new WaitForSeconds(2);
-        sleepCanvas.gameObject.SetActive(false); // Deactivating the canvas after displaying the day
+        sleepCanvas.gameObject.SetActive(false); 
     }
 
     public bool AreAllPlayersInCollider()
     {
         return playersInCollider.Count == NetworkManager.Singleton.ConnectedClients.Count;
+    }
+
+    private void CheckAllPlayersInBed()
+    {
+        if (!IsServer) return;
+        if (AreAllPlayersInCollider())
+        {
+            Debug.Log("Everyone in Bed area");
+            InitiateSleepForAllClientRpc();
+        }
+        else
+        {
+            Debug.Log("Waiting for all players to be in bed.");
+        }
+    }
+    [ClientRpc]
+    private void InitiateSleepForAllClientRpc()
+    {
+        StartCoroutine(Sleep());
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void PlayerWantsToSleepServerRpc()
+    {
+        Debug.Log("E key pressed by " + gameObject.name);
+        CheckAllPlayersInBed();
+    }
+    [ServerRpc]
+    private void IncrementDayServerRpc()
+    {
+        dayCount.Value++;
+        UpdateDayCountClientRpc(dayCount.Value);
+    }
+
+    [ClientRpc]
+    private void UpdateDayCountClientRpc(int newDay)
+    {
+        message.text = "Day " + newDay;
+        sleepCanvas.gameObject.SetActive(true);
+        StartCoroutine(DisplayDayCount());
     }
 }
