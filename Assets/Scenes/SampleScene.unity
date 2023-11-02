@@ -58750,14 +58750,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a442045b935d04a42a2c628654ae4086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullDayLength: 600
+  fullDayLength: 100
   noonSunDirection: {x: 50, y: 78.37, z: 0}
   dayColor: {r: 1, g: 1, b: 1, a: 0}
   nightColor: {r: 0, g: 0, b: 0, a: 0}
   sunLight: {fileID: 705507994}
   globalVolume: {fileID: 167709879}
   dayHDRI: {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
-  nightHDRI: {fileID: 8900000, guid: 762f22ba43541df4e95e0e7126e8d96c, type: 3}
+  nightHDRI: {fileID: 8900000, guid: 112f582dec9d6a24daa353efb33fd765, type: 3}
 --- !u!4 &1243456995
 Transform:
   m_ObjectHideFlags: 0
