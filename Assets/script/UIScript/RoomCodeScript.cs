@@ -43,6 +43,15 @@ public class RoomCodeScript : NetworkBehaviour
         uiGameObject.SetActive(false);
     }
 
+    public void copyCodeTextToClip()
+    {
+        TextEditor textEditor = new TextEditor();
+        textEditor.text = codeText.text;
+        textEditor.SelectAll();
+        textEditor.Copy();
+        Debug.Log("Text Copied");
+    }
+
     private void Update()
     {
         // Only allow the local player to toggle the UI
