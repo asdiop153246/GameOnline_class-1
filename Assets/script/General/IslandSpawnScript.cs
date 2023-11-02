@@ -26,8 +26,7 @@ public class IslandSpawnScript : NetworkBehaviour
     }
 
     public void SpawnIsland()
-    {
-        // Ensure network is ready
+    {        
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
         {
             Debug.LogError("Network is not ready.");
@@ -109,8 +108,7 @@ public class IslandSpawnScript : NetworkBehaviour
                 {
                     var item = Instantiate(itemPrefabs[j], spawnPoint.position, Quaternion.identity);
                     item.GetComponent<NetworkObject>().Spawn();
-
-                    // Explicitly set the parent here
+                 
                     item.transform.SetParent(island.transform);
 
                     break;

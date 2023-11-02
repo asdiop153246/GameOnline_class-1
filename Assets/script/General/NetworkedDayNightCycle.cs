@@ -15,19 +15,29 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [Header("Components")]
     [SerializeField] private Light sunLight;
+    [SerializeField] private Volume globalVolume;
 
-    
+    [Header("HDRI Sky")]
+    [SerializeField] private Cubemap dayHDRI;
+    [SerializeField] private Cubemap nightHDRI;
+    private HDRISky hdriSky;
+
+
 
 
     private float currentDayTime;
     private NetworkVariable<float> networkDayTime = new NetworkVariable<float>();
 
     public override void OnNetworkSpawn()
-    {    
-            StartCoroutine(UpdateTime());
+    {
+        StartCoroutine(UpdateTime());
         networkDayTime.OnValueChanged += OnDayTimeChanged;
 
-        
+        // Attempt to get the HDRISky override from the GlobalVolume
+        if (!globalVolume.profile.TryGet<HDRISky>(out hdriSky))
+        {
+            Debug.LogWarning("No HDRISky found in Global Volume.");
+        }
     }
 
     private void Update()
@@ -63,7 +73,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         sunLight.transform.forward = -sunDirection;
         UpdateLightColor(timeRatio); // Added this line to update the light color based on time of day
 
-        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)
@@ -92,31 +102,26 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             sunLight.color = Color.Lerp(dayColor, nightColor, nightRatio);
             
         }
-        //UpdateHDRI(timeRatio);
+        UpdateHDRISky(timeRatio);
     }
-    //private void UpdateHDRI(float timeRatio)
-    //{
-    //    if (hdriSky == null) return;
+    private void UpdateHDRISky(float timeRatio)
+    {
+        if (hdriSky == null) return;
 
-    //    // Assuming 0-0.25 is night, 0.25-0.75 is day, and 0.75-1 is night again.
-    //    if (timeRatio > 0.25f && timeRatio < 0.75f)
-    //    {
-    //        // It's day time
-    //        hdriSky.hdriSky.overrideState = true;
-    //        hdriSky.hdriSky.value = NightSkybox;
-    //    }
-    //    else
-    //    {
-    //        // It's night time
-    //        hdriSky.hdriSky.overrideState = true;
-    //        hdriSky.hdriSky.value = DaySkybox;
-    //    }
+        // Example: Change the rotation of the HDRI sky based on the time of day
+        float rotation = Mathf.Lerp(0f, 360f, timeRatio);
+        hdriSky.rotation.value = rotation;
 
-    //    // Force an update of the visual environment
-    //    VisualEnvironment visualEnvironment = GlobalVolume.GetComponent<VisualEnvironment>();
-    //    if (visualEnvironment != null)
-    //    {
-    //        visualEnvironment.skyType.value = (int)SkyType.HDRI;
-    //    }
-    //}
+        // Change the HDRI texture based on the time of day
+        if (timeRatio > 0.25f && timeRatio < 0.75f)
+        {
+            // Night time
+            hdriSky.hdriSky.value = nightHDRI;
+        }
+        else
+        {
+            // Day time
+            hdriSky.hdriSky.value = dayHDRI;
+        }
+    }
 }
