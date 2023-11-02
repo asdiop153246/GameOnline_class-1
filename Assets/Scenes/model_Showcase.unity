@@ -6946,7 +6946,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013505793}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -60, y: 0, z: 0}
   m_LocalScale: {x: 130, y: 130, z: 130}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9068,6 +9068,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 975493251}
     m_Modifications:
+    - target: {fileID: 5877334494265364255, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0446
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877334494265364255, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0377
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877334494265364255, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 5935551631158508315, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -9086,15 +9098,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5935551631158508315, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 177.54
+      value: 199
       objectReference: {fileID: 0}
     - target: {fileID: 5935551631158508315, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -69.374
+      value: -94.5
       objectReference: {fileID: 0}
     - target: {fileID: 5935551631158508315, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -334.57
+      value: -306
       objectReference: {fileID: 0}
     - target: {fileID: 5935551631158508315, guid: 2cc47561598b88343b2d945ee165cc8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10558,25 +10570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0996bd13eb2a549a6c244aee905b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpKey: 32
-  sprintKey: 304
-  cam: {fileID: 5838159102083037583}
-  mouseSensitivity: 2
-  speed: 5
-  rotationSpeed: 10
-  jumpCooldown: 0
-  jumpForce: 6
-  RunSpeed: 20
-  staminaConsumptionRate: 10
-  staminaRegenRate: 10
-  stamina: 100
-  maxStamina: 100
-  playerHeight: 2
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 8
-  orientation: {fileID: 504335097}
-  isCursorLocked: 0
 --- !u!33 &8530757076107080750
 MeshFilter:
   m_ObjectHideFlags: 0
