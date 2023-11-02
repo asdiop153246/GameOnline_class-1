@@ -17,7 +17,7 @@ public class BedInteraction : NetworkBehaviour
 
     private HashSet<NetworkBehaviour> playersInCollider = new HashSet<NetworkBehaviour>();
     private NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
-    private bool isSleeping = false;
+    //private bool isSleeping = false;
 
 
     private void Start()
@@ -68,10 +68,10 @@ public class BedInteraction : NetworkBehaviour
     private IEnumerator Sleep()
     {
         Debug.Log("In sleep function");
-        isSleeping = true;
+        //isSleeping = true;
         AdvanceDay();      
         message.text = "";
-        isSleeping = false;
+        //isSleeping = false;
         islandSpawnScript.SpawnIsland();
         yield return null;
     }

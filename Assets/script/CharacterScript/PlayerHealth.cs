@@ -13,7 +13,7 @@ public class PlayerHealth : NetworkBehaviour
     private float lerptimer;
     public float chipSpeed = 2f;
     public Image BackHealthBar;
-    private bool isInitialized = false;
+    //private bool isInitialized = false;
 
     void Start()
     {

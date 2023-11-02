@@ -15,7 +15,7 @@ public class Movetoward : NetworkBehaviour
 
     public Transform currentTarget;
     private bool isWaiting = false;
-    private bool isFlooding = false;
+    //private bool isFlooding = false;
 
     private void Start()
     {

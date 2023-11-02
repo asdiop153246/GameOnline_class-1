@@ -10,11 +10,13 @@ public class PlayerSpawnScript : NetworkBehaviour
     private Renderer[] renderers;
     int spawnedPoint = 2;
     LoginManagerScript loginManager;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
         renderers = GetComponentsInChildren<Renderer>();
         loginManager = GameObject.FindGameObjectWithTag("LoginManager").GetComponent<LoginManagerScript>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void SetPlayerState(bool state)
@@ -61,5 +63,6 @@ public class PlayerSpawnScript : NetworkBehaviour
         yield return new WaitForSeconds(3);
         SetPlayerState(true);
         GetComponent<PlayerHealth>().Health.Value = GetComponent<PlayerHealth>().maxHealth.Value;
+        playerHealth.UpdateHealthUI();
     }
 }

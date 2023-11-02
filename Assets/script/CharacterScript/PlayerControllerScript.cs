@@ -12,53 +12,53 @@ public class PlayerControllerScript : NetworkBehaviour
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
 
+    [Header("Controls")]
     public Transform cam;
-    private Vector3 currentRotation;
-    public float mouseSensitivity = 2.0f;
+    public Transform target;
+    public Transform orientation;
+
+    [Header("Movement Parameters")]
     public float speed = 3.5f;
+    public float RunSpeed = 7.0f;
+    public float swimSpeed = 4.0f;
     public float rotationSpeed = 10.0f;
+    public float mouseSensitivity = 2.0f;
+    public float playerHeight;
+    public LayerMask whatIsGround;
+
+    [Header("Jump Parameters")]
     public float jumpCooldown;
     public float jumpForce;
-    public float RunSpeed = 7.0f;
 
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
     public float swimConsumptionRate = 7f;
     public float staminaRegenRate = 5f;
-    [SerializeField] public float stamina = 100f;
-    [SerializeField] private float maxStamina = 100f;
+    public float stamina = 100f;
+    private float maxStamina = 100f;
     public Image StaminaBar;
     private float lerptimer;
     public float chipSpeed = 2f;
     public Image BackStaminaBar;
-    private bool isInitialized = false;
 
     private Animator animator;
     private Rigidbody rb;
+    private PlayerHealth health;
     private bool walking;
-    private bool running;
-    public bool canJump = true;
     private bool readyToJump = true;
-    [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
-    bool grounded;
-    
-    public bool isSwimming;
-    public float swimSpeed = 4;
-    public Transform target;
-    public Transform orientation;
-    Vector3 moveDirection;
-    Vector3 movement;
-    float cameraverticalRotation = 0f;
-    public bool isCursorLocked;
+    private bool grounded;
+    private bool isCursorLocked = true;
     public bool canMove = true;
-    private bool isSprinting = false;
+    public bool isSwimming;
+    public bool canJump = true;
+    public GameObject PlayerUI;
+    private Vector3 movement;
 
     private void Start()
     {
         if (!IsOwner)
         {
+            Destroy(PlayerUI);
             Destroy(StaminaBar);
             Destroy(BackStaminaBar);
             return;
@@ -69,7 +69,8 @@ public class PlayerControllerScript : NetworkBehaviour
         stamina = maxStamina;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        running = false;
+        health = GetComponent<PlayerHealth>();
+        //running = false;
         isCursorLocked = true;
     }
 
@@ -112,6 +113,7 @@ public class PlayerControllerScript : NetworkBehaviour
             float horizontalInput = Input.GetAxis("Horizontal");
             movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
             rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
+            canJump = true;
             //animator.SetBool("Swim", false);
             animator.SetBool("TreadingSwim", false);
             if (walking == true)
@@ -143,6 +145,7 @@ public class PlayerControllerScript : NetworkBehaviour
         {
             animator.SetBool("Walk", false);
             animator.SetBool("Run", false);
+            canJump = false;
             if(Input.GetAxisRaw("Vertical") > 0)
             {
                 //animator.SetBool("Swim", true);
@@ -168,7 +171,11 @@ public class PlayerControllerScript : NetworkBehaviour
                 stamina -= swimConsumptionRate * Time.deltaTime;
                 stamina = Mathf.Clamp(stamina, 0, maxStamina);
                 UpdateStaminaUI();
-            }          
+            }
+            if (stamina <= 0)
+            {
+                health.RequestTakeDamageServerRpc(0.01f);  
+            }
         }
     }
 
@@ -228,26 +235,16 @@ public class PlayerControllerScript : NetworkBehaviour
 
     private void UpdateStaminaUI()
     {
-        float fillF = StaminaBar.fillAmount;
-        float fillB = BackStaminaBar.fillAmount;
         float hFraction = stamina / maxStamina;
+        float fillDifference = Mathf.Abs(StaminaBar.fillAmount - hFraction);
 
-        if (fillB > hFraction)
+        if (fillDifference > 0.01f)
         {
-            StaminaBar.fillAmount = hFraction;
-            BackStaminaBar.color = Color.red;
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
-            BackStaminaBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
-        }
-
-        if (fillF < hFraction)
-        {
             StaminaBar.fillAmount = hFraction;
-            BackStaminaBar.color = Color.blue;
-            lerptimer += Time.deltaTime;
-            float percentComplete = lerptimer / chipSpeed;
-            BackStaminaBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
+            BackStaminaBar.fillAmount = Mathf.Lerp(StaminaBar.fillAmount, hFraction, percentComplete);
+            BackStaminaBar.color = StaminaBar.fillAmount > hFraction ? Color.red : Color.blue;
         }
     }
     public void UseStamina(float amount)

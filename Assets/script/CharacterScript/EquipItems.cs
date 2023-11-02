@@ -8,19 +8,19 @@ public class EquipItems : NetworkBehaviour
     public InteractionScript Havespear;
     public bool Isequip = false;
     [SerializeField]
-    public NetworkObject Spear; // Changed GameObject to NetworkObject
+    public NetworkObject Spear; 
 
     void Start()
     {
         
         Havespear = this.GetComponent<InteractionScript>();
-        Spear.gameObject.SetActive(false); // Ensure spear is inactive at the start
+        Spear.gameObject.SetActive(false); 
     }
 
     void Update()
     {
         if (!IsOwner)
-            return; // Ensure only the owner can process the input.
+            return; 
 
         if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q))
         {
@@ -34,7 +34,7 @@ public class EquipItems : NetworkBehaviour
                 Debug.Log("Trying to unequip spear");
                 RequestUnEquipSpearServerRpc();
             }
-        }
+        }       
     }
 
     [ServerRpc]

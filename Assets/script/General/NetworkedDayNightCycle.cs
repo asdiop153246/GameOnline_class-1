@@ -16,28 +16,17 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     [Header("Components")]
     [SerializeField] private Light sunLight;
 
-    //[Header("Skybox")]
-    //[SerializeField] private HDRISky hdriSky;
-    //[SerializeField] private Volume GlobalVolume;
-    //[SerializeField] private Cubemap DaySkybox;
-    //[SerializeField] private Cubemap SunsetSkybox;
-    //[SerializeField] private Cubemap NightSkybox;
     
 
 
     private float currentDayTime;
     private NetworkVariable<float> networkDayTime = new NetworkVariable<float>();
 
-    private void Start()
-    {
-        
-        
+    public override void OnNetworkSpawn()
+    {    
             StartCoroutine(UpdateTime());
         networkDayTime.OnValueChanged += OnDayTimeChanged;
-        //if (!GlobalVolume.profile.TryGet(out hdriSky))
-        //{
-        //    Debug.LogError("HDRISky not found in the Volume Profile.");
-        //}
+
         
     }
 
