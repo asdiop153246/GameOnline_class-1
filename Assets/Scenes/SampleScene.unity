@@ -26294,6 +26294,17 @@ MonoBehaviour:
   spawnPosition1: {x: -282.4675, y: 28, z: 66.69}
   spawnPosition2: {x: -188.8296, y: 9.789432, z: 204.8182}
   spawnPosition3: {x: 55.98389, y: -8.8, z: 510.4}
+  itemPrefabs:
+  - {fileID: 4601531565221700946, guid: 81bdaa2ac817a894fbfe2c867a8d85c9, type: 3}
+  - {fileID: 2917468501397498799, guid: 11d66030302598a40ba30d2b27369558, type: 3}
+  - {fileID: 3376170836565774904, guid: a0d9006697262794896016f1aea2fc28, type: 3}
+  - {fileID: 8836566267154447737, guid: 0df707ec516286143b8ad0565a02c4ab, type: 3}
+  itemSpawnChances:
+  - 0.2
+  - 0.3
+  - 0.15
+  - 0.15
+  noSpawnChance: 0.3
 --- !u!1 &566707186
 GameObject:
   m_ObjectHideFlags: 0
