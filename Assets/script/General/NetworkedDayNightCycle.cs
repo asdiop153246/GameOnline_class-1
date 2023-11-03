@@ -24,7 +24,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
-    private bool monstersSpawned = false;
+    public bool monstersSpawned = false;
 
 
     private float currentDayTime;
@@ -134,7 +134,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private void SpawnMonsters()
     {
         // Check if the spawn chance passes
-        if (Random.value <= 0.3f) 
+        if (Random.value <= 0.5f) 
         {
             if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
             {

@@ -78,7 +78,7 @@ public class PlayerHealth : NetworkBehaviour
     }
     public void TakeDamage(float damage)
     {
-        if (!IsServer) return;  
+        //if (!IsServer) return;  
         Health.Value -= damage;
         Health.Value = Mathf.Max(Health.Value, 0);
         Debug.Log("Current Health: " + Health.Value);

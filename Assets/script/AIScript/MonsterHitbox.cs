@@ -14,6 +14,7 @@ public class MonsterHitbox : NetworkBehaviour
             var playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
+                Debug.Log("Detected player in hitbox");
                 float attackDamage = parentMonster.GetComponent<EnemyAi>().attackDamage;
                 playerHealth.RequestTakeDamageServerRpc(attackDamage);
                 playersHitThisAttack.Add(other.gameObject);
