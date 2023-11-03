@@ -55277,6 +55277,7 @@ MonoBehaviour:
   monsterSpawnPoints:
   - {fileID: 863375370}
   - {fileID: 436405369}
+  monstersSpawned: 0
 --- !u!4 &1243456995
 Transform:
   m_ObjectHideFlags: 0
