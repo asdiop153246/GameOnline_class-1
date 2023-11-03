@@ -10,6 +10,16 @@ public class Item
     public string name;
     public Sprite icon;
     public int amount;
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        // Implement the serialization logic for each field
+        // For example, serializing a string:
+        serializer.SerializeValue(ref name);
+        // For Sprite, you might want to serialize a reference ID or path instead
+        // Since you cannot directly serialize a Sprite object
+        // ...
+        serializer.SerializeValue(ref amount);
+    }
 }
 public class InventoryScript : NetworkBehaviour
 {
@@ -19,8 +29,12 @@ public class InventoryScript : NetworkBehaviour
 
     [Header("UI References")]
     public GameObject inventoryUI;
+    public GameObject CraftingUI;
+    public GameObject MenuUI;
     public List<UnityEngine.UI.Image> itemImages; 
     public List<TMPro.TextMeshProUGUI> itemAmountTexts;
+    public GameObject MenuSelectorUI;
+    private bool IsOpeningUI = false;
 
     public NetworkVariable<int> woodCount = new NetworkVariable<int>();
     public NetworkVariable<int> foodCount = new NetworkVariable<int>();
@@ -48,10 +62,21 @@ public class InventoryScript : NetworkBehaviour
         {
             return;
         };
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && IsOpeningUI == false)
         {
             ToggleInventory();
             UpdateInventoryUI();
+        }
+        else if(IsOpeningUI == true && Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryUI.SetActive(false);
+            CraftingUI.SetActive(false);
+            MenuUI.SetActive(false);
+            MenuSelectorUI.SetActive(false);
+            IsOpeningUI = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            cameraControl.canRotate = true;
         }
     }
 
@@ -60,20 +85,54 @@ public class InventoryScript : NetworkBehaviour
         if (inventoryUI != null)
         {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
-
+            MenuSelectorUI.SetActive(!MenuSelectorUI.activeSelf);
             if (inventoryUI.activeSelf)
             {                
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 cameraControl.canRotate = false;
+                IsOpeningUI = true;
             }
             else
             {               
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 cameraControl.canRotate = true;
+                
             }
         }
+    }
+    public void OpenInventory()
+    {
+        inventoryUI.SetActive(true);
+        CraftingUI.SetActive(false);
+        MenuUI.SetActive(false);
+        IsOpeningUI = true;
+    }
+    public void OpenCrafting()
+    {
+        inventoryUI.SetActive(false);
+        CraftingUI.SetActive(true);
+        MenuUI.SetActive(false);
+        IsOpeningUI = true;
+    }
+    public void OpenMenu()
+    {
+        inventoryUI.SetActive(false);
+        CraftingUI.SetActive(false);
+        MenuUI.SetActive(true);
+        IsOpeningUI = true;
+    }
+    public void closeMenu()
+    {
+        inventoryUI.SetActive(false);
+        CraftingUI.SetActive(false);
+        MenuUI.SetActive(false);
+        MenuSelectorUI.SetActive(false);
+        IsOpeningUI = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        cameraControl.canRotate = true;
     }
     public void UpdateInventoryUI()
     {
@@ -192,5 +251,59 @@ public class InventoryScript : NetworkBehaviour
     public void IncreaseRopeCount(int amount)
     {
         ropeCount.Value += amount;
+    }
+
+    [ServerRpc]
+    public void AddItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
+    {
+        var item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null)
+        {
+            item.amount += amount;
+
+            // Update the corresponding NetworkVariable
+            UpdateItemCount(itemName, item.amount);
+        }
+    }
+
+    [ServerRpc]
+    public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
+    {
+        // Find the item in the list and deduct the amount
+        var item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null && item.amount >= amount) // Ensure we have enough to deduct
+        {
+            item.amount -= amount;
+
+            
+            UpdateItemCount(itemName, item.amount);
+        }
+    }
+    private void UpdateItemCount(string itemName, int newAmount)
+    {
+        switch (itemName)
+        {
+            case "Wood":
+                woodCount.Value = newAmount;
+                break;
+            case "Food":
+                foodCount.Value = newAmount;
+                break;
+            case "Spear":
+                spearCount.Value = newAmount;
+                break;
+            case "Water":
+                waterCount.Value = newAmount;
+                break;
+            case "Cola":
+                colaCount.Value = newAmount;
+                break;
+            case "Rope":
+                ropeCount.Value = newAmount;
+                break;
+            default:
+                Debug.LogWarning($"Item {itemName} does not have a corresponding NetworkVariable.");
+                break;
+        }
     }
 }

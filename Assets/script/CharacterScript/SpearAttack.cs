@@ -28,10 +28,6 @@ public class SpearAttack : NetworkBehaviour
             playerController.UseStamina(20);
             StartCoroutine(AttackDelay());
         }
-        else
-        {
-            Debug.Log("You're not having spear");
-        }
     }
 
     private void OnTriggerStay(Collider other)

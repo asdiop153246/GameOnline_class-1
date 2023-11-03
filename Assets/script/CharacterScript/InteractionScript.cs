@@ -19,7 +19,8 @@ public class InteractionScript : NetworkBehaviour
     public GameObject HomeCoreUI;
     public PlayerControllerScript playerMovement;
     public HomeCoreScript HomeCoreScript;
-    
+    public InventoryScript inventory;
+
 
     private void Update()
     {
@@ -32,7 +33,7 @@ public class InteractionScript : NetworkBehaviour
                 TryPickUpSpearServerRpc(spearNetworkObject.NetworkObjectId);
             }
         }
-        if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtHomeCore()) 
+        if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtHomeCore())
         {
             Debug.Log("Client: Attempting to Opening HomeCore UI");
             isOpeningUI = true;
@@ -44,6 +45,10 @@ public class InteractionScript : NetworkBehaviour
             isOpeningUI = false;
             HomeCoreScript.CloseHomeCoreUI();
         }
+        if(inventory.spearCount.Value >= 1)
+        {
+            HaveSpear = true;
+        }
 
         ResourcesScript.ResourceType? resourceType = IsLookingAtResource();
         if (Input.GetKeyDown(interactKey) && resourceType.HasValue)
@@ -52,7 +57,6 @@ public class InteractionScript : NetworkBehaviour
             TryPickUpResourceServerRpc(currentResource.GetComponent<NetworkObject>().NetworkObjectId, resourceType.Value);
         }
     }
-
     [ServerRpc]
     void TryPickUpSpearServerRpc(ulong spearNetworkObjectId, ServerRpcParams rpcParams = default)
     {
