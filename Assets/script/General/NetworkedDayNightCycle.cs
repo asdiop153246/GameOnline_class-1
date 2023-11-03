@@ -22,7 +22,9 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     [SerializeField] private Cubemap nightHDRI;
     private HDRISky hdriSky;
 
-
+    [SerializeField] public GameObject monsterPrefab;
+    [SerializeField] public Transform[] monsterSpawnPoints;
+    private bool monstersSpawned = false;
 
 
     private float currentDayTime;
@@ -33,7 +35,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         StartCoroutine(UpdateTime());
         networkDayTime.OnValueChanged += OnDayTimeChanged;
 
-        // Attempt to get the HDRISky override from the GlobalVolume
+        
         if (!globalVolume.profile.TryGet<HDRISky>(out hdriSky))
         {
             Debug.LogWarning("No HDRISky found in Global Volume.");
@@ -43,8 +45,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private void Update()
     {
         if (IsServer)
-        {
-            //networkDayTime.OnValueChanged += OnDayTimeChanged;
+        {          
             UpdateSunPosition();
         }
     }
@@ -71,9 +72,9 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         Vector3 sunDirection = Quaternion.Euler(sunRotationAngle, 0, 0) * noonSunDirection.normalized;
 
         sunLight.transform.forward = -sunDirection;
-        UpdateLightColor(timeRatio); // Added this line to update the light color based on time of day
+        UpdateLightColor(timeRatio); 
 
-        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)
@@ -84,23 +85,21 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     }
 
     private void UpdateLightColor(float timeRatio)
-    {
-        
-        
-        // Assuming 0-0.25 is night, 0.25-0.75 is day, and 0.75-1 is night again.
+    {         
+       
         if (timeRatio > 0.25f && timeRatio < 0.75f)
+        {
+            // Night time        
+            float nightRatio = timeRatio < 0.25f ? timeRatio / 0.25f : (timeRatio - 0.75f) / 0.25f;
+            sunLight.color = Color.Lerp(dayColor, nightColor, nightRatio);
+
+        }
+        else
         {
             // Day time
             float dayRatio = (timeRatio - 0.25f) / 0.5f;
             sunLight.color = Color.Lerp(nightColor, dayColor, dayRatio);
-            
-        }
-        else
-        {
-            // Night time
-            float nightRatio = timeRatio < 0.25f ? timeRatio / 0.25f : (timeRatio - 0.75f) / 0.25f;
-            sunLight.color = Color.Lerp(dayColor, nightColor, nightRatio);
-            
+
         }
         UpdateHDRISky(timeRatio);
     }
@@ -108,20 +107,71 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     {
         if (hdriSky == null) return;
 
-        // Example: Change the rotation of the HDRI sky based on the time of day
+        
         float rotation = Mathf.Lerp(0f, 360f, timeRatio);
         hdriSky.rotation.value = rotation;
 
-        // Change the HDRI texture based on the time of day
+        
         if (timeRatio > 0.25f && timeRatio < 0.75f)
         {
             // Night time
             hdriSky.hdriSky.value = nightHDRI;
+            if (!monstersSpawned)
+            {
+                SpawnMonsters();
+                monstersSpawned = true;
+            }
         }
         else
         {
-            // Day time
             hdriSky.hdriSky.value = dayHDRI;
+            if (monstersSpawned)
+            {
+                monstersSpawned = false;
+            }
+        }
+    }
+    private void SpawnMonsters()
+    {
+        // Check if the spawn chance passes
+        if (Random.value <= 0.3f) 
+        {
+            if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
+            {
+                foreach (var spawnPoint in monsterSpawnPoints)
+                {                                       
+                        var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
+                        monster.GetComponent<NetworkObject>().Spawn();
+
+                        Transform parentTransform = transform.parent;
+                        if (parentTransform != null)
+                        {
+                            monster.transform.SetParent(parentTransform);
+                            Debug.Log($"Monster spawned at {spawnPoint.name} under parent {parentTransform.name}");
+                        }                    
+                }
+            }
+            else
+            {
+                Debug.LogError("Monster Spawn Points or Monster Prefab is not assigned.");
+            }
+        }
+    }
+
+    public bool IsNightTime()
+    {   
+        
+        float timeRatio = currentDayTime / fullDayLength;        
+        return timeRatio > 0.25f && timeRatio < 0.75f;
+    }
+    public void SetTimeToMorning()
+    {
+        if (IsServer)  
+        {       
+            currentDayTime = fullDayLength * 0.76f;
+            networkDayTime.Value = currentDayTime;              
+            UpdateSunPosition();
+            UpdateHDRISky(currentDayTime / fullDayLength);
         }
     }
 }

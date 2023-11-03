@@ -136,7 +136,7 @@ public class Movetoward : NetworkBehaviour
 
                 if (parentTransform != null)  // Check if a parent exists
                 {
-                    monster.transform.SetParent(parentTransform);  // Set the spawned monster's parent to the parent of the current GameObject
+                    monster.transform.SetParent(parentTransform);  
                     Debug.Log("Monster parent set to: " + monster.transform.parent.name);
                 }
             }

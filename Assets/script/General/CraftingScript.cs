@@ -24,13 +24,12 @@ public class CraftingRecipe : INetworkSerializable
         int count = requiredItems.Count;
         serializer.SerializeValue(ref count);
 
-        // Ensure capacity in the list
+
         if (serializer.IsReader)
         {
             requiredItems = new List<Item>(count);
         }
 
-        // Serialize each item
         for (int i = 0; i < count; i++)
         {
             Item item = serializer.IsReader ? new Item() : requiredItems[i];
@@ -45,15 +44,15 @@ public class CraftingRecipe : INetworkSerializable
 
 public class CraftingScript : NetworkBehaviour
 {
-    public InventoryScript inventoryScript; // Reference to the InventoryScript
+    public InventoryScript inventoryScript; 
 
     [Header("Crafting Configuration")]
-    public List<CraftingRecipe> craftingRecipes; // List of possible recipes
+    public List<CraftingRecipe> craftingRecipes;
 
     [Header("UI References")]
-    public TMP_Dropdown craftingDropdown; // Dropdown to select the item to craft
-    public Button craftButton; // Button to start crafting
-    public TextMeshProUGUI craftingTimerText; // Text to display the crafting timer
+    public Button craftButton;
+    public Slider craftingTimerSlider;
+    public TextMeshProUGUI requiredItemsText;
 
     private CraftingRecipe selectedRecipe; 
     private bool isCrafting = false;
@@ -61,59 +60,79 @@ public class CraftingScript : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("CraftingScript has started.");
         craftButton.onClick.AddListener(StartCrafting);
     }
 
     public void SelectRecipe(int recipeIndex)
     {
+        Debug.Log($"SelectRecipe called with index: {recipeIndex}");
         if (recipeIndex >= 0 && recipeIndex < craftingRecipes.Count)
         {
-            selectedRecipeIndex = recipeIndex;            
+            selectedRecipeIndex = recipeIndex;
             selectedRecipe = craftingRecipes[recipeIndex];
+            UpdateRequiredItemsText(selectedRecipe);
+            Debug.Log($"Recipe selected: {selectedRecipe.result.name}");
+        }
+        else
+        {
+            Debug.LogError($"Invalid recipe index: {recipeIndex}");
         }
     }
     public void StartCrafting()
     {
+        Debug.Log("StartCrafting called.");
         if (selectedRecipe != null && !isCrafting && selectedRecipeIndex >= 0)
         {
-            int recipeIndex = craftingRecipes.IndexOf(selectedRecipe); // Get the index of the selected recipe
-            if (recipeIndex >= 0)
+            if (HasRequiredItems(selectedRecipe))
             {
-                StartCraftingServerRpc(recipeIndex); // Call the RPC with the index
+                Debug.Log($"Starting crafting process for {selectedRecipe.result.name}.");
+                int recipeIndex = craftingRecipes.IndexOf(selectedRecipe);
+                craftingTimerSlider.maxValue = selectedRecipe.craftingTime;
+                craftingTimerSlider.value = craftingTimerSlider.maxValue;
+                StartCraftingServerRpc(recipeIndex);
             }
             else
             {
-                Debug.LogError("Selected recipe is not in the list!");
+                Debug.LogError("Not enough required items to craft.");
             }
+        }
+        else
+        {
+            Debug.LogError("Crafting process cannot start. Either crafting is already in process or no recipe is selected.");
         }
     }
     [ServerRpc(RequireOwnership = false)]
     private void StartCraftingServerRpc(int recipeIndex, ServerRpcParams rpcParams = default)
     {
+        Debug.Log($"StartCraftingServerRpc called on server with recipe index: {recipeIndex}");
         if (!isCrafting)
         {
-            // Look up the recipe by index or some other key
             CraftingRecipe recipe = craftingRecipes[recipeIndex];
             StartCoroutine(CraftingProcess(recipe));
+        }
+        else
+        {
+            Debug.LogError("ServerRPC called, but is already crafting.");
         }
     }
 
     private IEnumerator CraftingProcess(CraftingRecipe recipe)
     {
+        Debug.Log("CraftingProcess coroutine started.");
         isCrafting = true;
 
-        // Inform all clients that crafting has started
         UpdateCraftingStatusClientRpc(true, recipe.craftingTime);
 
-        // Start crafting timer
         float time = recipe.craftingTime;
         while (time > 0)
         {
+            Debug.Log($"Crafting... {time} seconds remaining.");
             time -= Time.deltaTime;
             yield return null;
         }
 
-        // Deduct resources and add the crafted item on the server
+        Debug.Log("Crafting time completed. Deducting items and adding result to inventory.");
         foreach (var item in recipe.requiredItems)
         {
             inventoryScript.DeductItemServerServerRpc(item.name, item.amount);
@@ -121,63 +140,93 @@ public class CraftingScript : NetworkBehaviour
 
         inventoryScript.AddItemServerServerRpc(recipe.result.name, recipe.result.amount);
 
-        // Inform all clients that crafting has finished
         UpdateCraftingStatusClientRpc(false, 0);
 
         isCrafting = false;
+        Debug.Log("CraftingProcess coroutine finished.");
     }
 
-    // Add item to the inventory and update the network variables
+
     public void AddItem(string itemName, int amount)
     {
-        // Find the item in the inventory
+        
         Item itemToAdd = inventoryScript.items.Find(item => item.name == itemName);
         if (itemToAdd != null)
         {
-            itemToAdd.amount += amount;
-            // Update the network variable here, similar to your Increase methods
-            // For example: inventoryScript.IncreaseWoodCount(amount);
+            itemToAdd.amount += amount;            
         }      
         inventoryScript.UpdateInventoryUI();
     }
     public void DeductItem(string itemName, int amount)
     {
-        // Find the item in the inventory
+        
         Item itemToDeduct = inventoryScript.items.Find(item => item.name == itemName);
         if (itemToDeduct != null)
         {
             itemToDeduct.amount -= amount;
-            // Update the network variable here, similar to your Increase methods but deducting
-            // For example: inventoryScript.DecreaseWoodCount(amount);
+
         }
-        // Update UI
+       
         inventoryScript.UpdateInventoryUI();
     }
     [ClientRpc]
     private void UpdateCraftingStatusClientRpc(bool crafting, float time, ClientRpcParams rpcParams = default)
     {
+        Debug.Log($"UpdateCraftingStatusClientRpc called on client with crafting: {crafting} and time: {time}");
         isCrafting = crafting;
-        craftButton.interactable = !crafting; // Disable the craft button during crafting
+        craftButton.interactable = !crafting;
 
         if (crafting)
         {
-            // Start updating the timer on all clients
+            craftingTimerSlider.gameObject.SetActive(true);
             StartCoroutine(UpdateCraftingTimer(time));
         }
         else
         {
-            craftingTimerText.text = ""; // Clear the crafting timer
+            craftingTimerSlider.gameObject.SetActive(false);
         }
     }
-    private IEnumerator UpdateCraftingTimer(float time)
+    private IEnumerator UpdateCraftingTimer(float maxTime)
     {
-        while (time > 0)
+        Debug.Log($"UpdateCraftingTimer coroutine started with maxTime: {maxTime}");
+        craftingTimerSlider.maxValue = maxTime;
+        craftingTimerSlider.value = 0;
+        float timeElapsed = 0;
+
+        while (timeElapsed < maxTime)
         {
-            time -= Time.deltaTime;
-            craftingTimerText.text = "Crafting: " + time.ToString("F2") + "s";
+            timeElapsed += Time.deltaTime;
+            craftingTimerSlider.value = timeElapsed;
+            Debug.Log($"Crafting timer updated: {timeElapsed}/{maxTime}");
             yield return null;
         }
-        craftingTimerText.text = ""; // Clear the crafting timer once done
+
+        craftingTimerSlider.gameObject.SetActive(false);
+        Debug.Log("UpdateCraftingTimer coroutine finished.");
+    }
+    private void UpdateRequiredItemsText(CraftingRecipe recipe)
+    {
+        string requiredItemsInfo = "Required Items:\n";
+        foreach (var item in recipe.requiredItems)
+        {
+            requiredItemsInfo += $"{item.amount}x {item.name}\n";
+        }
+        requiredItemsText.text = requiredItemsInfo;
+        Debug.Log($"Required items text updated: {requiredItemsInfo}");
+    }
+    private bool HasRequiredItems(CraftingRecipe recipe)
+    {
+        foreach (var item in recipe.requiredItems)
+        {
+            Item inventoryItem = inventoryScript.items.Find(x => x.name == item.name);
+            if (inventoryItem == null || inventoryItem.amount < item.amount)
+            {
+                Debug.Log("You not have enough items");
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
 

@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
@@ -17,6 +17,7 @@ public class BedInteraction : NetworkBehaviour
 
     private HashSet<NetworkBehaviour> playersInCollider = new HashSet<NetworkBehaviour>();
     private NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
+    public NetworkedDayNightCycle dayNightCycle;
     //private bool isSleeping = false;
 
 
@@ -58,20 +59,22 @@ public class BedInteraction : NetworkBehaviour
 
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
             PlayerWantsToSleepServerRpc();
-        }
-
+        }       
     }
 
     private IEnumerator Sleep()
     {
         Debug.Log("In sleep function");
-        //isSleeping = true;
-        AdvanceDay();      
+
+        // Set the time to just after night begins
+        dayNightCycle.SetTimeToMorning();
+
+        AdvanceDay();
         message.text = "";
-        //isSleeping = false;
         islandSpawnScript.SpawnIsland();
         yield return null;
     }
@@ -116,7 +119,16 @@ public class BedInteraction : NetworkBehaviour
     private void PlayerWantsToSleepServerRpc()
     {
         Debug.Log("E key pressed by " + gameObject.name);
-        CheckAllPlayersInBed();
+
+        if (IsServer && dayNightCycle != null && dayNightCycle.IsNightTime())
+        {
+            CheckAllPlayersInBed();
+        }
+        else
+        {
+            Debug.Log("You can only sleep at night.");            
+            InformPlayerItIsNotNightClientRpc();
+        }
     }
     [ServerRpc]
     private void IncrementDayServerRpc()
@@ -131,5 +143,10 @@ public class BedInteraction : NetworkBehaviour
         message.text = "Day " + newDay;
         sleepCanvas.gameObject.SetActive(true);
         StartCoroutine(DisplayDayCount());
+    }
+    [ClientRpc]
+    private void InformPlayerItIsNotNightClientRpc()
+    {
+        message.text = "You can only sleep at night.";
     }
 }
