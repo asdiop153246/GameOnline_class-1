@@ -137,7 +137,11 @@ public class InventoryScript : NetworkBehaviour
     public void UpdateInventoryUI()
     {
         if (!IsOwner)
+        {
+            Debug.LogWarning("Trying to update inventory UI on a client that doesn't own this inventory.");
             return;
+        }
+
         Debug.Log("Updating inventory UI for client: " + NetworkManager.Singleton.LocalClientId);
         for (int i = 0; i < items.Count; i++)
         {
@@ -256,27 +260,42 @@ public class InventoryScript : NetworkBehaviour
     [ServerRpc]
     public void AddItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
+        Debug.Log($"[Server] Attempting to add {amount} of {itemName}.");
         var item = items.FirstOrDefault(i => i.name == itemName);
         if (item != null)
         {
             item.amount += amount;
-
+            Debug.Log($"[Server] Added {amount} of {itemName}. New amount: {item.amount}");
             // Update the corresponding NetworkVariable
             UpdateItemCount(itemName, item.amount);
         }
+        else
+        {
+            Debug.LogError($"[Server] Item {itemName} not found in inventory.");
+        }
     }
+
 
     [ServerRpc]
     public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
+        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");
         // Find the item in the list and deduct the amount
         var item = items.FirstOrDefault(i => i.name == itemName);
         if (item != null && item.amount >= amount) // Ensure we have enough to deduct
         {
             item.amount -= amount;
+            Debug.Log($"[Server] Deducted {amount} of {itemName}. New amount: {item.amount}");
 
-            
             UpdateItemCount(itemName, item.amount);
+        }   
+        else if (item != null)
+        {
+            Debug.LogError($"[Server] Not enough {itemName} to deduct. Current amount: {item.amount}, attempted to deduct: {amount}");
+        }
+        else
+        {
+            Debug.LogError($"[Server] Item {itemName} not found in inventory.");
         }
     }
     private void UpdateItemCount(string itemName, int newAmount)
