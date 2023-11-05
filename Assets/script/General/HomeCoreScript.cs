@@ -10,12 +10,12 @@ public class HomeCoreScript : NetworkBehaviour
     public MoveCamera cameraControl;
 
     [Header("Values")]
-    [Range(0, 100)] public float startingHealth = 500f;
-    [Range(0, 100)] public float startingEnergy = 500f;
+    [Range(0, 500)] public float startingHealth = 500f;
+    [Range(0, 500)] public float startingEnergy = 500f;
 
     [Header("Rate of Decrease")]
     public float HealthDecreaseRate = 0f;
-    public float EnergyDecreaseRate = 0.30f;
+    public float EnergyDecreaseRate = 0.80f;
 
     [Header("UI Components")]
     public Image HealthBar;
@@ -51,8 +51,8 @@ public class HomeCoreScript : NetworkBehaviour
 
     private void Update()
     {
-        //if (!IsOwner)
-        //    return;
+        if (!IsOwner)
+            return;
 
 
         if (IsServer)
@@ -70,7 +70,7 @@ public class HomeCoreScript : NetworkBehaviour
     public void DecreaseHealth(float amount)
     {
         Health.Value -= amount;
-        Health.Value = Mathf.Clamp(Health.Value, 0, 100);
+        Health.Value = Mathf.Clamp(Health.Value, 0, 500);
 
         if (Health.Value <= 0)
         {
@@ -81,8 +81,8 @@ public class HomeCoreScript : NetworkBehaviour
     public void DecreaseEnergy(float amount)
     {
         Energy.Value -= amount;
-        Energy.Value = Mathf.Clamp(Energy.Value, 0, 100);
-
+        Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
+        
         if (Energy.Value <= 0)
         {
             Debug.Log("Island is out of Energy");
@@ -92,13 +92,13 @@ public class HomeCoreScript : NetworkBehaviour
     public void IncreaseHealth(float amount)
     {
         Health.Value += amount;
-        Health.Value = Mathf.Clamp(Health.Value, 0, 100);
+        Health.Value = Mathf.Clamp(Health.Value, 0, 500);
     }
 
     public void IncreaseEnergy(float amount)
     {
         Energy.Value += amount;
-        Energy.Value = Mathf.Clamp(Energy.Value, 0, 100);
+        Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
     }
     public void UpdateHungerUI()
     {

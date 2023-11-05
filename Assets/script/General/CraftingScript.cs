@@ -55,7 +55,7 @@ public class CraftingScript : NetworkBehaviour
     public TextMeshProUGUI requiredItemsText;
 
     private CraftingRecipe selectedRecipe; 
-    private bool isCrafting = false;
+    public bool isCrafting = false;
     private int selectedRecipeIndex = -1;
 
     void Start()

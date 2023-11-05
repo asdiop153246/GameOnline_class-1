@@ -15,12 +15,14 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [Header("Components")]
     [SerializeField] private Light sunLight;
-    [SerializeField] private Volume globalVolume;
+    [SerializeField] private Volume globalVolume1;
+    [SerializeField] private Volume globalVolume2;
 
     [Header("HDRI Sky")]
     [SerializeField] private Cubemap dayHDRI;
     [SerializeField] private Cubemap nightHDRI;
-    private HDRISky hdriSky;
+    private HDRISky hdriSky1;
+    private HDRISky hdriSky2;
 
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
@@ -36,9 +38,13 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         networkDayTime.OnValueChanged += OnDayTimeChanged;
 
         
-        if (!globalVolume.profile.TryGet<HDRISky>(out hdriSky))
+        if (!globalVolume1.profile.TryGet<HDRISky>(out hdriSky1))
         {
-            Debug.LogWarning("No HDRISky found in Global Volume.");
+            Debug.LogWarning("No HDRISky found in Global Volume1.");
+        }
+        if (!globalVolume2.profile.TryGet<HDRISky>(out hdriSky2))
+        {
+            Debug.LogWarning("No HDRISky found in Global Volume2.");
         }
     }
 
@@ -105,17 +111,20 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     }
     private void UpdateHDRISky(float timeRatio)
     {
-        if (hdriSky == null) return;
+        if (hdriSky1 == null && hdriSky2 == null) return;
 
         
         float rotation = Mathf.Lerp(0f, 360f, timeRatio);
-        hdriSky.rotation.value = rotation;
+        hdriSky1.rotation.value = rotation;
+        hdriSky2.rotation.value = rotation;
 
-        
+
         if (timeRatio > 0.25f && timeRatio < 0.75f)
         {
+            //Debug.Log("Night time");
             // Night time
-            hdriSky.hdriSky.value = nightHDRI;
+            hdriSky1.hdriSky.value = nightHDRI;
+            hdriSky2.hdriSky.value = nightHDRI;
             if (!monstersSpawned)
             {
                 SpawnMonsters();
@@ -124,7 +133,8 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         }
         else
         {
-            hdriSky.hdriSky.value = dayHDRI;
+            hdriSky1.hdriSky.value = dayHDRI;
+            hdriSky2.hdriSky.value = dayHDRI;
             if (monstersSpawned)
             {
                 monstersSpawned = false;

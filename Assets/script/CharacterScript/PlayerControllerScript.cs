@@ -41,18 +41,31 @@ public class PlayerControllerScript : NetworkBehaviour
     public float chipSpeed = 2f;
     public Image BackStaminaBar;
 
-    private Animator animator;
-    private Rigidbody rb;
-    private PlayerHealth health;
-    private bool walking;
-    private bool readyToJump = true;
-    private bool grounded;
-    private bool isCursorLocked = true;
+    [Header("Audio")]
+    [SerializeField] private AudioSource WalkSound;
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource divingSound;
+    [SerializeField] private AudioSource backgroundSound;
+    [SerializeField] private AudioSource UnderwaterSound;
+
+
+    [Header("Bool")]
     public bool canMove = true;
     public bool isSwimming;
     public bool canJump = true;
     public GameObject PlayerUI;
     private Vector3 movement;
+    private Animator animator;
+    private Rigidbody rb;
+    private PlayerHealth health;
+    [SerializeField]private bool walking;
+    [SerializeField]private bool underWater = false;
+    [SerializeField] private float timeSinceLastUnderwaterSound = 0f;
+    [SerializeField] private bool canPlayUnderwaterSound = true; 
+    private bool readyToJump = true;
+    private bool grounded;
+    private bool isCursorLocked = true;
+    
 
     private void Start()
     {
@@ -88,27 +101,38 @@ public class PlayerControllerScript : NetworkBehaviour
         JumpInput();
         LockCursor();
         UpdateStamina();
+        
+        if (grounded)
+        {
+            ResumeWalkSound();
+        }
+        if (underWater)
+        {
+            PlayHorrorsound();
+        }
     }
     private void checkMovement() 
     {
 
         if (movement.x != 0 || movement.y != 0 || movement.z != 0)
         {
-            walking = true;
+            walking = true;         
         }
         else
         {
-            walking = false;
+            walking = false;            
         }
     }
     private void MoveForward()
     {
         if (isSwimming != true)
-        {
+        {                        
             if (rb.useGravity != true)
             {
                 rb.useGravity = true;
             }
+            underWater = false;
+            divingSound.Play();
             float verticalInput = Input.GetAxis("Vertical");
             float horizontalInput = Input.GetAxis("Horizontal");
             movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -118,13 +142,22 @@ public class PlayerControllerScript : NetworkBehaviour
             animator.SetBool("TreadingSwim", false);
             if (walking == true)
             {
+                if (!WalkSound.isPlaying)
+                {
+                    WalkSound.Play();
+                }
                 animator.SetBool("Walk", true);
             }
             else
             {
+                if (WalkSound.isPlaying)
+                {
+                    WalkSound.Stop();
+                }
                 animator.SetBool("Walk", false);
                 animator.SetBool("Run", false);
             }
+
 
 
             if (Input.GetKey(sprintKey) && stamina > 5)
@@ -143,16 +176,20 @@ public class PlayerControllerScript : NetworkBehaviour
         }
         else
         {
+            backgroundSound.Play();
             animator.SetBool("Walk", false);
             animator.SetBool("Run", false);
             canJump = false;
-            if(Input.GetAxisRaw("Vertical") > 0)
+            underWater = true;
+            
+            if (Input.GetAxisRaw("Vertical") > 0)
             {
                 //animator.SetBool("Swim", true);
                 animator.SetBool("TreadingSwim", true);
                 transform.position += target.forward * swimSpeed * Time.deltaTime;
                 stamina -= swimConsumptionRate * Time.deltaTime;
                 stamina = Mathf.Clamp(stamina, 0, maxStamina);
+                
                 UpdateStaminaUI();
             }
             if (Input.GetAxisRaw("Vertical") < 0)
@@ -162,6 +199,7 @@ public class PlayerControllerScript : NetworkBehaviour
                 transform.position -= target.forward * swimSpeed * Time.deltaTime;
                 stamina -= swimConsumptionRate * Time.deltaTime;
                 stamina = Mathf.Clamp(stamina, 0, maxStamina);
+               
                 UpdateStaminaUI();
             }
             if (Input.GetAxisRaw("Vertical") == 0)
@@ -169,12 +207,12 @@ public class PlayerControllerScript : NetworkBehaviour
                 animator.SetBool("Swim", false);
                 animator.SetBool("TreadingSwim", true);
                 stamina -= swimConsumptionRate * Time.deltaTime;
-                stamina = Mathf.Clamp(stamina, 0, maxStamina);
-                UpdateStaminaUI();
+                stamina = Mathf.Clamp(stamina, 0, maxStamina);              
+                UpdateStaminaUI();              
             }
             if (stamina <= 0)
             {
-                health.RequestTakeDamageServerRpc(0.01f);  
+                health.RequestTakeDamageServerRpc(0.03f);  
             }
         }
     }
@@ -192,13 +230,20 @@ public class PlayerControllerScript : NetworkBehaviour
 
     private void Jump()
     {
+        if (WalkSound.isPlaying)
+        {
+            WalkSound.Pause();
+        }
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        jumpSound.Play();     
         animator.SetTrigger("Jump");
+
     }
 
     private void ResetJump()
     {
+        
         readyToJump = true;
     }
 
@@ -257,5 +302,35 @@ public class PlayerControllerScript : NetworkBehaviour
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+    }
+    private void ResumeWalkSound()
+    {
+        
+        if (grounded && walking && !WalkSound.isPlaying)
+        {
+            WalkSound.UnPause(); 
+        }
+    }
+    private void PlayHorrorsound()
+    {
+        
+        timeSinceLastUnderwaterSound += Time.deltaTime;
+
+        
+        if (canPlayUnderwaterSound && Random.value <= 0.05f)
+        {
+            
+            UnderwaterSound.Play();
+            StartCoroutine(SoundDelay());
+        }
+    }
+    IEnumerator SoundDelay()
+    {
+        canPlayUnderwaterSound = false;
+
+        yield return new WaitForSeconds(20f);
+
+        timeSinceLastUnderwaterSound = 0f;
+        canPlayUnderwaterSound = true;
     }
 }

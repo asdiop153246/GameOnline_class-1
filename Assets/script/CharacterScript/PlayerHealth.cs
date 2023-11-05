@@ -92,7 +92,7 @@ public class PlayerHealth : NetworkBehaviour
 
     public void RestoreHealth(float health)
     {
-        if (!IsServer) return;  
+        //if (!IsServer) return;  
         Health.Value += health;
         Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  
     }

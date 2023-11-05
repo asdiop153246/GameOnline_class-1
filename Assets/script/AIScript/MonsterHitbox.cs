@@ -9,7 +9,7 @@ public class MonsterHitbox : NetworkBehaviour
     private List<GameObject> playersHitThisAttack = new List<GameObject>();
     private void OnTriggerEnter(Collider other)
     {
-        if (IsServer && other.gameObject.CompareTag("Player") && !playersHitThisAttack.Contains(other.gameObject))
+        if (other.gameObject.CompareTag("Player") && !playersHitThisAttack.Contains(other.gameObject))
         {
             var playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)

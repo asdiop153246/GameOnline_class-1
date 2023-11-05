@@ -36,12 +36,18 @@ public class InventoryScript : NetworkBehaviour
     public GameObject MenuSelectorUI;
     private bool IsOpeningUI = false;
 
-    public NetworkVariable<int> woodCount = new NetworkVariable<int>();
-    public NetworkVariable<int> foodCount = new NetworkVariable<int>();
-    public NetworkVariable<int> spearCount = new NetworkVariable<int>();
-    public NetworkVariable<int> waterCount = new NetworkVariable<int>();
-    public NetworkVariable<int> colaCount = new NetworkVariable<int>();
-    public NetworkVariable<int> ropeCount = new NetworkVariable<int>();
+    public NetworkVariable<int> woodCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> foodCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> spearCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> waterCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> colaCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> ropeCount = new NetworkVariable<int>(default,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
 
     private void Start()
@@ -55,6 +61,17 @@ public class InventoryScript : NetworkBehaviour
             colaCount.OnValueChanged += OnColaCountChanged;
             ropeCount.OnValueChanged += OnRopeCountChanged;
         }
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy(); 
+       
+        woodCount.OnValueChanged -= OnWoodCountChanged;
+        spearCount.OnValueChanged -= OnSpearCountChanged;
+        foodCount.OnValueChanged -= OnFoodCountChanged;
+        waterCount.OnValueChanged -= OnWaterCountChanged;
+        colaCount.OnValueChanged -= OnColaCountChanged;
+        ropeCount.OnValueChanged -= OnRopeCountChanged;
     }
     private void Update()
     {
@@ -279,10 +296,9 @@ public class InventoryScript : NetworkBehaviour
     [ServerRpc]
     public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");
-        // Find the item in the list and deduct the amount
+        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");        
         var item = items.FirstOrDefault(i => i.name == itemName);
-        if (item != null && item.amount >= amount) // Ensure we have enough to deduct
+        if (item != null && item.amount >= amount) 
         {
             item.amount -= amount;
             Debug.Log($"[Server] Deducted {amount} of {itemName}. New amount: {item.amount}");

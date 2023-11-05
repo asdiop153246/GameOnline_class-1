@@ -20,7 +20,8 @@ public class InteractionScript : NetworkBehaviour
     public PlayerControllerScript playerMovement;
     public HomeCoreScript HomeCoreScript;
     public InventoryScript inventory;
-
+    [Header("Audio")]
+    [SerializeField] private AudioSource pickupSound;
 
     private void Update()
     {
@@ -142,8 +143,10 @@ public class InteractionScript : NetworkBehaviour
         if (resourceScript && resourceScript.CanBePickedUp())
         {
             InventoryScript inventory = GetComponent<InventoryScript>();
+
             if (inventory != null)
             {
+                pickupSound.Play();
                 resourceScript.PickUp();
                 Debug.Log("Resource to pick up: " + resourceType);
                 switch (resourceType)

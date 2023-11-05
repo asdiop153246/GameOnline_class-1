@@ -12,6 +12,9 @@ public class SpearAttack : NetworkBehaviour
     public bool canAttack = true;
     public Animator animator;
     public EquipItems equipItems;
+    [Header("Audio")]
+    [SerializeField] private AudioSource Attacksound;
+
     private void Update()
     {
         // Only the owner can perform attacks.
@@ -26,6 +29,7 @@ public class SpearAttack : NetworkBehaviour
             isAttacking = true;
             animator.SetTrigger("Stab");
             playerController.UseStamina(20);
+            Attacksound.Play();
             StartCoroutine(AttackDelay());
         }
     }
