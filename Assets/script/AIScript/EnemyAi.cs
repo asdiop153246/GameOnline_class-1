@@ -26,19 +26,21 @@ public class EnemyAi : NetworkBehaviour
     public float windUpDuration = 1.5f;
     private NetworkVariable<Vector3> position = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     private NetworkVariable<Quaternion> rotation = new NetworkVariable<Quaternion>(new Quaternion());
+    private GameObject homeCore;
+    private bool isHomeCoreSet = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         SetMovementSpeed(MoveSpeed);
+        FindHomeCore();
     }
 
     void Update()
     {
         if (!IsServer) return;
-        animator.SetBool("Walk", false);
-        // Check if player is in sight range
+        animator.SetBool("Walk", false);        
         Collider[] playersInSightRange = Physics.OverlapSphere(transform.position, sightRange, playerMask);
         if (playersInSightRange.Length != 0)
         {
@@ -55,7 +57,7 @@ public class EnemyAi : NetworkBehaviour
             {
                 agent.SetDestination(playersInSightRange[0].transform.position);
                 animator.SetBool("Walk", true);
-                
+
             }
             else
             {
@@ -70,14 +72,27 @@ public class EnemyAi : NetworkBehaviour
         }
         else
         {
-            if (!walkPointSet) SearchWalkPoint();
-            if (walkPointSet)
+            
+            if (homeCore)
             {
-                agent.SetDestination(walkPoint.Value);
-                animator.SetBool("Walk", true);
+                float distanceToHomeCore = Vector3.Distance(transform.position, homeCore.transform.position);
+                if (distanceToHomeCore > attackRange)
+                {
+                    Debug.Log("Monster attempted to move to HomeCore");
+                    MoveToTarget(homeCore.transform.position);
+                }
+                else
+                {
+                    AttackHomeCore(); 
+                }
+            }
+            else
+            {
+                
+                PatrolBehavior();
             }
         }
-        if (IsServer)
+            if (IsServer)
         {
             position.Value = transform.position;
             rotation.Value = transform.rotation;
@@ -150,6 +165,7 @@ public class EnemyAi : NetworkBehaviour
         agent.velocity = Vector3.zero;
         agent.isStopped = false;
         hitbox.SetActive(false);
+        StartCoroutine(ResetDashAttackTime());
 
     }
     private void ResetAttack()
@@ -159,5 +175,45 @@ public class EnemyAi : NetworkBehaviour
         isAttacking = false;
 
         agent.isStopped = false;
+    }
+    private void FindHomeCore()
+    {
+        homeCore = GameObject.FindGameObjectWithTag("HomeCore");
+        if (homeCore != null)
+        {
+            isHomeCoreSet = true;
+        }
+    }
+    private void MoveToTarget(Vector3 target)
+    {
+        agent.SetDestination(target);
+        animator.SetBool("Walk", true);
+    }
+    private void PatrolBehavior()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+        if (walkPointSet)
+        {
+            MoveToTarget(walkPoint.Value);
+        }
+    }
+    private void AttackHomeCore()
+    {
+        if (isAttacking) return;
+
+        agent.isStopped = true;
+
+        hitbox.SetActive(true);
+        Debug.Log("Attacking Core");
+        animator.SetTrigger("Punch");
+
+        isAttacking = true;
+
+        Invoke(nameof(ResetAttack), timeBetweenAttacks);
+    }
+    IEnumerator ResetDashAttackTime()
+    {
+        yield return new WaitForSeconds(10f);
+        hasPlayerBeenSpotted = false;
     }
 }

@@ -16,10 +16,12 @@ public class MoveCamera : NetworkBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-    // Update is called once per frame
+    
     void Update()
     {
-        if (canRotate) { 
+        
+        if (!canRotate) return;
+
         float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
@@ -29,10 +31,5 @@ public class MoveCamera : NetworkBehaviour
 
         player.Rotate(Vector3.up * inputX);
     }
-        else
-        {
-            return;
-        }
 
-    }
 }

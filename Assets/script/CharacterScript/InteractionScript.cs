@@ -18,11 +18,15 @@ public class InteractionScript : NetworkBehaviour
     public MoveCamera cameraControl;
     public GameObject HomeCoreUI;
     public PlayerControllerScript playerMovement;
-    public HomeCoreScript HomeCoreScript;
+    private HomeCoreScript homeCoreScript;
     public InventoryScript inventory;
     [Header("Audio")]
     [SerializeField] private AudioSource pickupSound;
 
+    private void Start()
+    {
+        FindHomeCoreObject();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(interactKey) && !HaveSpear && IsLookingAtSpear())
@@ -36,17 +40,17 @@ public class InteractionScript : NetworkBehaviour
         }
         if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtHomeCore())
         {
-            Debug.Log("Client: Attempting to Opening HomeCore UI");
+            Debug.Log("Client: Attempting to Open HomeCore UI");
             isOpeningUI = true;
-            HomeCoreScript.OpenHomeCoreUI();
+            homeCoreScript.OpenHomeCoreUI(); 
         }
         else if (Input.GetKeyDown(interactKey) && isOpeningUI)
         {
             Debug.Log("Client: Closing HomeCore UI");
             isOpeningUI = false;
-            HomeCoreScript.CloseHomeCoreUI();
+            homeCoreScript.CloseHomeCoreUI(); 
         }
-        if(inventory.spearCount.Value >= 1)
+        if (inventory.spearCount.Value >= 1)
         {
             HaveSpear = true;
         }
@@ -132,6 +136,22 @@ public class InteractionScript : NetworkBehaviour
         }
 
         return new ResourcesScript.ResourceType?();
+    }
+    private void FindHomeCoreObject()
+    {
+        GameObject homeCoreObject = GameObject.FindWithTag("HomeCore"); // Make sure your HomeCore has the tag "HomeCore"
+        if (homeCoreObject != null)
+        {
+            homeCoreScript = homeCoreObject.GetComponent<HomeCoreScript>();
+            if (homeCoreScript == null)
+            {
+                Debug.LogError("HomeCoreScript component not found on HomeCore object!");
+            }
+        }
+        else
+        {
+            Debug.LogError("HomeCore object not found in the scene!");
+        }
     }
     [ServerRpc]
     void TryPickUpResourceServerRpc(ulong resourceNetworkObjectId, ResourcesScript.ResourceType resourceType, ServerRpcParams rpcParams = default)

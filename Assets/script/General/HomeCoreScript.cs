@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class HomeCoreScript : NetworkBehaviour
 {
     public GameObject HomeCoreUI;
-    public PlayerControllerScript playerMovement;
-    public MoveCamera cameraControl;
+    private PlayerControllerScript playerMovement;
+    private MoveCamera cameraControl;
 
     [Header("Values")]
     [Range(0, 500)] public float startingHealth = 500f;
@@ -25,26 +25,19 @@ public class HomeCoreScript : NetworkBehaviour
 
     private float lerptimer;
     public float chipSpeed = 2f;
-    public NetworkVariable<float> Health = new NetworkVariable<float>(default,
+    public NetworkVariable<float> Health = new NetworkVariable<float>(500f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<float> Energy = new NetworkVariable<float>(default,
+    public NetworkVariable<float> Energy = new NetworkVariable<float>(500f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        //if (!IsOwner)
-        //{
-        //    Destroy(HealthBar);
-        //    Destroy(BackHealthBar);
-        //    Destroy(EnergyBar);
-        //    Destroy(BackEnergyBar);
-        //    return;
-        //};
         if (IsServer)
         {
             Health.Value = startingHealth;
             Energy.Value = startingEnergy;
-        }
-
+            FindPlayer();
+            FindCamera();
+        }                
         Health.OnValueChanged += (oldValue, newValue) => UpdateHungerUI();
         Energy.OnValueChanged += (oldValue, newValue) => UpdateThirstUI();
     }
@@ -119,16 +112,14 @@ public class HomeCoreScript : NetworkBehaviour
     {
         if (fillB > hFraction)
         {
-            frontBar.fillAmount = hFraction;
-            backBar.color = Color.white;
+            frontBar.fillAmount = hFraction;        
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             backBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
         }
         if (fillF < hFraction)
         {
-            frontBar.fillAmount = hFraction;
-            backBar.color = Color.white;
+            frontBar.fillAmount = hFraction;            
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
@@ -151,5 +142,39 @@ public class HomeCoreScript : NetworkBehaviour
         cameraControl.canRotate = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+    private void FindPlayer()
+    {
+        GameObject Player = GameObject.FindWithTag("Player");
+        if (Player != null)
+        {
+            Debug.Log("Detected Player for HomeCore");
+            playerMovement = Player.GetComponent<PlayerControllerScript>();
+            if (playerMovement == null)
+            {
+                Debug.LogError("PlayerControllerScript Component not found on HomeCore object!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player object not found in the scene!");
+        }
+    }
+    private void FindCamera()
+    {
+        GameObject Camera = GameObject.FindWithTag("MainCamera");
+        if (Camera != null)
+        {
+            Debug.Log("Detected Camera for HomeCore");
+            cameraControl = Camera.GetComponent<MoveCamera>();
+            if (cameraControl == null)
+            {
+                Debug.LogError("CameraScript component not found on HomeCore object!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Camera Object not found in the scene!");
+        }
     }
 }

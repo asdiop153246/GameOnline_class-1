@@ -20,6 +20,18 @@ public class MonsterHitbox : NetworkBehaviour
                 playersHitThisAttack.Add(other.gameObject);
             }
         }
+        else if (other.gameObject.CompareTag("HomeCore"))
+        {
+            var CoreHealth = other.gameObject.GetComponent<HomeCoreScript>();
+            if(CoreHealth != null)
+            {
+                Debug.Log("Successfully hit Core");
+                float CoreDamage = parentMonster.GetComponent<EnemyAi>().attackDamage;
+                CoreHealth.DecreaseHealth(CoreDamage);
+            }
+
+        }
+
     }
 
     public void ResetHitList()

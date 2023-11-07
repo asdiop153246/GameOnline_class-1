@@ -144,7 +144,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private void SpawnMonsters()
     {
         // Check if the spawn chance passes
-        if (Random.value <= 0.5f) 
+        if (Random.value <= 0.99f) 
         {
             if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
             {
