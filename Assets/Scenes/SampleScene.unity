@@ -21057,10 +21057,42 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2900233170
       objectReference: {fileID: 0}
-    - target: {fileID: 1809258754, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.68
+    - target: {fileID: 1481675136, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1868127478
       objectReference: {fileID: 0}
+    - target: {fileID: 1809258754, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1809258754, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1809258754, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: EnergyBar
+      value: 
+      objectReference: {fileID: 492434966}
+    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: HealthBar
+      value: 
+      objectReference: {fileID: 1078553550}
+    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: HomeCoreUI
+      value: 
+      objectReference: {fileID: 761060832}
+    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: BackEnergyBar
+      value: 
+      objectReference: {fileID: 1308517817}
+    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: BackHealthBar
+      value: 
+      objectReference: {fileID: 1775971799}
     - target: {fileID: 2025980522, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1716826248
@@ -66111,82 +66143,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1809258753, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
   m_PrefabInstance: {fileID: 503803595}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1481675136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481675134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4055956811
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!114 &1481675137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481675134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 0}
---- !u!95 &1481675138
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481675134}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 75766ecd8fb5e6247a4e30f095993c44, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1481675139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481675134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  InLocalSpace: 0
-  Interpolate: 1
 --- !u!1 &1482839259
 GameObject:
   m_ObjectHideFlags: 0
@@ -83066,32 +83022,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1752377035, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
   m_PrefabInstance: {fileID: 503803595}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1893523975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1893523970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16b2c2885e1721942b3f66e3b97b6b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HomeCoreUI: {fileID: 761060832}
-  startingHealth: 500
-  startingEnergy: 500
-  HealthDecreaseRate: 0
-  EnergyDecreaseRate: 0.8
-  HealthBar: {fileID: 1078553550}
-  BackHealthBar: {fileID: 1775971799}
-  EnergyBar: {fileID: 492434966}
-  BackEnergyBar: {fileID: 1308517817}
-  chipSpeed: 2
-  Health:
-    m_InternalValue: 0
-  Energy:
-    m_InternalValue: 0
 --- !u!1 &1894808473
 GameObject:
   m_ObjectHideFlags: 0
