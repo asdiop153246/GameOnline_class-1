@@ -13,6 +13,9 @@ public class InteractionScript : NetworkBehaviour
     private GameObject currentResource;
     public bool HaveSpear = false;
     public bool isOpeningUI = false;
+    public bool isLookingAtSomethingInteractable = false;
+    public GameObject TextUI;
+    public TextMeshProUGUI resourcesCollectedText;
     public TextMeshProUGUI notificationText;
     public GameObject notificationPanel;
     public MoveCamera cameraControl;
@@ -22,13 +25,16 @@ public class InteractionScript : NetworkBehaviour
     public InventoryScript inventory;
     [Header("Audio")]
     [SerializeField] private AudioSource pickupSound;
-
+    
     private void Start()
     {
         FindHomeCoreObject();
     }
+    
     private void Update()
     {
+        TextUI.gameObject.SetActive(true);
+        bool isLookingAtSomethingInteractable = false;
         if (Input.GetKeyDown(interactKey) && !HaveSpear && IsLookingAtSpear())
         {
             Debug.Log("Client: Attempting to pick up spear");
@@ -53,6 +59,17 @@ public class InteractionScript : NetworkBehaviour
         if (inventory.spearCount.Value >= 1)
         {
             HaveSpear = true;
+        }
+        if (IsLookingAtHomeCore() || IsLookingAtResource().HasValue)
+        {
+            ShowInteractionNotification("Press E to interact");
+            isLookingAtSomethingInteractable = true;
+        }
+
+        
+        if (!isLookingAtSomethingInteractable)
+        {
+            HideInteractionNotification();
         }
 
         ResourcesScript.ResourceType? resourceType = IsLookingAtResource();
@@ -106,36 +123,29 @@ public class InteractionScript : NetworkBehaviour
     private bool IsLookingAtHomeCore()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
         {
-            if (hit.collider.CompareTag("HomeCore") && hit.distance < 3f)
+            if (hit.collider.CompareTag("HomeCore"))
             {
                 HomeCore = hit.collider.gameObject;
-                Debug.Log("Looking at HomeCore");
                 return true;
             }
         }
-
         return false;
     }
     private ResourcesScript.ResourceType? IsLookingAtResource()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit) && hit.distance < 3f)
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
         {
             ResourcesScript resourceScript = hit.collider.gameObject.GetComponent<ResourcesScript>();
             if (resourceScript)
             {
                 currentResource = hit.collider.gameObject;
-                Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
-                Debug.Log("Detected resource: " + resourceScript.resourceType);
                 return resourceScript.resourceType;
             }
         }
-
-        return new ResourcesScript.ResourceType?();
+        return null;
     }
     private void FindHomeCoreObject()
     {
@@ -192,9 +202,41 @@ public class InteractionScript : NetworkBehaviour
                         Debug.Log("Increasing inventory for: " + resourceType);
                         break;
 
-                }             
+                }
+                string message = $"Picked up {resourceScript.amountPerPickup} {resourceType}";
+                float displayTime = 2.0f;
+                ShowTemporaryMessageClientRpc(message, displayTime, rpcParams.Receive.SenderClientId);
             }
         }
     }
-
+    private void ShowInteractionNotification(string message)
+    {
+        if (notificationPanel.activeSelf == false)
+        {
+            notificationPanel.SetActive(true);
+            notificationText.text = message;
+        }
+    }
+    private void HideInteractionNotification()
+    {
+        if (notificationPanel.activeSelf == true)
+        {
+            notificationPanel.SetActive(false);
+        }
+    }
+    [ClientRpc]
+    void ShowTemporaryMessageClientRpc(string message, float displayTime, ulong clientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            StartCoroutine(ShowTemporaryMessage(message, displayTime));
+        }
+    }
+    private IEnumerator ShowTemporaryMessage(string message, float displayTime)
+    {
+        resourcesCollectedText.text = message;
+        resourcesCollectedText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(displayTime);
+        resourcesCollectedText.gameObject.SetActive(false);
+    }
 }

@@ -54,6 +54,7 @@ public class PlayerControllerScript : NetworkBehaviour
     public bool isSwimming;
     public bool canJump = true;
     public GameObject PlayerUI;
+    public GameObject TextUI;
     private Vector3 movement;
     private Animator animator;
     private Rigidbody rb;
@@ -72,6 +73,7 @@ public class PlayerControllerScript : NetworkBehaviour
         if (!IsOwner)
         {
             Destroy(PlayerUI);
+            Destroy(TextUI);
             Destroy(StaminaBar);
             Destroy(BackStaminaBar);
             return;
