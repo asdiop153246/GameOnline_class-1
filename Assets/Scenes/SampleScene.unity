@@ -21101,9 +21101,17 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3027584386
       objectReference: {fileID: 0}
+    - target: {fileID: 3569963376769631603, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00688
+      objectReference: {fileID: 0}
     - target: {fileID: 4018075111936666700, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3950415189
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042254773382273378, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.02
       objectReference: {fileID: 0}
     - target: {fileID: 4580794354036246060, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_Name
@@ -21153,6 +21161,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5366882814439518543, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a50f525e48ba4df4e9e4533d526a3966, type: 2}
+    - target: {fileID: 6226522862135620997, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0068
+      objectReference: {fileID: 0}
     - target: {fileID: 6226522862135620997, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -21173,6 +21189,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7559419684660844494, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a50f525e48ba4df4e9e4533d526a3966, type: 2}
     - target: {fileID: 7579777306237616592, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3007056955
