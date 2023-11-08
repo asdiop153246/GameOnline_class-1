@@ -78,7 +78,7 @@ public class EnemyAi : NetworkBehaviour
                 float distanceToHomeCore = Vector3.Distance(transform.position, homeCore.transform.position);
                 if (distanceToHomeCore > attackRange)
                 {
-                    Debug.Log("Monster attempted to move to HomeCore");
+                    //Debug.Log("Monster attempted to move to HomeCore");
                     MoveToTarget(homeCore.transform.position);
                 }
                 else

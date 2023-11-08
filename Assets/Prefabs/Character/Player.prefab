@@ -5154,7 +5154,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5916412658624309670}
         m_TargetAssemblyTypeName: InventoryScript, Assembly-CSharp
-        m_MethodName: ConsumeItem
+        m_MethodName: RequestConsumeItem
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7464,7 +7464,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1422254318965968283}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5916412658624309670}
+        m_TargetAssemblyTypeName: InventoryScript, Assembly-CSharp
+        m_MethodName: RequestConsumeItem
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Water
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7999485266670438853
 GameObject:
   m_ObjectHideFlags: 0
@@ -7847,7 +7859,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1608899771844499243}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5916412658624309670}
+        m_TargetAssemblyTypeName: InventoryScript, Assembly-CSharp
+        m_MethodName: RequestConsumeItem
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Cola
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8237555807757996375
 GameObject:
   m_ObjectHideFlags: 0
@@ -8380,6 +8404,7 @@ MonoBehaviour:
   - {fileID: 4810625852106564043}
   - {fileID: 2086546747}
   - {fileID: 6458902970826574469}
+  - {fileID: 8416183665076312939}
 --- !u!114 &8416183665076312939
 MonoBehaviour:
   m_ObjectHideFlags: 0

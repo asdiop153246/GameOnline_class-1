@@ -25,9 +25,11 @@ public class InteractionScript : NetworkBehaviour
     public InventoryScript inventory;
     [Header("Audio")]
     [SerializeField] private AudioSource pickupSound;
+
     
     private void Start()
     {
+        if (!IsOwner) return;
         FindHomeCoreObject();
     }
     

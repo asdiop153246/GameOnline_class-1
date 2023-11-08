@@ -31,12 +31,13 @@ public class InventoryScript : NetworkBehaviour
     public GameObject inventoryUI;
     public GameObject CraftingUI;
     public GameObject MenuUI;
-    public List<UnityEngine.UI.Image> itemImages; 
+    public List<UnityEngine.UI.Image> itemImages;
     public List<TMPro.TextMeshProUGUI> itemAmountTexts;
     public GameObject MenuSelectorUI;
     private bool IsOpeningUI = false;
 
     private HungerThirstScript hungerThirstScript;
+    private PlayerControllerScript StaminaScript;
     public NetworkVariable<int> woodCount = new NetworkVariable<int>(default,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<int> foodCount = new NetworkVariable<int>(default,
@@ -53,7 +54,7 @@ public class InventoryScript : NetworkBehaviour
 
     private void Start()
     {
-        if (IsOwner)  
+        if (IsOwner)
         {
             woodCount.OnValueChanged += OnWoodCountChanged;
             spearCount.OnValueChanged += OnSpearCountChanged;
@@ -62,12 +63,13 @@ public class InventoryScript : NetworkBehaviour
             colaCount.OnValueChanged += OnColaCountChanged;
             ropeCount.OnValueChanged += OnRopeCountChanged;
             hungerThirstScript = gameObject.GetComponent<HungerThirstScript>();
+            StaminaScript = gameObject.GetComponent<PlayerControllerScript>();
         }
     }
     public override void OnDestroy()
     {
-        base.OnDestroy(); 
-       
+        base.OnDestroy();
+
         woodCount.OnValueChanged -= OnWoodCountChanged;
         spearCount.OnValueChanged -= OnSpearCountChanged;
         foodCount.OnValueChanged -= OnFoodCountChanged;
@@ -86,7 +88,7 @@ public class InventoryScript : NetworkBehaviour
             ToggleInventory();
             UpdateInventoryUI();
         }
-        else if(IsOpeningUI == true && Input.GetKeyDown(KeyCode.I))
+        else if (IsOpeningUI == true && Input.GetKeyDown(KeyCode.I))
         {
             inventoryUI.SetActive(false);
             CraftingUI.SetActive(false);
@@ -106,18 +108,18 @@ public class InventoryScript : NetworkBehaviour
             inventoryUI.SetActive(!inventoryUI.activeSelf);
             MenuSelectorUI.SetActive(!MenuSelectorUI.activeSelf);
             if (inventoryUI.activeSelf)
-            {                
+            {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 cameraControl.canRotate = false;
                 IsOpeningUI = true;
             }
             else
-            {               
+            {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 cameraControl.canRotate = true;
-                
+
             }
         }
     }
@@ -175,27 +177,27 @@ public class InventoryScript : NetworkBehaviour
 
             if (items[i].amount > 0)
             {
-                
+
                 itemAmountTexts[i].text = items[i].amount.ToString();
                 itemAmountTexts[i].gameObject.SetActive(true);
 
                 var tempColor = itemImages[i].color;
-                
+
                 tempColor = new Color32(255, 255, 255, 255);
                 itemImages[i].color = tempColor;
             }
             else
             {
-                
+
                 itemAmountTexts[i].gameObject.SetActive(false);
 
                 var tempColor = itemImages[i].color;
-                
+
                 tempColor = new Color32(255, 255, 255, 20);
                 itemImages[i].color = tempColor;
             }
 
-            
+
             itemImages[i].gameObject.SetActive(items[i].icon != null);
         }
     }
@@ -220,7 +222,7 @@ public class InventoryScript : NetworkBehaviour
         if (items[3].name == "Food")
         {
             items[3].amount += newCount;
-            
+
         }
         UpdateInventoryUI();
     }
@@ -298,15 +300,15 @@ public class InventoryScript : NetworkBehaviour
     [ServerRpc]
     public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");        
+        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");
         var item = items.FirstOrDefault(i => i.name == itemName);
-        if (item != null && item.amount >= amount) 
+        if (item != null && item.amount >= amount)
         {
             item.amount -= amount;
             Debug.Log($"[Server] Deducted {amount} of {itemName}. New amount: {item.amount}");
 
             UpdateItemCount(itemName, item.amount);
-        }   
+        }
         else if (item != null)
         {
             Debug.LogError($"[Server] Not enough {itemName} to deduct. Current amount: {item.amount}, attempted to deduct: {amount}");
@@ -343,23 +345,50 @@ public class InventoryScript : NetworkBehaviour
                 break;
         }
     }
-    public void ConsumeItem(string itemName)
+    public void RequestConsumeItem(string itemName)
     {
+        Debug.Log($"RequestConsumeItem called by {NetworkManager.Singleton.LocalClientId} for item {itemName}");
+        ConsumeItemServerRpc(itemName);
+    }
+
+    [ServerRpc]
+    private void ConsumeItemServerRpc(string itemName, ServerRpcParams rpcParams = default)
+    {
+        Debug.Log($"ConsumeItemServerRpc called by {rpcParams.Receive.SenderClientId} for item {itemName}");
         Item itemToConsume = items.FirstOrDefault(item => item.name == itemName && item.amount > 0);
         if (itemToConsume != null)
         {
-            
             if (itemName == "Food")
             {
-                hungerThirstScript.IncreaseHunger(itemToConsume.amount); 
-                DeductItemServerServerRpc(itemName, 1); 
+                hungerThirstScript.IncreaseHunger(20);
+                itemToConsume.amount -= 1; // Deduct the item amount.
             }
             else if (itemName == "Water")
             {
-                hungerThirstScript.IncreaseThirst(itemToConsume.amount); 
-                DeductItemServerServerRpc(itemName, 1); 
+                hungerThirstScript.IncreaseThirst(20);
+                itemToConsume.amount -= 1; // Deduct the item amount.
             }
-            
+            else if (itemName == "Cola")
+            {
+                hungerThirstScript.IncreaseThirst(30);
+                StaminaScript.IncreaseStamina(25);
+                itemToConsume.amount -= 1; // Deduct the item amount.
+            }
+
+            UpdateItemCount(itemName, itemToConsume.amount);
+
+            ConsumeItemClientRpc(itemName, rpcParams.Receive.SenderClientId);
         }
     }
+
+    [ClientRpc]
+    private void ConsumeItemClientRpc(string itemName, ulong clientId)
+    {
+        
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            UpdateInventoryUI();
+        }
+    }
+
 }

@@ -19,12 +19,12 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (IsOwner)
         {
-            Frame.SetActive(true);
+            //Frame.SetActive(true);
             Health.Value = maxHealth.Value;
         }
         else
         {
-            Destroy(Ui);
+            //Destroy(Ui);
         }
     }
 

@@ -74,8 +74,8 @@ public class PlayerControllerScript : NetworkBehaviour
         {
             Destroy(PlayerUI);
             Destroy(TextUI);
-            Destroy(StaminaBar);
-            Destroy(BackStaminaBar);
+            //Destroy(StaminaBar);
+            //Destroy(BackStaminaBar);
             return;
         };
 
@@ -251,9 +251,11 @@ public class PlayerControllerScript : NetworkBehaviour
 
     private void UpdateStamina()
     {
-        if (Input.GetKey(sprintKey) && stamina > 0)
+        if (Input.GetKey(sprintKey) && stamina > 5)
         {
+            if(movement.x != 0 || movement.y != 0 || movement.z != 0) { 
             stamina -= staminaConsumptionRate * Time.deltaTime;
+                }
         }
         else if (stamina < maxStamina)
         {
@@ -292,6 +294,13 @@ public class PlayerControllerScript : NetworkBehaviour
             StaminaBar.fillAmount = hFraction;
             BackStaminaBar.fillAmount = Mathf.Lerp(StaminaBar.fillAmount, hFraction, percentComplete);
             BackStaminaBar.color = StaminaBar.fillAmount > hFraction ? Color.red : Color.blue;
+        }
+    }
+    public void IncreaseStamina(float amount)
+    {
+        if (IsServer)
+        {
+            stamina = Mathf.Clamp(stamina + amount, 0, maxStamina);
         }
     }
     public void UseStamina(float amount)
