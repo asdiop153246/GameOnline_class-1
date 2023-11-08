@@ -36,6 +36,7 @@ public class InventoryScript : NetworkBehaviour
     public GameObject MenuSelectorUI;
     private bool IsOpeningUI = false;
 
+    private HungerThirstScript hungerThirstScript;
     public NetworkVariable<int> woodCount = new NetworkVariable<int>(default,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<int> foodCount = new NetworkVariable<int>(default,
@@ -60,6 +61,7 @@ public class InventoryScript : NetworkBehaviour
             waterCount.OnValueChanged += OnWaterCountChanged;
             colaCount.OnValueChanged += OnColaCountChanged;
             ropeCount.OnValueChanged += OnRopeCountChanged;
+            hungerThirstScript = gameObject.GetComponent<HungerThirstScript>();
         }
     }
     public override void OnDestroy()
@@ -339,6 +341,25 @@ public class InventoryScript : NetworkBehaviour
             default:
                 Debug.LogWarning($"Item {itemName} does not have a corresponding NetworkVariable.");
                 break;
+        }
+    }
+    public void ConsumeItem(string itemName)
+    {
+        Item itemToConsume = items.FirstOrDefault(item => item.name == itemName && item.amount > 0);
+        if (itemToConsume != null)
+        {
+            
+            if (itemName == "Food")
+            {
+                hungerThirstScript.IncreaseHunger(itemToConsume.amount); 
+                DeductItemServerServerRpc(itemName, 1); 
+            }
+            else if (itemName == "Water")
+            {
+                hungerThirstScript.IncreaseThirst(itemToConsume.amount); 
+                DeductItemServerServerRpc(itemName, 1); 
+            }
+            
         }
     }
 }

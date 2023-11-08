@@ -83,14 +83,18 @@ public class HungerThirstScript : NetworkBehaviour
 
     public void IncreaseHunger(float amount)
     {
-        hunger.Value += amount;
-        hunger.Value = Mathf.Clamp(hunger.Value, 0, 100);
+        if (IsServer)
+        {
+            hunger.Value = Mathf.Clamp(hunger.Value + amount, 0, startingHunger);
+        }
     }
 
     public void IncreaseThirst(float amount)
     {
-        thirst.Value += amount;
-        thirst.Value = Mathf.Clamp(thirst.Value, 0, 100);
+        if (IsServer)
+        {
+            thirst.Value = Mathf.Clamp(thirst.Value + amount, 0, startingThirst);
+        }
     }
     public void UpdateHungerUI()
     {
