@@ -10,6 +10,7 @@ public class IslandSpawnScript : NetworkBehaviour
     [SerializeField] private Vector3 spawnPosition1; // Set the specific spawn position in the inspector
     [SerializeField] private Vector3 spawnPosition2;
     [SerializeField] private Vector3 spawnPosition3;
+    [SerializeField] private Vector3 spawnPosition4;
 
     [Header("Item Spawning")]
     [SerializeField] private GameObject[] itemPrefabs;  
@@ -85,7 +86,22 @@ public class IslandSpawnScript : NetworkBehaviour
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
         }
-
+        else if (randomIndex == 3)
+        {
+            island = Instantiate(islandPrefabs[randomIndex], spawnPosition4, Quaternion.identity);
+            island.GetComponent<NetworkObject>().Spawn();
+            SpawnRandomItemsAround(island);
+            var navMeshSurface = island.GetComponent<NavMeshSurface>();
+            if (navMeshSurface != null)
+            {
+                navMeshSurface.BuildNavMesh();
+                Debug.Log("NavMesh built at runtime.");
+            }
+            else
+            {
+                Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
+            }
+        }
 
 
     }
