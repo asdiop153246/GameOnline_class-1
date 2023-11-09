@@ -57006,6 +57006,8 @@ MonoBehaviour:
   globalVolume2: {fileID: 715766042}
   dayHDRI: {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
   nightHDRI: {fileID: 8900000, guid: 112f582dec9d6a24daa353efb33fd765, type: 3}
+  islandSpawnScript: {fileID: 566258912}
+  islandSpawnedThisCycle: 0
   monsterPrefab: {fileID: 1924439643053029929, guid: f2fd8739e06fdb9479ce0005523d41eb, type: 3}
   monsterSpawnPoints:
   - {fileID: 863375370}

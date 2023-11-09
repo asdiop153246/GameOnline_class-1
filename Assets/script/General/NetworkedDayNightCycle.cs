@@ -24,6 +24,9 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private HDRISky hdriSky1;
     private HDRISky hdriSky2;
 
+    [SerializeField] private IslandSpawnScript islandSpawnScript;
+    public bool islandSpawnedThisCycle = false;
+
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
     public bool monstersSpawned = false;
@@ -51,8 +54,21 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private void Update()
     {
         if (IsServer)
-        {          
+        {
             UpdateSunPosition();
+
+            
+            if (currentDayTime >= fullDayLength * 0.76f && !islandSpawnedThisCycle)
+            {
+                
+                islandSpawnScript.SpawnIsland();
+                islandSpawnedThisCycle = true;
+            }
+            
+            if (currentDayTime < fullDayLength * 0.76f)
+            {
+                islandSpawnedThisCycle = false;
+            }
         }
     }
 
@@ -144,7 +160,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     private void SpawnMonsters()
     {
         // Check if the spawn chance passes
-        if (Random.value <= 0.99f) 
+        if (Random.value <= 0.50f) 
         {
             if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
             {
