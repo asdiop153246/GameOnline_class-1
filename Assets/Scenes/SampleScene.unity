@@ -57044,7 +57044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a442045b935d04a42a2c628654ae4086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullDayLength: 100
+  fullDayLength: 300
   noonSunDirection: {x: 50, y: 78.37, z: 0}
   dayColor: {r: 1, g: 1, b: 1, a: 0}
   nightColor: {r: 0, g: 0, b: 0, a: 0}

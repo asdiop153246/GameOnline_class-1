@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Rendering;
@@ -29,7 +31,9 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
+    private List<GameObject> spawnedMonsters = new List<GameObject>();
     public bool monstersSpawned = false;
+    private bool canSpawnNewMonsters = true;
 
 
     private float currentDayTime;
@@ -56,8 +60,8 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         if (IsServer)
         {
             UpdateSunPosition();
+            CheckAllMonstersDefeated();
 
-            
             if (currentDayTime >= fullDayLength * 0.76f && !islandSpawnedThisCycle)
             {
                 
@@ -68,6 +72,10 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             if (currentDayTime < fullDayLength * 0.76f)
             {
                 islandSpawnedThisCycle = false;
+            }
+            if (monstersSpawned && monsterSpawnPoints.All(monster => !monster.gameObject.activeSelf))
+            {            
+                monstersSpawned = false;
             }
         }
     }
@@ -158,36 +166,58 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     }
     private void SpawnMonsters()
     {
-        // Check if the spawn chance passes
-        if (Random.value <= 0.50f) 
+        if (canSpawnNewMonsters && Random.value <= 0.50f)
         {
+            canSpawnNewMonsters = false;
             if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
             {
                 foreach (var spawnPoint in monsterSpawnPoints)
-                {                                       
-                        var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
-                        monster.GetComponent<NetworkObject>().Spawn();
-                        monstersSpawned = true;
-                        Transform parentTransform = transform.parent;
-                        if (parentTransform != null)
-                        {
-                            monster.transform.SetParent(parentTransform);
-                            Debug.Log($"Monster spawned at {spawnPoint.name} under parent {parentTransform.name}");
-                        }                    
+                {
+                    var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
+                    monster.GetComponent<NetworkObject>().Spawn();
+                    monstersSpawned = true;
+
+                    // Add the monster to the list
+                    spawnedMonsters.Add(monster);
+
+                    Transform parentTransform = transform.parent;
+                    if (parentTransform != null)
+                    {
+                        monster.transform.SetParent(parentTransform);
+                        Debug.Log($"Monster spawned at {spawnPoint.name} under parent {parentTransform.name}");
+                    }
                 }
             }
             else
             {
-                Debug.LogError("Monster Spawn Points or Monster Prefab is not assigned.");
+                Debug.LogError("Monster is not spawning");
             }
         }
     }
+    private void CheckAllMonstersDefeated()
+    {
 
+        if (monstersSpawned && spawnedMonsters.All(monster => monster == null))
+        {
+            StartCoroutine(ResetMonsterSpawn());
+        }
+    }
     public bool IsNightTime()
     {   
         
         float timeRatio = currentDayTime / fullDayLength;        
         return timeRatio > 0.25f && timeRatio < 0.75f;
+    }
+    private IEnumerator ResetMonsterSpawn()
+    {
+        monstersSpawned = false;
+        spawnedMonsters.Clear();
+        Debug.Log("All monsters have been defeated. Waiting 30 seconds before new spawn...");
+
+        yield return new WaitForSeconds(30); 
+
+        canSpawnNewMonsters = true; 
+        Debug.Log("Monsters can now spawn again.");
     }
     public void SetTimeToMorning()
     {
