@@ -6,8 +6,8 @@ using Unity.Netcode;
 using UnityEngine.AI;
 public class IslandSpawnScript : NetworkBehaviour
 {
-    [SerializeField] private GameObject[] islandPrefabs; // Assign your island prefabs in the inspector
-    [SerializeField] private Vector3 spawnPosition1; // Set the specific spawn position in the inspector
+    [SerializeField] private GameObject[] islandPrefabs; 
+    [SerializeField] private Vector3 spawnPosition1; 
     [SerializeField] private Vector3 spawnPosition2;
     [SerializeField] private Vector3 spawnPosition3;
     [SerializeField] private Vector3 spawnPosition4;
@@ -36,7 +36,7 @@ public class IslandSpawnScript : NetworkBehaviour
             return;
         }
 
-        int randomIndex = 3;//Random.Range(0, islandPrefabs.Length);
+        int randomIndex = Random.Range(0, islandPrefabs.Length);
         Debug.Log("Currentlly island = "+ randomIndex);
         GameObject island = null;
         if (randomIndex == 0)

@@ -120,7 +120,7 @@ public class BedInteraction : NetworkBehaviour
     {
         Debug.Log("E key pressed by " + gameObject.name);
 
-        if (IsServer && dayNightCycle != null && dayNightCycle.IsNightTime() && dayNightCycle.monstersSpawned == false)
+        if (IsServer && dayNightCycle != null && dayNightCycle.IsNightTime())
         {
             CheckAllPlayersInBed();
         }

@@ -96,7 +96,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         sunLight.transform.forward = -sunDirection;
         UpdateLightColor(timeRatio); 
 
-        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)
@@ -144,7 +144,6 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             if (!monstersSpawned)
             {
                 SpawnMonsters();
-                monstersSpawned = true;
             }
         }
         else
@@ -168,7 +167,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
                 {                                       
                         var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
                         monster.GetComponent<NetworkObject>().Spawn();
-
+                        monstersSpawned = true;
                         Transform parentTransform = transform.parent;
                         if (parentTransform != null)
                         {

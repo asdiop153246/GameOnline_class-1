@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 58
+  controlID: 158
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 21
+  controlID: 30
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,8 +165,8 @@ MonoBehaviour:
     y: 0
     width: 1052
     height: 501
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -1017,21 +1017,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 36fbffff
+      m_ExpandedIDs: e6f0feff42f8ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: ItemSpawnPoint1
+        m_OriginalName: ItemSpawnPoint1
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 73368
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -1094,10 +1094,10 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 237}
-    m_SelectedIDs: d2150100
-    m_LastClickedID: 71122
-    m_ExpandedIDs: 000000002e14010030140100321401003414010036140100381401003a1401003c1401003e1401004014010042140100441401004614010048140100c015010000ca9a3b
+    scrollPos: {x: 0, y: 233}
+    m_SelectedIDs: 8c1c0100
+    m_LastClickedID: 72844
+    m_ExpandedIDs: 00000000f41a0100f61a0100f81a0100fa1a0100fc1a0100fe1a0100001b0100021b0100041b0100061b0100081b01000a1b01000c1b01000e1b01007e1c010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1125,7 +1125,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000002e14010030140100321401003414010036140100381401003a1401003c1401003e1401004014010042140100441401004614010048140100
+    m_ExpandedIDs: 00000000f41a0100f61a0100f81a0100fa1a0100fc1a0100fe1a0100001b0100021b0100041b0100061b0100081b01000a1b01000c1b01000e1b0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1156,15 +1156,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 8e000100d6210900f0b10400725f0500
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: IslandSpawnScript
-      m_OriginalName: IslandSpawnScript
+      m_Name: BedInteraction
+      m_OriginalName: BedInteraction
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 9292
+      m_UserData: 7014
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0

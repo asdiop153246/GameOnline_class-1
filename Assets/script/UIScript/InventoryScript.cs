@@ -278,7 +278,7 @@ public class InventoryScript : NetworkBehaviour
         ropeCount.Value += amount;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void AddItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
         Debug.Log($"[Server] Attempting to add {amount} of {itemName}.");
@@ -297,7 +297,7 @@ public class InventoryScript : NetworkBehaviour
     }
 
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
         Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");
@@ -351,7 +351,7 @@ public class InventoryScript : NetworkBehaviour
         ConsumeItemServerRpc(itemName);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void ConsumeItemServerRpc(string itemName, ServerRpcParams rpcParams = default)
     {
         Debug.Log($"ConsumeItemServerRpc called by {rpcParams.Receive.SenderClientId} for item {itemName}");
