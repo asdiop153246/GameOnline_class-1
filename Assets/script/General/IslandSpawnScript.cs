@@ -36,7 +36,7 @@ public class IslandSpawnScript : NetworkBehaviour
             return;
         }
 
-        int randomIndex = 3;//Random.Range(0, islandPrefabs.Length);
+        int randomIndex = 4;//Random.Range(0, islandPrefabs.Length);
         Debug.Log("Currentlly island = "+ randomIndex);
         GameObject island = null;
         if (randomIndex == 0)
@@ -104,7 +104,7 @@ public class IslandSpawnScript : NetworkBehaviour
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
         }
-        else if (randomIndex == 4)
+        else if (randomIndex == 4) //House2
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition5, Quaternion.identity);
             island.GetComponent<NetworkObject>().Spawn();
