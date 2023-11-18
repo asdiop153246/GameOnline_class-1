@@ -50256,7 +50256,7 @@ GameObject:
   - component: {fileID: 1126383866}
   - component: {fileID: 1126383865}
   m_Layer: 0
-  m_Name: Cam_Win
+  m_Name: Cam_Win_temp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72069,7 +72069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1552253987
 Transform:
   m_ObjectHideFlags: 0
@@ -101557,7 +101557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2210621359236758261
 Transform:
   m_ObjectHideFlags: 0
