@@ -11,7 +11,6 @@ public class ResourcesScript : NetworkBehaviour
         Food,
         Water,
         Cola,
-        
     }
 
     public ResourceType resourceType;
