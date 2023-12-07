@@ -47,21 +47,34 @@ public class ResourcesScript : NetworkBehaviour
 
             if (currentPickups.Value >= maxPickups)
             {
-                DespawnResource();
+                DespawnResourceServerRpc();
             }
 
             
             OnResourcePickedUp?.Invoke(resourceType, amountPerPickup);
         }
     }
-
-    private void DespawnResource()
+    [ServerRpc]
+    private void DespawnResourceServerRpc()
+    {
+        DespawnResourceClientRpc();
+        //NetworkObject networkObject = GetComponent<NetworkObject>();
+        //if (networkObject)
+        //{
+        //    networkObject.gameObject.SetActive(false);
+        //    //networkObject.Despawn();
+        //    //Destroy(gameObject);
+        //}
+    }
+    [ClientRpc]
+    private void DespawnResourceClientRpc()
     {
         NetworkObject networkObject = GetComponent<NetworkObject>();
         if (networkObject)
         {
-            networkObject.Despawn();
-            Destroy(gameObject);
+            networkObject.gameObject.SetActive(false);
+            //networkObject.Despawn();
+            //Destroy(gameObject);
         }
     }
 }

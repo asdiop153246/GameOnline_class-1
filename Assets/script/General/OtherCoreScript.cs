@@ -3,45 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
-public class HomeCoreScript : NetworkBehaviour
+public class OtherCoreScript : NetworkBehaviour
 {
-    public GameObject HomeCoreUI;
+    private GameObject CoreUI;
     private PlayerControllerScript playerMovement;
     private MoveCamera cameraControl;
 
     [Header("Values")]
-    [Range(0, 500)] public float startingHealth = 500f;
-    [Range(0, 500)] public float startingEnergy = 500f;
+    private float startingEnergy;
 
     [Header("Rate of Decrease")]
-    public float HealthDecreaseRate = 0f;
     public float EnergyDecreaseRate = 0.80f;
 
-    [Header("UI Components")]
-    public Image HealthBar;
-    public Image BackHealthBar;
-    public Image EnergyBar;
-    public Image BackEnergyBar;
+    private Image EnergyBar;
+    private Image BackEnergyBar;
 
     private float lerptimer;
     public float chipSpeed = 2f;
-    public NetworkVariable<float> Health = new NetworkVariable<float>(500f,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<float> Energy = new NetworkVariable<float>(500f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public override void OnNetworkSpawn()
     {
         if (IsServer)
         {
-            Health.Value = startingHealth;
-            Energy.Value = startingEnergy;
-            FindPlayer();
-            FindCamera();
-        }                
-        Health.OnValueChanged += (oldValue, newValue) => UpdateHealthUI();
+            startingEnergy = Random.Range(300, 500);
+            Energy.Value = startingEnergy;            
+        }
         Energy.OnValueChanged += (oldValue, newValue) => UpdateEnergyUI();
     }
-
     private void Update()
     {
         if (!IsOwner)
@@ -50,56 +39,29 @@ public class HomeCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            DecreaseHealth(Time.deltaTime * HealthDecreaseRate);
+            CoreUI = GameObject.FindWithTag("CoreUI");
+            FindImage();
+            FindPlayer();
+            FindCamera();
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
-        }
-        HealthBar.fillAmount = Health.Value / startingHealth;
+        }        
         EnergyBar.fillAmount = Energy.Value / startingEnergy;
-        
-        UpdateHealthUI();
+
+;
         UpdateEnergyUI();
-    }
-
-    public void DecreaseHealth(float amount)
-    {
-        Health.Value -= amount;
-        Health.Value = Mathf.Clamp(Health.Value, 0, 500);
-
-        if (Health.Value <= 0)
-        {
-            Debug.Log("Island is out of Health");
-        }
     }
 
     public void DecreaseEnergy(float amount)
     {
         Energy.Value -= amount;
         Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
-        
+
         if (Energy.Value <= 0)
         {
             Debug.Log("Island is out of Energy");
         }
     }
 
-    public void IncreaseHealth(float amount)
-    {
-        Health.Value += amount;
-        Health.Value = Mathf.Clamp(Health.Value, 0, 500);
-    }
-
-    public void IncreaseEnergy(float amount)
-    {
-        Energy.Value += amount;
-        Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
-    }
-    public void UpdateHealthUI()
-    {
-        float fillF = HealthBar.fillAmount;
-        float fillB = BackHealthBar.fillAmount;
-        float hFraction = Health.Value / startingHealth;
-        UpdateUIValues(hFraction, ref fillF, ref fillB, HealthBar, BackHealthBar);
-    }
 
     public void UpdateEnergyUI()
     {
@@ -112,32 +74,32 @@ public class HomeCoreScript : NetworkBehaviour
     {
         if (fillB > hFraction)
         {
-            frontBar.fillAmount = hFraction;        
+            frontBar.fillAmount = hFraction;
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             backBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
         }
         if (fillF < hFraction)
         {
-            frontBar.fillAmount = hFraction;            
+            frontBar.fillAmount = hFraction;
             lerptimer += Time.deltaTime;
             float percentComplete = lerptimer / chipSpeed;
             backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
         }
     }
 
-    public void OpenHomeCoreUI()
+    public void OpenCoreUI()
     {
-        HomeCoreUI.SetActive(true);
+        CoreUI.SetActive(true);
         playerMovement.canMove = false;
         cameraControl.canRotate = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    public void CloseHomeCoreUI()
+    public void CloseCoreUI()
     {
-        HomeCoreUI.SetActive(false);
+        CoreUI.SetActive(false);
         playerMovement.canMove = true;
         cameraControl.canRotate = true;
         Cursor.lockState = CursorLockMode.Locked;
@@ -148,11 +110,11 @@ public class HomeCoreScript : NetworkBehaviour
         GameObject Player = GameObject.FindWithTag("Player");
         if (Player != null)
         {
-            Debug.Log("Detected Player for HomeCore");
+            Debug.Log("Detected Player for OtherCore");
             playerMovement = Player.GetComponent<PlayerControllerScript>();
             if (playerMovement == null)
             {
-                Debug.LogError("PlayerControllerScript Component not found on HomeCore object!");
+                Debug.LogError("PlayerControllerScript Component not found on OtherCore object!");
             }
         }
         else
@@ -165,16 +127,30 @@ public class HomeCoreScript : NetworkBehaviour
         GameObject Camera = GameObject.FindWithTag("MainCamera");
         if (Camera != null)
         {
-            Debug.Log("Detected Camera for HomeCore");
+            Debug.Log("Detected Camera for OtherCore");
             cameraControl = Camera.GetComponent<MoveCamera>();
             if (cameraControl == null)
             {
-                Debug.LogError("CameraScript component not found on HomeCore object!");
+                Debug.LogError("CameraScript component not found on OtherCore object!");
             }
         }
         else
         {
             Debug.LogError("Camera Object not found in the scene!");
+        }
+    }
+    private void FindImage()
+    {
+        GameObject EnergyBarImage = GameObject.FindWithTag("CrystalF");
+        GameObject BackEnergyBarImage = GameObject.FindWithTag("CrystalB");
+        if(EnergyBarImage && BackEnergyBarImage != null)
+        {
+            EnergyBar = EnergyBarImage.GetComponent<Image>();
+            BackEnergyBar = BackEnergyBarImage.GetComponent<Image>();
+        }
+        else
+        {
+            Debug.LogError("Can't find EnergyImage");
         }
     }
 }

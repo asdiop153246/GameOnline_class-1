@@ -279,16 +279,13 @@ public class InventoryScript : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AddItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
+    public void AddItemServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"[Server] Attempting to add {amount} of {itemName}.");
         var item = items.FirstOrDefault(i => i.name == itemName);
         if (item != null)
         {
             item.amount += amount;
-            Debug.Log($"[Server] Added {amount} of {itemName}. New amount: {item.amount}");
-            // Update the corresponding NetworkVariable
-            UpdateItemCount(itemName, item.amount);
+            UpdateInventoryClientRpc(); 
         }
         else
         {
@@ -298,25 +295,24 @@ public class InventoryScript : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void DeductItemServerServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
+    public void DeductItemServerRpc(string itemName, int amount, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"[Server] Attempting to deduct {amount} of {itemName}.");
         var item = items.FirstOrDefault(i => i.name == itemName);
         if (item != null && item.amount >= amount)
         {
             item.amount -= amount;
-            Debug.Log($"[Server] Deducted {amount} of {itemName}. New amount: {item.amount}");
-
-            UpdateItemCount(itemName, item.amount);
-        }
-        else if (item != null)
-        {
-            Debug.LogError($"[Server] Not enough {itemName} to deduct. Current amount: {item.amount}, attempted to deduct: {amount}");
+            UpdateItemCount(itemName, amount);
+            UpdateInventoryClientRpc();
         }
         else
         {
-            Debug.LogError($"[Server] Item {itemName} not found in inventory.");
+            Debug.LogError($"[Server] Not enough {itemName} to deduct or item not found.");
         }
+    }
+    [ClientRpc]
+    private void UpdateInventoryClientRpc()
+    {
+        UpdateInventoryUI();
     }
     private void UpdateItemCount(string itemName, int newAmount)
     {
@@ -354,41 +350,34 @@ public class InventoryScript : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void ConsumeItemServerRpc(string itemName, ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"ConsumeItemServerRpc called by {rpcParams.Receive.SenderClientId} for item {itemName}");
-        Item itemToConsume = items.FirstOrDefault(item => item.name == itemName && item.amount > 0);
-        if (itemToConsume != null)
+        var item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null && item.amount > 0)
         {
-            if (itemName == "Food")
-            {
-                hungerThirstScript.IncreaseHunger(20);
-                itemToConsume.amount -= 1; // Deduct the item amount.
-            }
-            else if (itemName == "Water")
-            {
-                hungerThirstScript.IncreaseThirst(20);
-                itemToConsume.amount -= 1; // Deduct the item amount.
-            }
-            else if (itemName == "Cola")
-            {
-                hungerThirstScript.IncreaseThirst(30);
-                StaminaScript.IncreaseStamina(25);
-                itemToConsume.amount -= 1; // Deduct the item amount.
-            }
+            // Apply the effects of the item
+            ApplyItemEffects(itemName);
 
-            UpdateItemCount(itemName, itemToConsume.amount);
-
-            ConsumeItemClientRpc(itemName, rpcParams.Receive.SenderClientId);
+            // Deduct the item
+            DeductItemServerRpc(itemName, 1);
+        }
+        else
+        {
+            Debug.LogError($"[Server] Player does not have item {itemName} or insufficient quantity.");
         }
     }
-
-    [ClientRpc]
-    private void ConsumeItemClientRpc(string itemName, ulong clientId)
+    private void ApplyItemEffects(string itemName)
     {
-        
-        if (NetworkManager.Singleton.LocalClientId == clientId)
+        if (itemName == "Food")
         {
-            UpdateInventoryUI();
+            hungerThirstScript.IncreaseHungerServerRpc(20);
+        }
+        else if (itemName == "Water")
+        {
+            hungerThirstScript.IncreaseThirstServerRpc(20);
+        }
+        else if (itemName == "Cola")
+        {
+            hungerThirstScript.IncreaseThirstServerRpc(30);
+            StaminaScript.IncreaseStamina(25);
         }
     }
-
 }

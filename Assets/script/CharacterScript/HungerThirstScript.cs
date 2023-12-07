@@ -26,15 +26,14 @@ public class HungerThirstScript : NetworkBehaviour
     public NetworkVariable<float> thirst = new NetworkVariable<float>(default,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-    
+
     private void Start()
-    {      
+    {
         if (IsServer)
         {
             hunger.Value = startingHunger;
             thirst.Value = startingThirst;
         }
-        if (!IsOwner) return;
 
         hunger.OnValueChanged += (oldValue, newValue) => UpdateHungerUI();
         thirst.OnValueChanged += (oldValue, newValue) => UpdateThirstUI();
@@ -82,21 +81,16 @@ public class HungerThirstScript : NetworkBehaviour
             }
         }
     }
-
-    public void IncreaseHunger(float amount)
+    [ServerRpc]
+    public void IncreaseHungerServerRpc(float amount)
     {
-        if (IsServer)
-        {
-            hunger.Value = Mathf.Clamp(hunger.Value + amount, 0, startingHunger);
-        }
+        hunger.Value = Mathf.Clamp(hunger.Value + amount, 0, startingHunger);
     }
 
-    public void IncreaseThirst(float amount)
+    [ServerRpc]
+    public void IncreaseThirstServerRpc(float amount)
     {
-        if (IsServer)
-        {
-            thirst.Value = Mathf.Clamp(thirst.Value + amount, 0, startingThirst);
-        }
+        thirst.Value = Mathf.Clamp(thirst.Value + amount, 0, startingThirst);
     }
     public void UpdateHungerUI()
     {

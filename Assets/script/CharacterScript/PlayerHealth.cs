@@ -78,14 +78,14 @@ public class PlayerHealth : NetworkBehaviour
     }
     public void TakeDamage(float damage)
     {
-        //if (!IsServer) return;  
+        
         Health.Value -= damage;
         Health.Value = Mathf.Max(Health.Value, 0);
         Debug.Log("Current Health: " + Health.Value);
         if (Health.Value <= 0)
         {
             Debug.Log("Player should die now");
-            Die();
+            DieServerRpc();
         }
         Debug.Log(Health.Value);
     }
@@ -96,15 +96,15 @@ public class PlayerHealth : NetworkBehaviour
         Health.Value += health;
         Health.Value = Mathf.Min(Health.Value, maxHealth.Value);  
     }
-    private void Die()
+    [ServerRpc]
+    private void DieServerRpc()
     {
-        NotifyClientOfDeathClientRpc();
-        GetComponent<PlayerSpawnScript>().Respawn();
+        NotifyClientOfDeathClientRpc();        
     }
     [ClientRpc]
     private void NotifyClientOfDeathClientRpc()
     {
-        
+       GetComponent<PlayerSpawnScript>().Respawn();
     }
 }
 

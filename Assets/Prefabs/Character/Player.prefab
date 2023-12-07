@@ -8245,7 +8245,6 @@ MonoBehaviour:
   notificationText: {fileID: 2010706549567347679}
   notificationPanel: {fileID: 8518653682617993062}
   cameraControl: {fileID: 6966656224375759667}
-  HomeCoreUI: {fileID: 0}
   playerMovement: {fileID: 6605962441980350462}
   inventory: {fileID: 5916412658624309670}
   pickupSound: {fileID: 7282177384425537640}

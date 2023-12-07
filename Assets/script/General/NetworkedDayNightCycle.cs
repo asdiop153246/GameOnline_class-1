@@ -104,7 +104,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         sunLight.transform.forward = -sunDirection;
         UpdateLightColor(timeRatio); 
 
-        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)

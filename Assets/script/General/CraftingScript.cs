@@ -135,10 +135,10 @@ public class CraftingScript : NetworkBehaviour
         Debug.Log("Crafting time completed. Deducting items and adding result to inventory.");
         foreach (var item in recipe.requiredItems)
         {
-            inventoryScript.DeductItemServerServerRpc(item.name, item.amount);
+            inventoryScript.DeductItemServerRpc(item.name, item.amount);
         }
 
-        inventoryScript.AddItemServerServerRpc(recipe.result.name, recipe.result.amount);
+        inventoryScript.AddItemServerRpc(recipe.result.name, recipe.result.amount);
 
         UpdateCraftingStatusClientRpc(false, 0);
 

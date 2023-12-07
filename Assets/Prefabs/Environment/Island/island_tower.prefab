@@ -2302,6 +2302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: islandCore
       objectReference: {fileID: 0}
+    - target: {fileID: 8106562606133553406, guid: 37431e7e5ea801948af10a85756c2c76, type: 3}
+      propertyPath: m_TagString
+      value: OtherCore
+      objectReference: {fileID: 0}
     - target: {fileID: 8106562606133553407, guid: 37431e7e5ea801948af10a85756c2c76, type: 3}
       propertyPath: m_RootOrder
       value: 2

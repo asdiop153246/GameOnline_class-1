@@ -19,9 +19,9 @@ public class InteractionScript : NetworkBehaviour
     public TextMeshProUGUI notificationText;
     public GameObject notificationPanel;
     public MoveCamera cameraControl;
-    public GameObject HomeCoreUI;
     public PlayerControllerScript playerMovement;
     private HomeCoreScript homeCoreScript;
+    private OtherCoreScript CoreScript;
     public InventoryScript inventory;
     [Header("Audio")]
     [SerializeField] private AudioSource pickupSound;
@@ -35,6 +35,7 @@ public class InteractionScript : NetworkBehaviour
     
     private void Update()
     {
+        FindCoreObject();
         TextUI.gameObject.SetActive(true);
         bool isLookingAtSomethingInteractable = false;
         if (Input.GetKeyDown(interactKey) && !HaveSpear && IsLookingAtSpear())
@@ -56,19 +57,25 @@ public class InteractionScript : NetworkBehaviour
         {
             Debug.Log("Client: Closing HomeCore UI");
             isOpeningUI = false;
-            homeCoreScript.CloseHomeCoreUI(); 
+            homeCoreScript.CloseHomeCoreUI();
+            CoreScript.CloseCoreUI();
+        }
+        if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtCore())
+        {
+            Debug.Log("Client: Attempting to Open OtherCore UI");
+            isOpeningUI = true;
+            CoreScript.OpenCoreUI();
         }
         if (inventory.spearCount.Value >= 1)
         {
             HaveSpear = true;
         }
-        if (IsLookingAtHomeCore() || IsLookingAtResource().HasValue)
+        if (IsLookingAtHomeCore() || IsLookingAtCore() || IsLookingAtResource().HasValue)
         {
             ShowInteractionNotification("Press E to interact");
             isLookingAtSomethingInteractable = true;
         }
-
-        
+       
         if (!isLookingAtSomethingInteractable)
         {
             HideInteractionNotification();
@@ -130,6 +137,21 @@ public class InteractionScript : NetworkBehaviour
             if (hit.collider.CompareTag("HomeCore"))
             {
                 HomeCore = hit.collider.gameObject;
+                Debug.Log("Ray Hit HomeCore");
+                return true;
+            }
+        }
+        return false;
+    }
+    private bool IsLookingAtCore()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+        {
+            if (hit.collider.CompareTag("OtherCore"))
+            {
+                HomeCore = hit.collider.gameObject;
+                Debug.Log("Ray Hit Core");
                 return true;
             }
         }
@@ -163,6 +185,22 @@ public class InteractionScript : NetworkBehaviour
         else
         {
             Debug.LogError("HomeCore object not found in the scene!");
+        }
+    }
+    private void FindCoreObject()
+    {
+        GameObject CoreObject = GameObject.FindWithTag("OtherCore"); 
+        if (CoreObject != null)
+        {
+            CoreScript = CoreObject.GetComponent<OtherCoreScript>();
+            if (CoreScript == null)
+            {
+                Debug.LogError("CoreScript component not found on Core object!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Core object not found in the scene!");
         }
     }
     [ServerRpc]
