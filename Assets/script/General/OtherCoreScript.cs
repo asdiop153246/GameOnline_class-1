@@ -20,14 +20,20 @@ public class OtherCoreScript : NetworkBehaviour
 
     private float lerptimer;
     public float chipSpeed = 2f;
-    public NetworkVariable<float> Energy = new NetworkVariable<float>(500f,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> Energy = new NetworkVariable<float>();
     public override void OnNetworkSpawn()
     {
         if (IsServer)
         {
             startingEnergy = Random.Range(300, 500);
-            Energy.Value = startingEnergy;            
+            Energy.Value = startingEnergy;
+            CoreUI = CoreUIManager.Instance.CoreUI;
+            EnergyBar = CoreUIManager.Instance.EnergyBar;
+            BackEnergyBar = CoreUIManager.Instance.BackEnergyBar;
+            playerMovement = CoreUIManager.Instance.PlayerMovement;
+            cameraControl = CoreUIManager.Instance.CameraMovement;
+            //FindPlayer();
+            //FindCamera();
         }
         Energy.OnValueChanged += (oldValue, newValue) => UpdateEnergyUI();
     }
@@ -39,15 +45,12 @@ public class OtherCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            CoreUI = GameObject.FindWithTag("CoreUI");
-            FindImage();
-            FindPlayer();
-            FindCamera();
+
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
-        }        
+        }
         EnergyBar.fillAmount = Energy.Value / startingEnergy;
 
-;
+        ;
         UpdateEnergyUI();
     }
 
@@ -87,9 +90,19 @@ public class OtherCoreScript : NetworkBehaviour
             backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
         }
     }
-
+    public void TransferEnergy(float amount)
+    {
+        if (Energy.Value >= amount)
+        {
+            Energy.Value -= amount;
+            // Call HomeCoreScript to increase its energy
+            FindObjectOfType<HomeCoreScript>().IncreaseEnergy(amount);
+        }
+    }
     public void OpenCoreUI()
     {
+        Debug.Log("Opening CoreUI");
+        Debug.Log($"Current Energy is {Energy.Value}");
         CoreUI.SetActive(true);
         playerMovement.canMove = false;
         cameraControl.canRotate = false;
@@ -99,6 +112,7 @@ public class OtherCoreScript : NetworkBehaviour
 
     public void CloseCoreUI()
     {
+        Debug.Log("Closing CoreUI");
         CoreUI.SetActive(false);
         playerMovement.canMove = true;
         cameraControl.canRotate = true;
@@ -137,20 +151,6 @@ public class OtherCoreScript : NetworkBehaviour
         else
         {
             Debug.LogError("Camera Object not found in the scene!");
-        }
-    }
-    private void FindImage()
-    {
-        GameObject EnergyBarImage = GameObject.FindWithTag("CrystalF");
-        GameObject BackEnergyBarImage = GameObject.FindWithTag("CrystalB");
-        if(EnergyBarImage && BackEnergyBarImage != null)
-        {
-            EnergyBar = EnergyBarImage.GetComponent<Image>();
-            BackEnergyBar = BackEnergyBarImage.GetComponent<Image>();
-        }
-        else
-        {
-            Debug.LogError("Can't find EnergyImage");
         }
     }
 }

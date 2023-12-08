@@ -12,7 +12,8 @@ public class InteractionScript : NetworkBehaviour
     private GameObject currentFood;
     private GameObject currentResource;
     public bool HaveSpear = false;
-    public bool isOpeningUI = false;
+    public bool isOpeningHouseUI = false;
+    public bool isOpeningOtherUI = false;
     public bool isLookingAtSomethingInteractable = false;
     public GameObject TextUI;
     public TextMeshProUGUI resourcesCollectedText;
@@ -22,6 +23,7 @@ public class InteractionScript : NetworkBehaviour
     public PlayerControllerScript playerMovement;
     private HomeCoreScript homeCoreScript;
     private OtherCoreScript CoreScript;
+    private CoreUIManager CoreUIScript;
     public InventoryScript inventory;
     [Header("Audio")]
     [SerializeField] private AudioSource pickupSound;
@@ -47,24 +49,31 @@ public class InteractionScript : NetworkBehaviour
                 TryPickUpSpearServerRpc(spearNetworkObject.NetworkObjectId);
             }
         }
-        if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtHomeCore())
+        if (Input.GetKeyDown(interactKey) && !isOpeningHouseUI && IsLookingAtHomeCore())
         {
             Debug.Log("Client: Attempting to Open HomeCore UI");
-            isOpeningUI = true;
+            isOpeningHouseUI = true;
             homeCoreScript.OpenHomeCoreUI(); 
-        }
-        else if (Input.GetKeyDown(interactKey) && isOpeningUI)
-        {
-            Debug.Log("Client: Closing HomeCore UI");
-            isOpeningUI = false;
-            homeCoreScript.CloseHomeCoreUI();
-            CoreScript.CloseCoreUI();
-        }
-        if (Input.GetKeyDown(interactKey) && !isOpeningUI && IsLookingAtCore())
+        }      
+        else if (Input.GetKeyDown(interactKey) && !isOpeningOtherUI && IsLookingAtCore())
         {
             Debug.Log("Client: Attempting to Open OtherCore UI");
-            isOpeningUI = true;
-            CoreScript.OpenCoreUI();
+            isOpeningOtherUI = true;
+            CoreUIScript.OpenCoreUI();
+        }
+        if (Input.GetKeyDown(interactKey) && isOpeningHouseUI)
+        {
+            Debug.Log("Client: Closing HomeCore UI");
+            isOpeningHouseUI = false;
+            homeCoreScript.CloseHomeCoreUI();
+            
+        }
+        else if (Input.GetKeyDown(interactKey) && isOpeningOtherUI)
+        {
+            Debug.Log("Client: Closing HomeCore UI");
+            isOpeningOtherUI = false;
+            CoreUIScript.CloseCoreUI();
+
         }
         if (inventory.spearCount.Value >= 1)
         {
@@ -122,7 +131,7 @@ public class InteractionScript : NetworkBehaviour
             if (hit.collider.CompareTag("PSpear") && hit.distance < 3f)
             {
                 Pspear = hit.collider.gameObject;
-                Debug.Log("Looking at Spear");
+                //Debug.Log("Looking at Spear");
                 return true;
             }
         }
@@ -137,7 +146,7 @@ public class InteractionScript : NetworkBehaviour
             if (hit.collider.CompareTag("HomeCore"))
             {
                 HomeCore = hit.collider.gameObject;
-                Debug.Log("Ray Hit HomeCore");
+                //Debug.Log("Ray Hit HomeCore");
                 return true;
             }
         }
@@ -151,7 +160,7 @@ public class InteractionScript : NetworkBehaviour
             if (hit.collider.CompareTag("OtherCore"))
             {
                 HomeCore = hit.collider.gameObject;
-                Debug.Log("Ray Hit Core");
+                //Debug.Log("Ray Hit Core");
                 return true;
             }
         }

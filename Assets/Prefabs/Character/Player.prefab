@@ -4326,7 +4326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5569046434053230249
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7631,7 +7631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3957369408980833840
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8238,7 +8238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactKey: 101
   HaveSpear: 0
-  isOpeningUI: 0
+  isOpeningHouseUI: 0
+  isOpeningOtherUI: 0
   isLookingAtSomethingInteractable: 0
   TextUI: {fileID: 3155073234840296049}
   resourcesCollectedText: {fileID: 1958949701}

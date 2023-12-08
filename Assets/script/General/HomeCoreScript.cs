@@ -92,6 +92,11 @@ public class HomeCoreScript : NetworkBehaviour
     {
         Energy.Value += amount;
         Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
+        if(Energy.Value > 500)
+        {
+            Energy.Value = 500;
+        }
+        Debug.Log($"Current Energy after Increaes = {Energy.Value}");
     }
     public void UpdateHealthUI()
     {
