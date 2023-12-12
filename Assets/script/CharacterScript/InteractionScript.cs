@@ -53,18 +53,32 @@ public class InteractionScript : NetworkBehaviour
         {
             Debug.Log("Client: Attempting to Open HomeCore UI");
             isOpeningHouseUI = true;
+            playerMovement.canMove = false;
+            cameraControl.canRotate = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             homeCoreScript.OpenHomeCoreUI(); 
         }      
         else if (Input.GetKeyDown(interactKey) && !isOpeningOtherUI && IsLookingAtCore())
         {
             Debug.Log("Client: Attempting to Open OtherCore UI");
             isOpeningOtherUI = true;
-            CoreUIScript.OpenCoreUI();
+            CoreScript.OpenCoreUI();
+            playerMovement.canMove = false;
+            cameraControl.canRotate = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
+
         }
-        if (Input.GetKeyDown(interactKey) && isOpeningHouseUI)
+        else if (Input.GetKeyDown(interactKey) && isOpeningHouseUI)
         {
             Debug.Log("Client: Closing HomeCore UI");
             isOpeningHouseUI = false;
+            playerMovement.canMove = true;
+            cameraControl.canRotate = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             homeCoreScript.CloseHomeCoreUI();
             
         }
@@ -72,7 +86,11 @@ public class InteractionScript : NetworkBehaviour
         {
             Debug.Log("Client: Closing HomeCore UI");
             isOpeningOtherUI = false;
-            CoreUIScript.CloseCoreUI();
+            playerMovement.canMove = true;
+            cameraControl.canRotate = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            CoreScript.CloseCoreUI();
 
         }
         if (inventory.spearCount.Value >= 1)

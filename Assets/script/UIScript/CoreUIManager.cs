@@ -27,17 +27,9 @@ public class CoreUIManager : NetworkBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void Start()
-    {
-        // Initialize playerMovement and cameraMovement
-        PlayerMovement = FindObjectOfType<PlayerControllerScript>();
-        CameraMovement = Camera.main.GetComponent<MoveCamera>();
-    }
-
     private void Update()
     {
-        if (!IsOwner) return;
+        //if (!IsOwner) return;
 
         // Periodically check for OtherCoreScript instance
         if (otherCore == null)
@@ -54,46 +46,5 @@ public class CoreUIManager : NetworkBehaviour
             otherCore = foundInstance;
         }
     }
-
-    public void OnTransferEnergyButtonPressed()
-    {
-        if (otherCore != null)
-        {
-            otherCore.TransferEnergy(200); // Transfer 200 energy as an example
-        }
-    }
-
-    public void OpenCoreUI()
-    {
-        if (!IsOwner) return;
-
-        CoreUI.SetActive(true);
-        if (PlayerMovement != null)
-        {
-            PlayerMovement.canMove = false;
-        }
-        if (CameraMovement != null)
-        {
-            CameraMovement.canRotate = false;
-        }
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    public void CloseCoreUI()
-    {
-        if (!IsOwner) return;
-
-        CoreUI.SetActive(false);
-        if (PlayerMovement != null)
-        {
-            PlayerMovement.canMove = true;
-        }
-        if (CameraMovement != null)
-        {
-            CameraMovement.canRotate = true;
-        }
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+    
 }

@@ -7943,6 +7943,7 @@ GameObject:
   - component: {fileID: 3516959268610572594}
   - component: {fileID: 2197499127337743904}
   - component: {fileID: -5916078102410704430}
+  - component: {fileID: 2557354056857119642}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -8147,6 +8148,7 @@ MonoBehaviour:
   - {fileID: 2086546747}
   - {fileID: 6458902970826574469}
   - {fileID: 8416183665076312939}
+  - {fileID: 2557354056857119642}
 --- !u!114 &8416183665076312939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9063,6 +9065,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2557354056857119642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496384795635220035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3aabadd7ec24d7468f4deeecf03cc77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HomeCore: {fileID: 0}
+  Daycount: {fileID: 0}
+  CameraSwitch: {fileID: 0}
+  Helicopter: {fileID: 0}
+  PlayerCamera: {fileID: 7473532660779588485}
+  CameraWin: {fileID: 0}
+  CameraLose: {fileID: 0}
+  isCamReady: 0
 --- !u!1 &8518653682617993062
 GameObject:
   m_ObjectHideFlags: 0

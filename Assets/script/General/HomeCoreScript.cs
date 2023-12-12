@@ -87,8 +87,8 @@ public class HomeCoreScript : NetworkBehaviour
         Health.Value += amount;
         Health.Value = Mathf.Clamp(Health.Value, 0, 500);
     }
-
-    public void IncreaseEnergy(float amount)
+    [ServerRpc]
+    public void IncreaseEnergyServerRpc(float amount)
     {
         Energy.Value += amount;
         Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);

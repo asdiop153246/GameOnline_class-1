@@ -16,7 +16,7 @@ public class BedInteraction : NetworkBehaviour
     public IslandSpawnScript islandSpawnScript;
 
     private HashSet<NetworkBehaviour> playersInCollider = new HashSet<NetworkBehaviour>();
-    private NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
+    public NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
     public NetworkedDayNightCycle dayNightCycle;
     //private bool isSleeping = false;
 

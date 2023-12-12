@@ -84,7 +84,7 @@ public class PlayerControllerScript : NetworkBehaviour
         stamina = maxStamina;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        health = GetComponent<PlayerHealth>();
+        health = GetComponent<PlayerHealth>();        
         //running = false;
         isCursorLocked = true;
     }

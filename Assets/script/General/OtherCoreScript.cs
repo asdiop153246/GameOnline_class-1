@@ -5,9 +5,7 @@ using Unity.Netcode;
 using UnityEngine.UI;
 public class OtherCoreScript : NetworkBehaviour
 {
-    private GameObject CoreUI;
-    private PlayerControllerScript playerMovement;
-    private MoveCamera cameraControl;
+    public GameObject CoreUI;
 
     [Header("Values")]
     private float startingEnergy;
@@ -15,11 +13,12 @@ public class OtherCoreScript : NetworkBehaviour
     [Header("Rate of Decrease")]
     public float EnergyDecreaseRate = 0.80f;
 
-    private Image EnergyBar;
-    private Image BackEnergyBar;
+    public Image EnergyBar;
+    public Image BackEnergyBar;
 
     private float lerptimer;
     public float chipSpeed = 2f;
+    public bool isUIReady = false;
     private NetworkVariable<float> Energy = new NetworkVariable<float>();
     public override void OnNetworkSpawn()
     {
@@ -27,30 +26,38 @@ public class OtherCoreScript : NetworkBehaviour
         {
             startingEnergy = Random.Range(300, 500);
             Energy.Value = startingEnergy;
-            CoreUI = CoreUIManager.Instance.CoreUI;
-            EnergyBar = CoreUIManager.Instance.EnergyBar;
-            BackEnergyBar = CoreUIManager.Instance.BackEnergyBar;
-            playerMovement = CoreUIManager.Instance.PlayerMovement;
-            cameraControl = CoreUIManager.Instance.CameraMovement;
-            //FindPlayer();
-            //FindCamera();
         }
-        Energy.OnValueChanged += (oldValue, newValue) => UpdateEnergyUI();
+        Energy.OnValueChanged += (oldValue, newValue) => UpdateEnergyUI();        
+    }
+    private IEnumerator FindUIElements()
+    {
+        while (!isUIReady)
+        {
+            if (CoreUIManager.Instance != null)
+            {
+                Debug.Log("Finding UI Elements");
+                CoreUI = CoreUIManager.Instance.CoreUI;
+                EnergyBar = CoreUIManager.Instance.EnergyBar;
+                BackEnergyBar = CoreUIManager.Instance.BackEnergyBar;
+                isUIReady = true;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f); // Check again after a delay
+            }
+        }
     }
     private void Update()
     {
-        if (!IsOwner)
-            return;
-
-
+        //if (!IsOwner || !isUIReady)
+        //    return;
+        StartCoroutine(FindUIElements());
         if (IsServer)
         {
-
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
         }
-        EnergyBar.fillAmount = Energy.Value / startingEnergy;
 
-        ;
+        EnergyBar.fillAmount = Energy.Value / startingEnergy;
         UpdateEnergyUI();
     }
 
@@ -90,13 +97,15 @@ public class OtherCoreScript : NetworkBehaviour
             backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
         }
     }
-    public void TransferEnergy(float amount)
+    [ServerRpc]
+    public void TransferEnergyServerRpc(float amount)
     {
         if (Energy.Value >= amount)
         {
+            Debug.Log($"Transfering {amount} Energy to Home");
             Energy.Value -= amount;
             // Call HomeCoreScript to increase its energy
-            FindObjectOfType<HomeCoreScript>().IncreaseEnergy(amount);
+            FindObjectOfType<HomeCoreScript>().IncreaseEnergyServerRpc(amount);
         }
     }
     public void OpenCoreUI()
@@ -104,53 +113,12 @@ public class OtherCoreScript : NetworkBehaviour
         Debug.Log("Opening CoreUI");
         Debug.Log($"Current Energy is {Energy.Value}");
         CoreUI.SetActive(true);
-        playerMovement.canMove = false;
-        cameraControl.canRotate = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public void CloseCoreUI()
     {
         Debug.Log("Closing CoreUI");
         CoreUI.SetActive(false);
-        playerMovement.canMove = true;
-        cameraControl.canRotate = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
-    private void FindPlayer()
-    {
-        GameObject Player = GameObject.FindWithTag("Player");
-        if (Player != null)
-        {
-            Debug.Log("Detected Player for OtherCore");
-            playerMovement = Player.GetComponent<PlayerControllerScript>();
-            if (playerMovement == null)
-            {
-                Debug.LogError("PlayerControllerScript Component not found on OtherCore object!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Player object not found in the scene!");
-        }
-    }
-    private void FindCamera()
-    {
-        GameObject Camera = GameObject.FindWithTag("MainCamera");
-        if (Camera != null)
-        {
-            Debug.Log("Detected Camera for OtherCore");
-            cameraControl = Camera.GetComponent<MoveCamera>();
-            if (cameraControl == null)
-            {
-                Debug.LogError("CameraScript component not found on OtherCore object!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Camera Object not found in the scene!");
-        }
-    }
+
 }

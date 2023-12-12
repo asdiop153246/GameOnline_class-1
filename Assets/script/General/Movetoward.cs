@@ -46,7 +46,7 @@ public class Movetoward : NetworkBehaviour
             // Check if the island is close to the target position
             if (Vector3.Distance(transform.position, targetPosition) < 1f) 
             {
-                StartCoroutine(WaitAndMove(60));
+                StartCoroutine(WaitAndMove(300));
             }
 
             // If it is close to target2, despawn the island

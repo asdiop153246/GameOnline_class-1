@@ -25,6 +25,9 @@ TagManager:
   - CoreUI
   - CrystalF
   - CrystalB
+  - CamWin
+  - CamLose
+  - Helicopter
   layers:
   - Default
   - TransparentFX
