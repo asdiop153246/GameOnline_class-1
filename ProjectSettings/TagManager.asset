@@ -28,6 +28,7 @@ TagManager:
   - CamWin
   - CamLose
   - Helicopter
+  - CoreUIManager
   layers:
   - Default
   - TransparentFX

@@ -72,15 +72,31 @@ public class EndDemoScript : NetworkBehaviour
 
     [ServerRpc]
     private void VictorySceneServerRpc()
-    {       
+    {
         isEnding = true;
-        VictorySceneClientRpc();
+        Helicopter.gameObject.SetActive(true);
+        StartCoroutine(HandleVictorySequence());
     }
     [ClientRpc]
     private void VictorySceneClientRpc()
     {
         CameraWin.gameObject.SetActive(true);
-        PlayerCamera.gameObject.SetActive(false);
-        Helicopter.gameObject.SetActive(true);
+        PlayerCamera.gameObject.SetActive(false);       
+    }
+    private IEnumerator HandleVictorySequence()
+    {
+        VictorySceneClientRpc(); // Activate victory scene for all clients
+
+        yield return new WaitForSeconds(20f);
+
+        
+        Debug.Log("Shutting down the server...");
+        NetworkManager.Singleton.Shutdown();
+        Application.Quit();
+
+        // For Editor mode, you can add a debug log to confirm the quit command
+#if UNITY_EDITOR
+        Debug.Log("Game is quitting... (This only works outside of the Unity Editor)");
+#endif
     }
 }

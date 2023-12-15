@@ -28,18 +28,19 @@ public class EnemyAi : NetworkBehaviour
     private NetworkVariable<Quaternion> rotation = new NetworkVariable<Quaternion>(new Quaternion());
     private GameObject homeCore;
     private bool isHomeCoreSet = false;
-
+    private MonsterHP monsterHP;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        monsterHP = GetComponent<MonsterHP>();
         SetMovementSpeed(MoveSpeed);
         FindHomeCore();
     }
 
     void Update()
     {
-        if (!IsServer) return;
+        if (!IsServer || monsterHP.isStunned) return;
         animator.SetBool("Walk", false);        
         Collider[] playersInSightRange = Physics.OverlapSphere(transform.position, sightRange, playerMask);
         if (playersInSightRange.Length != 0)
@@ -131,14 +132,22 @@ public class EnemyAi : NetworkBehaviour
 
         agent.isStopped = true;
         
-        hitbox.SetActive(true);
+        //hitbox.SetActive(true);
         Debug.Log("Attacking player!");
         animator.SetTrigger("Punch");
-
-        isAttacking = true;
+        StartCoroutine(DelaybeforeHitbox());
+        //isAttacking = true;
 
         Invoke(nameof(ResetAttack), timeBetweenAttacks);
     }
+
+    private IEnumerator DelaybeforeHitbox()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(1.5f);
+        hitbox.SetActive(true);
+    }
+
     private IEnumerator DashAttack(Vector3 targetPosition)
     {
         Vector3 directionToPlayer = (targetPosition - transform.position).normalized;

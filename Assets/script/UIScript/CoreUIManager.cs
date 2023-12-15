@@ -14,7 +14,6 @@ public class CoreUIManager : NetworkBehaviour
     public Image BackEnergyBar;
     public PlayerControllerScript PlayerMovement { get; private set; }
     public MoveCamera CameraMovement { get; private set; }
-
     private void Awake()
     {
         if (Instance == null)
@@ -31,7 +30,6 @@ public class CoreUIManager : NetworkBehaviour
     {
         //if (!IsOwner) return;
 
-        // Periodically check for OtherCoreScript instance
         if (otherCore == null)
         {
             FindOtherCoreInstance();

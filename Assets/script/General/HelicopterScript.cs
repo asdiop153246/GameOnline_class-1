@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 public class HelicopterScript : NetworkBehaviour
 {
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed = 12.0f;
     [SerializeField] private Transform target;
     public Transform currentTarget;
     private Vector3 targetPosition;
@@ -18,11 +18,8 @@ public class HelicopterScript : NetworkBehaviour
         }
     }
     private void Update()
-    {
-        if (IsServer)
-        {
-            MoveToTarget();
-        }
+    {       
+            MoveToTarget();       
     }
     private void MoveToTarget()
     {

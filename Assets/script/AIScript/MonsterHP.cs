@@ -9,7 +9,8 @@ public class MonsterHP : NetworkBehaviour
     public int maxHealth = 100;
     private Animator animator;
     public NetworkVariable<int> currentHealth = new NetworkVariable<int>();
-
+    public float stunDuration = 1.5f;
+    public bool isStunned = false;
     private void Start()
     {
         Debug.Log("MonsterHP object owned by: " + NetworkObject.OwnerClientId);
@@ -22,30 +23,37 @@ public class MonsterHP : NetworkBehaviour
     {
         
         Debug.Log("Request to damage monster received");
-        TakeDamage(damage);
+        TakeDamageClientRpc(damage);
     }
 
-    public void TakeDamage(int damage)
+    [ClientRpc]
+    public void TakeDamageClientRpc(int damage)
     {
-        //if (!IsServer)
-        //    return;
+        if (isStunned) return; 
 
         currentHealth.Value -= damage;
 
         if (currentHealth.Value <= 0)
         {
-            animator.SetTrigger("Die");
-            Die();
+            DieServerRpc();
+        }
+        else
+        {
+            StartCoroutine(ApplyStunEffect());
         }
     }
-
-    private void Die()
+    private IEnumerator ApplyStunEffect()
     {
+        isStunned = true;
+        yield return new WaitForSeconds(stunDuration);
+        isStunned = false;
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void DieServerRpc()
+    {
+        StartCoroutine(DieAfterDelay());
+        NetworkObject.Destroy(gameObject);
         DieClientRpc();
-        if (IsServer)
-        {
-            NetworkObject.Destroy(gameObject);
-        }
     }
 
     [ClientRpc]
@@ -61,7 +69,12 @@ public class MonsterHP : NetworkBehaviour
         if (other.gameObject.CompareTag("DeadZone"))
         {
             Debug.Log("monster hit deadzone");
-            Die();  
+            DieServerRpc();  
         }
+    }
+    private IEnumerator DieAfterDelay()
+    {
+        animator.SetTrigger("Die");
+        yield return new WaitForSeconds(3);        
     }
 }

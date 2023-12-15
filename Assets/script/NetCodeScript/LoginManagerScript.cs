@@ -150,6 +150,10 @@ public class LoginManagerScript : MonoBehaviour
         Hostmenu.SetActive(false);
         Clientmenu.SetActive(true);
     }
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
     private bool approveConnection(string clientData , string serverData)
     {

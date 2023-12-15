@@ -38,18 +38,12 @@ public class InventoryScript : NetworkBehaviour
 
     private HungerThirstScript hungerThirstScript;
     private PlayerControllerScript StaminaScript;
-    public NetworkVariable<int> woodCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> foodCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> spearCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> waterCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> colaCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> ropeCount = new NetworkVariable<int>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> woodCount = new NetworkVariable<int>();
+    public NetworkVariable<int> foodCount = new NetworkVariable<int>();
+    public NetworkVariable<int> spearCount = new NetworkVariable<int>();
+    public NetworkVariable<int> waterCount = new NetworkVariable<int>();
+    public NetworkVariable<int> colaCount = new NetworkVariable<int>();
+    public NetworkVariable<int> ropeCount = new NetworkVariable<int>();
 
 
     private void Start()
@@ -285,6 +279,7 @@ public class InventoryScript : NetworkBehaviour
         if (item != null)
         {
             item.amount += amount;
+            UpdateItemCount(itemName, amount);
             UpdateInventoryClientRpc(); 
         }
         else
@@ -311,7 +306,7 @@ public class InventoryScript : NetworkBehaviour
     }
     [ClientRpc]
     private void UpdateInventoryClientRpc()
-    {
+    {       
         UpdateInventoryUI();
     }
     private void UpdateItemCount(string itemName, int newAmount)

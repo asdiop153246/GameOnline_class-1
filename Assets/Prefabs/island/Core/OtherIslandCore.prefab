@@ -70,6 +70,7 @@ MonoBehaviour:
   EnergyBar: {fileID: 0}
   BackEnergyBar: {fileID: 0}
   chipSpeed: 2
+  isUIReady: 0
 --- !u!65 &140441147
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -81,8 +82,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.4599686, y: 9.755022, z: 4.931675}
-  m_Center: {x: -8.271137, y: 1.0676336, z: -6.736372}
+  m_Size: {x: 5.0307617, y: 9.755022, z: 5.77065}
+  m_Center: {x: -8.347528, y: 1.0676336, z: -6.8386846}
 --- !u!114 &140441148
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -19,15 +19,25 @@ public class OtherCoreScript : NetworkBehaviour
     private float lerptimer;
     public float chipSpeed = 2f;
     public bool isUIReady = false;
+    public CoreUIManager CoreUIManager;
     private NetworkVariable<float> Energy = new NetworkVariable<float>();
     public override void OnNetworkSpawn()
     {
         if (IsServer)
         {
             startingEnergy = Random.Range(300, 500);
+            Debug.Log($"[Server] Setting starting energy to: {startingEnergy}");
             Energy.Value = startingEnergy;
         }
-        Energy.OnValueChanged += (oldValue, newValue) => UpdateEnergyUI();        
+        else
+        {
+            Debug.Log("[Client] Waiting for server to initialize energy value.");
+        }
+
+        Energy.OnValueChanged += (oldValue, newValue) => {
+            Debug.Log($"Energy value changed. Old: {oldValue}, New: {newValue}");
+            UpdateEnergyUI();
+        };
     }
     private IEnumerator FindUIElements()
     {
@@ -35,23 +45,33 @@ public class OtherCoreScript : NetworkBehaviour
         {
             if (CoreUIManager.Instance != null)
             {
-                Debug.Log("Finding UI Elements");
                 CoreUI = CoreUIManager.Instance.CoreUI;
                 EnergyBar = CoreUIManager.Instance.EnergyBar;
                 BackEnergyBar = CoreUIManager.Instance.BackEnergyBar;
-                isUIReady = true;
+
+                if (CoreUI != null && EnergyBar != null && BackEnergyBar != null)
+                {
+                    Debug.Log("UI Elements found successfully.");
+                    isUIReady = true;
+                }
+                else
+                {
+                    Debug.LogWarning("UI Elements not found, retrying...");
+                    yield return new WaitForSeconds(0.5f);
+                }
             }
             else
             {
-                yield return new WaitForSeconds(0.5f); // Check again after a delay
+                Debug.LogWarning("CoreUIManager instance not found, retrying...");
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }
     private void Update()
     {
-        //if (!IsOwner || !isUIReady)
-        //    return;
+        
         StartCoroutine(FindUIElements());
+        //if (!isUIReady) return;
         if (IsServer)
         {
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
@@ -97,14 +117,17 @@ public class OtherCoreScript : NetworkBehaviour
             backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
         }
     }
+    public void TransferEnergyButton(float amount)
+    {
+        TransferEnergyServerRpc(amount);
+    }
     [ServerRpc]
     public void TransferEnergyServerRpc(float amount)
     {
         if (Energy.Value >= amount)
         {
             Debug.Log($"Transfering {amount} Energy to Home");
-            Energy.Value -= amount;
-            // Call HomeCoreScript to increase its energy
+            Energy.Value -= amount;            
             FindObjectOfType<HomeCoreScript>().IncreaseEnergyServerRpc(amount);
         }
     }
