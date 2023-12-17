@@ -9,6 +9,7 @@ public class Movetoward : NetworkBehaviour
     [SerializeField] private Transform target2;
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Transform[] monsterSpawnPoints;
+    public GameObject OtherCore;
     private Vector3 target1Position;
     private Vector3 target2Position;
     private float stoppingDistance;
@@ -75,11 +76,17 @@ public class Movetoward : NetworkBehaviour
     {
         isWaiting = true;
         SpawnMonsters();
-
+        SpawnCore();
         yield return new WaitForSeconds(seconds);
 
         isWaiting = false;
         SwitchTarget();
+    }
+
+    private void SpawnCore()
+    {
+        OtherCore = GameObject.FindWithTag("OtherCore");
+        OtherCore.GetComponent<NetworkObject>().Spawn();
     }
 
     private void SwitchTarget()

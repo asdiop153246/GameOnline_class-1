@@ -15274,7 +15274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3376170836565774903, guid: a0d9006697262794896016f1aea2fc28, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.62287
+      value: 34.03
       objectReference: {fileID: 0}
     - target: {fileID: 3376170836565774903, guid: a0d9006697262794896016f1aea2fc28, type: 3}
       propertyPath: m_LocalRotation.w
@@ -24634,6 +24634,7 @@ MonoBehaviour:
   spawnPosition4: {x: -144.5, y: 2.3, z: -588.9}
   spawnPosition5: {x: 603.9, y: -3.9, z: 0}
   spawnPosition6: {x: -222.7, y: -10.6, z: -397.2}
+  OtherCore: {fileID: 0}
   itemPrefabs:
   - {fileID: 4601531565221700946, guid: 81bdaa2ac817a894fbfe2c867a8d85c9, type: 3}
   - {fileID: 2917468501397498799, guid: 11d66030302598a40ba30d2b27369558, type: 3}
@@ -32514,6 +32515,11 @@ MonoBehaviour:
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
       Prefab: {fileID: 8993627325468631134, guid: f9adc627420c3394885722126900602f, type: 3}
+      SourcePrefabToOverride: {fileID: 8993627325468631134, guid: f9adc627420c3394885722126900602f, type: 3}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 966300913328960069, guid: 22e6cb4db36a5b84bb609f18c53d63b0, type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
@@ -91998,13 +92004,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7379351248007169857, guid: f9adc627420c3394885722126900602f, type: 3}
         m_TargetAssemblyTypeName: OtherCoreScript, Assembly-CSharp
-        m_MethodName: TransferEnergyServerRpc
+        m_MethodName: TransferEnergyButton
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 200
+          m_FloatArgument: 100
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2

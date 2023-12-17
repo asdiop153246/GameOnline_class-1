@@ -3,41 +3,114 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
+
 public class OtherCoreScript : NetworkBehaviour
 {
     public GameObject CoreUI;
 
     [Header("Values")]
-    private float startingEnergy;
+    [SerializeField] private float startingEnergyRangeMin = 300;
+    [SerializeField] private float startingEnergyRangeMax = 500;
+    [SerializeField] private NetworkVariable<float> Energy = new NetworkVariable<float>();
 
     [Header("Rate of Decrease")]
     public float EnergyDecreaseRate = 0.80f;
 
+    [Header("UI Elements")]
     public Image EnergyBar;
     public Image BackEnergyBar;
 
     private float lerptimer;
     public float chipSpeed = 2f;
     public bool isUIReady = false;
-    public CoreUIManager CoreUIManager;
-    private NetworkVariable<float> Energy = new NetworkVariable<float>();
+
+    public HomeCoreScript HomeCore;
+    public bool energyInitialized = false; // Flag to check if energy is initialized
+
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
+        if (IsServer && !energyInitialized)
         {
-            startingEnergy = Random.Range(300, 500);
-            Debug.Log($"[Server] Setting starting energy to: {startingEnergy}");
-            Energy.Value = startingEnergy;
-        }
-        else
-        {
-            Debug.Log("[Client] Waiting for server to initialize energy value.");
+            Energy.Value = Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
+            Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
+            energyInitialized = true;
         }
 
-        Energy.OnValueChanged += (oldValue, newValue) => {
-            Debug.Log($"Energy value changed. Old: {oldValue}, New: {newValue}");
-            UpdateEnergyUI();
-        };
+        Energy.OnValueChanged += UpdateEnergyUI;
+    }
+
+    private void Update()
+    {
+        StartCoroutine(FindUIElements());
+
+        if (IsServer)
+        {
+            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
+        }
+
+        if (HomeCore == null)
+        {
+            HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+        }
+
+        // Debugging the current energy value on the client
+        Debug.Log($"Current Energy (Update): {Energy.Value}");
+    }
+
+    private void DecreaseEnergy(float amount)
+    {
+        Energy.Value = Mathf.Clamp(Energy.Value - amount, 0, startingEnergyRangeMax);
+    }
+
+    private void UpdateEnergyUI(float oldValue, float newValue)
+    {
+        if (EnergyBar != null && BackEnergyBar != null)
+        {
+            float hFraction = newValue / startingEnergyRangeMax;
+            UpdateUIValues(hFraction);
+        }
+    }
+
+    private void UpdateUIValues(float hFraction)
+    {
+        if (BackEnergyBar.fillAmount > hFraction)
+        {
+            lerptimer += Time.deltaTime;
+            BackEnergyBar.fillAmount = Mathf.Lerp(BackEnergyBar.fillAmount, hFraction, lerptimer / chipSpeed);
+        }
+        if (EnergyBar.fillAmount < hFraction)
+        {
+            lerptimer += Time.deltaTime;
+            EnergyBar.fillAmount = Mathf.Lerp(EnergyBar.fillAmount, hFraction, lerptimer / chipSpeed);
+        }
+    }
+
+    public void TransferEnergyButton(float amount)
+    {
+        Debug.Log($"Player pressed Button with {Energy.Value}");
+        if (Energy.Value >= amount)
+        {
+            Debug.Log("Server is transfering energy");
+            TransferEnergyServerRpc(amount);
+        }
+    }
+
+    [ServerRpc]
+    private void TransferEnergyServerRpc(float amount)
+    {
+        Energy.Value -= amount;
+        HomeCore?.IncreaseEnergy(amount);
+    }
+
+    public void OpenCoreUI()
+    {
+        Debug.Log($"Current Energy is {Energy.Value}");
+        CoreUI.SetActive(true);
+    }
+
+    public void CloseCoreUI()
+    {
+        CoreUI.SetActive(false);
     }
     private IEnumerator FindUIElements()
     {
@@ -67,81 +140,4 @@ public class OtherCoreScript : NetworkBehaviour
             }
         }
     }
-    private void Update()
-    {
-        
-        StartCoroutine(FindUIElements());
-        //if (!isUIReady) return;
-        if (IsServer)
-        {
-            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
-        }
-
-        EnergyBar.fillAmount = Energy.Value / startingEnergy;
-        UpdateEnergyUI();
-    }
-
-    public void DecreaseEnergy(float amount)
-    {
-        Energy.Value -= amount;
-        Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
-
-        if (Energy.Value <= 0)
-        {
-            Debug.Log("Island is out of Energy");
-        }
-    }
-
-
-    public void UpdateEnergyUI()
-    {
-        float fillF = EnergyBar.fillAmount;
-        float fillB = BackEnergyBar.fillAmount;
-        float hFraction = Energy.Value / startingEnergy;
-        UpdateUIValues(hFraction, ref fillF, ref fillB, EnergyBar, BackEnergyBar);
-    }
-    private void UpdateUIValues(float hFraction, ref float fillF, ref float fillB, Image frontBar, Image backBar)
-    {
-        if (fillB > hFraction)
-        {
-            frontBar.fillAmount = hFraction;
-            lerptimer += Time.deltaTime;
-            float percentComplete = lerptimer / chipSpeed;
-            backBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
-        }
-        if (fillF < hFraction)
-        {
-            frontBar.fillAmount = hFraction;
-            lerptimer += Time.deltaTime;
-            float percentComplete = lerptimer / chipSpeed;
-            backBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
-        }
-    }
-    public void TransferEnergyButton(float amount)
-    {
-        TransferEnergyServerRpc(amount);
-    }
-    [ServerRpc]
-    public void TransferEnergyServerRpc(float amount)
-    {
-        if (Energy.Value >= amount)
-        {
-            Debug.Log($"Transfering {amount} Energy to Home");
-            Energy.Value -= amount;            
-            FindObjectOfType<HomeCoreScript>().IncreaseEnergyServerRpc(amount);
-        }
-    }
-    public void OpenCoreUI()
-    {
-        Debug.Log("Opening CoreUI");
-        Debug.Log($"Current Energy is {Energy.Value}");
-        CoreUI.SetActive(true);
-    }
-
-    public void CloseCoreUI()
-    {
-        Debug.Log("Closing CoreUI");
-        CoreUI.SetActive(false);
-    }
-
 }

@@ -14,6 +14,7 @@ public class IslandSpawnScript : NetworkBehaviour
     [SerializeField] private Vector3 spawnPosition5;
     [SerializeField] private Vector3 spawnPosition6;
 
+    public GameObject OtherCore;
     [Header("Item Spawning")]
     [SerializeField] private GameObject[] itemPrefabs;  
     [SerializeField] private float[] itemSpawnChances;  
@@ -42,7 +43,9 @@ public class IslandSpawnScript : NetworkBehaviour
         if (randomIndex == 0)
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition1, Quaternion.identity);
+                    
             island.GetComponent<NetworkObject>().Spawn();
+            
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
@@ -58,7 +61,9 @@ public class IslandSpawnScript : NetworkBehaviour
         else if (randomIndex == 1) //normal
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition2, Quaternion.identity);
+            
             island.GetComponent<NetworkObject>().Spawn();
+            
             island.transform.Rotate(Vector3.up, 182.15f);
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
@@ -75,7 +80,9 @@ public class IslandSpawnScript : NetworkBehaviour
         else if (randomIndex == 2) //Tower
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition3, Quaternion.identity);
+           
             island.GetComponent<NetworkObject>().Spawn();
+            
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
@@ -91,7 +98,9 @@ public class IslandSpawnScript : NetworkBehaviour
         else if (randomIndex == 3) //Temple
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition4, Quaternion.identity);
+            
             island.GetComponent<NetworkObject>().Spawn();
+            
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
@@ -107,7 +116,9 @@ public class IslandSpawnScript : NetworkBehaviour
         else if (randomIndex == 4) //House2
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition5, Quaternion.identity);
+            
             island.GetComponent<NetworkObject>().Spawn();
+            
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
@@ -123,7 +134,9 @@ public class IslandSpawnScript : NetworkBehaviour
         else if (randomIndex == 5) //Mart
         {
             island = Instantiate(islandPrefabs[randomIndex], spawnPosition6, Quaternion.identity);
+            
             island.GetComponent<NetworkObject>().Spawn();
+            
             SpawnRandomItemsAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)

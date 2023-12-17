@@ -87,8 +87,13 @@ public class HomeCoreScript : NetworkBehaviour
         Health.Value += amount;
         Health.Value = Mathf.Clamp(Health.Value, 0, 500);
     }
+    public void IncreaseEnergy(float amount)
+    {
+        Debug.Log("Transfering Energy is in HomeCoreScript");
+        IncreaseEnergyServerRpc(amount);
+    }
     [ServerRpc]
-    public void IncreaseEnergyServerRpc(float amount)
+    private void IncreaseEnergyServerRpc(float amount)
     {
         Energy.Value += amount;
         Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);
@@ -97,6 +102,12 @@ public class HomeCoreScript : NetworkBehaviour
             Energy.Value = 500;
         }
         Debug.Log($"Current Energy after Increaes = {Energy.Value}");
+        IncreaseEnergyClientRpc();
+    }
+    [ClientRpc]
+    private void IncreaseEnergyClientRpc()
+    {
+        UpdateEnergyUI();
     }
     public void UpdateHealthUI()
     {

@@ -58,6 +58,8 @@ public class ResourcesScript : NetworkBehaviour
     private void DespawnResourceServerRpc()
     {
         DespawnResourceClientRpc();
+        NetworkObject networkObject = GetComponent<NetworkObject>();
+        networkObject.gameObject.SetActive(false);
         //NetworkObject networkObject = GetComponent<NetworkObject>();
         //if (networkObject)
         //{
