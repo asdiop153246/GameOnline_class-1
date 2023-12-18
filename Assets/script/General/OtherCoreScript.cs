@@ -54,7 +54,7 @@ public class OtherCoreScript : NetworkBehaviour
         }
 
         // Debugging the current energy value on the client
-        Debug.Log($"Current Energy (Update): {Energy.Value}");
+        //Debug.Log($"Current Energy (Update): {Energy.Value}");
     }
 
     private void DecreaseEnergy(float amount)
@@ -87,18 +87,26 @@ public class OtherCoreScript : NetworkBehaviour
 
     public void TransferEnergyButton(float amount)
     {
-        Debug.Log($"Player pressed Button with {Energy.Value}");
-        if (Energy.Value >= amount)
+        if (IsLocalPlayer)
         {
-            Debug.Log("Server is transfering energy");
-            TransferEnergyServerRpc(amount);
+            Debug.Log("[Local Player] TransferEnergyButton pressed.");
+            if (Energy.Value >= amount)
+            {
+                TransferEnergyServerRpc(amount);
+            }
+        }
+        else
+        {
+            Debug.Log("[Non-Local Player] TransferEnergyButton pressed. Ignored.");
         }
     }
 
     [ServerRpc]
     private void TransferEnergyServerRpc(float amount)
     {
+        Debug.Log($"[Server] Before transfer, Energy: {Energy.Value}");
         Energy.Value -= amount;
+        Debug.Log($"[Server] After transfer, Energy: {Energy.Value}");
         HomeCore?.IncreaseEnergy(amount);
     }
 
