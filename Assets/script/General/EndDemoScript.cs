@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 using System;
 
 public class EndDemoScript : NetworkBehaviour
 {
     public HomeCoreScript HomeCore;
     public BedInteraction Daycount;
+    public TextMeshProUGUI DayText;
     public GameObject CameraSwitch;
     public GameObject Helicopter;
     public GameObject PlayerCamera;
@@ -26,6 +28,7 @@ public class EndDemoScript : NetworkBehaviour
         if (IsServer)
             StartCoroutine(FindCamElements());
         {
+            DayText.text = $"Day {Daycount.dayCount.Value}";
             if (isEnding == false)
             {               
                 if (PlayerCamera != null)

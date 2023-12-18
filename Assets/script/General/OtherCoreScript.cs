@@ -85,30 +85,38 @@ public class OtherCoreScript : NetworkBehaviour
         }
     }
 
-    public void TransferEnergyButton(float amount)
+    public void TransferEnergy(float amount)
     {
-        if (IsLocalPlayer)
+        if (IsServer)
         {
-            Debug.Log("[Local Player] TransferEnergyButton pressed.");
+            Debug.Log("[Server]Is in TransferEnergy Function");
             if (Energy.Value >= amount)
             {
-                TransferEnergyServerRpc(amount);
+                Debug.Log("Value > amount transfering");
+                Energy.Value -= amount;
+                HomeCore.IncreaseEnergy(amount);
             }
         }
-        else
-        {
-            Debug.Log("[Non-Local Player] TransferEnergyButton pressed. Ignored.");
-        }
     }
+    //public void TransferEnergyButton(float amount)
+    //{
+    //    if (IsLocalPlayer)
+    //    {
+    //        RequestTransferEnergyServerRpc(amount);
+    //    }
+    //}
 
-    [ServerRpc]
-    private void TransferEnergyServerRpc(float amount)
-    {
-        Debug.Log($"[Server] Before transfer, Energy: {Energy.Value}");
-        Energy.Value -= amount;
-        Debug.Log($"[Server] After transfer, Energy: {Energy.Value}");
-        HomeCore?.IncreaseEnergy(amount);
-    }
+    //[ServerRpc]
+    //private void RequestTransferEnergyServerRpc(float amount)
+    //{
+    //    if (Energy.Value >= amount)
+    //    {
+    //        Debug.Log($"[Server] Before transfer, Energy: {Energy.Value}");
+    //        Energy.Value -= amount;
+    //        Debug.Log($"[Server] After transfer, Energy: {Energy.Value}");
+    //        HomeCore?.IncreaseEnergy(amount);
+    //    }
+    //}
 
     public void OpenCoreUI()
     {

@@ -29,11 +29,16 @@ public class CoreUIManager : NetworkBehaviour
     private void Update()
     {
         //if (!IsOwner) return;
-
         if (otherCore == null)
         {
             FindOtherCoreInstance();
         }
+        //if (CoreUI == null)
+        //{
+        //    CoreUI = GameObject.FindWithTag("CoreUI");
+        //    EnergyBar = GameObject.FindWithTag("CrystalF").GetComponent<Image>();
+        //    BackEnergyBar = GameObject.FindWithTag("CrystalB").GetComponent<Image>();
+        //}
     }
 
     private void FindOtherCoreInstance()

@@ -53,6 +53,7 @@ public class TutorialScript : NetworkBehaviour
             StartCoroutine(DelaybeforeNextText(10f));
             isOpenHomeUI = true;
         }
+        
 
 
 
