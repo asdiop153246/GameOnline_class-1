@@ -16,7 +16,8 @@ public class IslandSpawnScript : NetworkBehaviour
 
     public GameObject OtherCore;
     [Header("Item Spawning")]
-    [SerializeField] private GameObject[] itemPrefabs;  
+    [SerializeField] private GameObject[] itemPrefabs;
+    [SerializeField] private GameObject woodPrefabs;
     [SerializeField] private float[] itemSpawnChances;  
     [SerializeField] private float noSpawnChance = 0.3f;  
 
@@ -66,6 +67,7 @@ public class IslandSpawnScript : NetworkBehaviour
             
             island.transform.Rotate(Vector3.up, 182.15f);
             SpawnRandomItemsAround(island);
+            SpawnWoodAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -84,6 +86,7 @@ public class IslandSpawnScript : NetworkBehaviour
             island.GetComponent<NetworkObject>().Spawn();
             
             SpawnRandomItemsAround(island);
+            SpawnWoodAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -102,6 +105,7 @@ public class IslandSpawnScript : NetworkBehaviour
             island.GetComponent<NetworkObject>().Spawn();
             
             SpawnRandomItemsAround(island);
+            SpawnWoodAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -120,6 +124,7 @@ public class IslandSpawnScript : NetworkBehaviour
             island.GetComponent<NetworkObject>().Spawn();
             
             SpawnRandomItemsAround(island);
+            SpawnWoodAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -138,6 +143,7 @@ public class IslandSpawnScript : NetworkBehaviour
             island.GetComponent<NetworkObject>().Spawn();
             
             SpawnRandomItemsAround(island);
+            SpawnWoodAround(island);
             var navMeshSurface = island.GetComponent<NavMeshSurface>();
             if (navMeshSurface != null)
             {
@@ -176,6 +182,22 @@ public class IslandSpawnScript : NetworkBehaviour
                     break;
                 }
                 randomChance -= itemSpawnChances[j];
+            }
+        }
+    }
+    private void SpawnWoodAround(GameObject island)
+    {
+        Transform[] WoodSpawnPoints = island.GetComponentsInChildren<Transform>(true).Where(t => t.name.StartsWith("WoodSpawnPoint")).ToArray();
+        foreach (Transform spawnPoint in WoodSpawnPoints)
+        {
+            float randomChance = Random.Range(0f, 1f);
+            Debug.Log($"The value chance for Wood to spawn is {randomChance}");
+            // If randomChance is greater than 0.5, spawn wood.
+            if (randomChance > 0.5f)
+            {
+                var item = Instantiate(woodPrefabs, spawnPoint.position, Quaternion.identity);
+                item.GetComponent<NetworkObject>().Spawn();
+                item.transform.SetParent(island.transform);
             }
         }
     }
