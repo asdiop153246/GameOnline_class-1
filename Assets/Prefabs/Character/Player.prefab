@@ -8832,6 +8832,7 @@ MonoBehaviour:
   animator: {fileID: 3814001647287031206}
   equipItems: {fileID: 7532727666176547822}
   Attacksound: {fileID: 1590974587016304672}
+  damagedParticle: {fileID: 0}
 --- !u!114 &4810625852106564043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8883,7 +8884,6 @@ MonoBehaviour:
       icon: {fileID: 21300000, guid: 908330e798043ef4990f95cd945e1097, type: 3}
       amount: 1
     craftingTime: 10
-  itemImage: {fileID: 8664642228874800805}
   craftButton: {fileID: 4092661213360297107}
   craftingTimerSlider: {fileID: 2646812782886506481}
   requiredItemsText: {fileID: 184839498160391530}

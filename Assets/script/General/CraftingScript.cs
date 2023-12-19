@@ -48,7 +48,6 @@ public class CraftingScript : NetworkBehaviour
 
     [Header("Crafting Configuration")]
     public List<CraftingRecipe> craftingRecipes;
-    public Image itemImage;
 
     [Header("UI References")]
     public Button craftButton;
@@ -70,7 +69,6 @@ public class CraftingScript : NetworkBehaviour
         Debug.Log($"SelectRecipe called with index: {recipeIndex}");
         if (recipeIndex >= 0 && recipeIndex < craftingRecipes.Count)
         {
-            itemImage.gameObject.SetActive(true);
             selectedRecipeIndex = recipeIndex;
             selectedRecipe = craftingRecipes[recipeIndex];
             UpdateRequiredItemsText(selectedRecipe);
