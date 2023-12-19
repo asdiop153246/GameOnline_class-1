@@ -25,6 +25,7 @@ public class OtherCoreScript : NetworkBehaviour
     public bool isUIReady = false;
 
     public HomeCoreScript HomeCore;
+    public GameObject OtherCoreObject;
     public bool energyInitialized = false; // Flag to check if energy is initialized
 
     public override void OnNetworkSpawn()
@@ -51,6 +52,10 @@ public class OtherCoreScript : NetworkBehaviour
         if (HomeCore == null)
         {
             HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+        }
+        if (OtherCoreObject == null)
+        {
+            OtherCoreObject = GameObject.FindWithTag("OtherCore");
         }
 
         // Debugging the current energy value on the client

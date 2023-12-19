@@ -75,18 +75,11 @@ public class Movetoward : NetworkBehaviour
     IEnumerator WaitAndMove(float seconds)
     {
         isWaiting = true;
-        SpawnMonsters();
-        SpawnCore();
+        SpawnMonsters();       
         yield return new WaitForSeconds(seconds);
 
         isWaiting = false;
         SwitchTarget();
-    }
-
-    private void SpawnCore()
-    {
-        OtherCore = GameObject.FindWithTag("OtherCore");
-        OtherCore.GetComponent<NetworkObject>().Spawn();
     }
 
     private void SwitchTarget()

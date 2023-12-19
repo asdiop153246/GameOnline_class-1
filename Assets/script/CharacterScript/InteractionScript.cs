@@ -18,11 +18,13 @@ public class InteractionScript : NetworkBehaviour
     public GameObject TextUI;
     public TextMeshProUGUI resourcesCollectedText;
     public TextMeshProUGUI notificationText;
+    public TextMeshProUGUI sleepText;
     public GameObject notificationPanel;
     public MoveCamera cameraControl;
     public PlayerControllerScript playerMovement;
     private HomeCoreScript homeCoreScript;
     private OtherCoreScript CoreScript;
+    public GameObject OtherCoreObject;
     private CoreUIManager CoreUIScript;
     public InventoryScript inventory;
     [Header("Audio")]
@@ -216,13 +218,13 @@ public class InteractionScript : NetworkBehaviour
     }
     private void FindCoreObject()
     {
-        GameObject CoreObject = GameObject.FindWithTag("OtherCore"); 
-        if (CoreObject != null)
+        GameObject CoreObjectScript = GameObject.FindWithTag("OtherCoreManager");
+        if (CoreObjectScript != null)
         {
-            CoreScript = CoreObject.GetComponent<OtherCoreScript>();
+            CoreScript = CoreObjectScript.GetComponent<OtherCoreScript>();
             if (CoreScript == null)
             {
-                Debug.LogError("CoreScript component not found on Core object!");
+                Debug.LogError("CoreScript component not found on Core object Manager!");
             }
         }
         else
@@ -305,5 +307,21 @@ public class InteractionScript : NetworkBehaviour
         resourcesCollectedText.gameObject.SetActive(true);
         yield return new WaitForSeconds(displayTime);
         resourcesCollectedText.gameObject.SetActive(false);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bed"))
+        {
+            sleepText.gameObject.SetActive(true);
+            sleepText.text = "Press E to Sleep";
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Bed"))
+        {
+            sleepText.gameObject.SetActive(false);
+            sleepText.text = "";
+        }
     }
 }

@@ -10,6 +10,7 @@ public class BedInteraction : NetworkBehaviour
     public Canvas sleepCanvas;
     public Image screenOverlay;
     public TextMeshProUGUI message;
+    public TextMeshProUGUI PlayerText;
     public float sleepTransitionTime = 1.0f;
 
     [Header("Island Spawning")]
@@ -29,14 +30,15 @@ public class BedInteraction : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
+        {           
             NetworkBehaviour enteringPlayer = other.gameObject.GetComponent<NetworkBehaviour>();
             if (enteringPlayer != null)
             {
 
                 playersInCollider.Add(enteringPlayer);
                 Debug.Log($"Total players in collider: {playersInCollider.Count}");
-                Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");                
+                Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");
+                message.text = "Press E to sleep";
                 Debug.Log($"{enteringPlayer.gameObject.name} entered. Press 'E' to sleep.");
             }
         }
@@ -49,7 +51,7 @@ public class BedInteraction : NetworkBehaviour
             NetworkBehaviour exitingPlayer = other.gameObject.GetComponent<NetworkBehaviour>();
             if (exitingPlayer != null)
             {
-                playersInCollider.Remove(exitingPlayer);
+                playersInCollider.Remove(exitingPlayer);               
                 Debug.Log($"Total players in collider: {playersInCollider.Count}");
                 Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");
                 Debug.Log($"{exitingPlayer.gameObject.name} left the sleeping area.");
