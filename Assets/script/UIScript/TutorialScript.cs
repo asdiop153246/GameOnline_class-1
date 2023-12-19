@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using TMPro;
-using System;
+using System.Threading;
 
 public class TutorialScript : NetworkBehaviour
 {
@@ -14,6 +14,7 @@ public class TutorialScript : NetworkBehaviour
     private bool isOpenInventory = false;
     private bool isOpenCrafting = false;
     private bool isOpenHomeUI = false;
+    private CancellationTokenSource typingCancellationTokenSource;
 
     private void Start()
     {
@@ -21,39 +22,32 @@ public class TutorialScript : NetworkBehaviour
         isInitialised = true;
         HomeUI = gameObject.GetComponent<InteractionScript>();
         TutorialText.gameObject.SetActive(true);
+        typingCancellationTokenSource = new CancellationTokenSource();
     }
     private void Update()
     {
-       
-        if (isInitialised == true)
+
+        if (isInitialised)
         {
-            TutorialText.gameObject.SetActive(true);
-            StartCoroutine(TypeText("Welcome to the Island. You can press WASD to walk around. You can press SHIFT to run", 0.05f));
-            StartCoroutine(DelaybeforeNextText(10f));
+            StartTypingText("Welcome to the Island. You can press WASD to walk around. You can press SHIFT to run", 0.05f);
             isInitialised = false;
         }
-        else if (isOpenInventory == false && Input.GetKeyDown(KeyCode.I))
+        else if (!isOpenInventory && Input.GetKeyDown(KeyCode.I))
         {
-            TutorialText.gameObject.SetActive(true);
-            StartCoroutine(TypeText("Welcome to Inventory UI", 0.05f));
-            StartCoroutine(DelaybeforeNextText(10f));
+            StartTypingText("Welcome to Inventory UI", 0.05f);
             isOpenInventory = true;
         }
-        else if (isOpenCrafting == false && CraftingUI.activeInHierarchy)
+        else if (!isOpenCrafting && CraftingUI.activeInHierarchy)
         {
-            TutorialText.gameObject.SetActive(true);
-            StartCoroutine(TypeText("Welcome to Crafting UI", 0.05f));
-            StartCoroutine(DelaybeforeNextText(10f));
+            StartTypingText("Welcome to Crafting UI", 0.05f);
             isOpenCrafting = true;
         }
-        else if (isOpenHomeUI == false && HomeUI.isOpeningHouseUI == true )
+        else if (!isOpenHomeUI && HomeUI.isOpeningHouseUI)
         {
-            TutorialText.gameObject.SetActive(true);
-            StartCoroutine(TypeText("Welcome to HomeCore UI", 0.05f));
-            StartCoroutine(DelaybeforeNextText(10f));
+            StartTypingText("Welcome to HomeCore UI", 0.05f);
             isOpenHomeUI = true;
         }
-        
+
 
 
 
@@ -65,15 +59,29 @@ public class TutorialScript : NetworkBehaviour
         yield return new WaitForSeconds(time);
         TutorialText.gameObject.SetActive(false);
     }
-    private IEnumerator TypeText(string text, float typingSpeed)
+    private void StartTypingText(string text, float typingSpeed)
+    {
+        typingCancellationTokenSource.Cancel(); // Cancel any ongoing typing
+        typingCancellationTokenSource = new CancellationTokenSource(); // Create a new token source
+        StartCoroutine(TypeText(text, typingSpeed, typingCancellationTokenSource.Token));
+    }
+    private IEnumerator TypeText(string text, float typingSpeed, CancellationToken token)
     {
         TutorialText.text = ""; // Start with an empty text
         foreach (char letter in text.ToCharArray())
         {
+            if (token.IsCancellationRequested)
+            {
+                break; // Stop typing if cancellation is requested
+            }
             TutorialText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        yield return new WaitForSeconds(3f); // Wait for a moment after the complete text is displayed
+        if (!token.IsCancellationRequested)
+        {
+            yield return new WaitForSeconds(3f); // Wait for a moment after the complete text is displayed
+            TutorialText.gameObject.SetActive(false);
+        }
     }
 }
