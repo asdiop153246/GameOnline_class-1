@@ -142,6 +142,7 @@ MonoBehaviour:
     m_InternalValue: 100
   stunDuration: 1.5
   isStunned: 0
+  damagedParticle: {fileID: 2195671477756100812}
 --- !u!114 &6118250973440743428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +375,11 @@ PrefabInstance:
 --- !u!4 &2195671477756100809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5478958866756477056, guid: 3aabc158b776c9b47a33fa01b57eb3a6, type: 3}
+  m_PrefabInstance: {fileID: 5940735662518116425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2195671477756100812 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5478958866756477061, guid: 3aabc158b776c9b47a33fa01b57eb3a6, type: 3}
   m_PrefabInstance: {fileID: 5940735662518116425}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7009264032584100553

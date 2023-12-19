@@ -11,6 +11,7 @@ public class MonsterHP : NetworkBehaviour
     public NetworkVariable<int> currentHealth = new NetworkVariable<int>();
     public float stunDuration = 1.5f;
     public bool isStunned = false;
+    public GameObject damagedParticle;
     private void Start()
     {
         Debug.Log("MonsterHP object owned by: " + NetworkObject.OwnerClientId);
@@ -40,6 +41,7 @@ public class MonsterHP : NetworkBehaviour
         else
         {
             StartCoroutine(ApplyStunEffect());
+            StartCoroutine(ApplyDamagedEffect());
         }
     }
     private IEnumerator ApplyStunEffect()
@@ -47,6 +49,12 @@ public class MonsterHP : NetworkBehaviour
         isStunned = true;
         yield return new WaitForSeconds(stunDuration);
         isStunned = false;
+    }
+    private IEnumerator ApplyDamagedEffect()
+    {
+        damagedParticle.SetActive(true);
+        yield return new WaitForSeconds(1);
+        damagedParticle.SetActive(false);
     }
     [ServerRpc(RequireOwnership = false)]
     private void DieServerRpc()
