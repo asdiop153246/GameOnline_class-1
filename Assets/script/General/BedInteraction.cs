@@ -25,6 +25,7 @@ public class BedInteraction : NetworkBehaviour
     private void Start()
     {
         sleepCanvas.gameObject.SetActive(false);
+        PlayerText.text = "";
     }
 
     private void OnTriggerEnter(Collider other)
@@ -109,6 +110,7 @@ public class BedInteraction : NetworkBehaviour
         }
         else
         {
+            StartCoroutine(textDelayBeforeDisappear("Waiting for all players to be in bed."));
             Debug.Log("Waiting for all players to be in bed.");
         }
     }
@@ -128,9 +130,17 @@ public class BedInteraction : NetworkBehaviour
         }
         else
         {
-            Debug.Log("You can only sleep at night.");            
+            StartCoroutine(textDelayBeforeDisappear("You can only sleep at night."));
+            Debug.Log("You can only sleep at night.");
             InformPlayerItIsNotNightClientRpc();
         }
+    }
+
+    private IEnumerator textDelayBeforeDisappear(string text)
+    {
+        PlayerText.text = text;
+        yield return new WaitForSeconds(2f);
+        PlayerText.text = "";
     }
     [ServerRpc]
     private void IncrementDayServerRpc()
