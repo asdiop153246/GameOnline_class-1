@@ -29,6 +29,8 @@ TagManager:
   - CamLose
   - Helicopter
   - CoreUIManager
+  - PlayerText
+  - OtherCoreManager
   layers:
   - Default
   - TransparentFX
