@@ -58715,11 +58715,18 @@ MonoBehaviour:
   nightHDRI: {fileID: 8900000, guid: 112f582dec9d6a24daa353efb33fd765, type: 3}
   islandSpawnScript: {fileID: 566258912}
   islandSpawnedThisCycle: 0
+  timeRatio: 0
+  isDayTime: 0
   monsterPrefab: {fileID: 1924439643053029929, guid: f2fd8739e06fdb9479ce0005523d41eb, type: 3}
   monsterSpawnPoints:
   - {fileID: 863375370}
   - {fileID: 436405369}
   monstersSpawned: 0
+  daytimeTrigger: 0
+  DayCount: {fileID: 0}
+  currentDayTime: 0
+  networkDayTime:
+    m_InternalValue: 0
 --- !u!4 &1243456995
 Transform:
   m_ObjectHideFlags: 0
