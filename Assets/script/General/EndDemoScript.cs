@@ -43,7 +43,7 @@ public class EndDemoScript : NetworkBehaviour
             }
             if (isStart == true)
             {
-                if (HomeCore.Health.Value <= 0 || HomeCore.Energy.Value <= 0)
+                if (HomeCore.Health.Value <= 0 || HomeCore.Energy.Value <= 0 && isEnding == false)
                 {
                     LoseSceneServerRpc();
                 }
@@ -88,6 +88,7 @@ public class EndDemoScript : NetworkBehaviour
     [ClientRpc]
     private void VictorySceneClientRpc()
     {
+        isEnding = true;
         CameraWin.gameObject.SetActive(true);
         EndDemoText.gameObject.SetActive(true);
         PlayerCamera.gameObject.SetActive(false);       
@@ -95,6 +96,7 @@ public class EndDemoScript : NetworkBehaviour
     [ClientRpc]
     private void LoseSceneClientRpc()
     {
+        isEnding = true;
         CameraLose.gameObject.SetActive(true);
         EndDemoText.gameObject.SetActive(true);
         PlayerCamera.gameObject.SetActive(false);
