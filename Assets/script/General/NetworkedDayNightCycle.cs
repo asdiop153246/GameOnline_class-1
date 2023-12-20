@@ -28,16 +28,17 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [SerializeField] private IslandSpawnScript islandSpawnScript;
     public bool islandSpawnedThisCycle = false;
-    public float timeRatio;   
+    public float timeRatio;
+    public bool isDayTime = false;
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
     private List<GameObject> spawnedMonsters = new List<GameObject>();
     public bool monstersSpawned = false;
     private bool canSpawnNewMonsters = true;
-
-
-    private float currentDayTime;
-    private NetworkVariable<float> networkDayTime = new NetworkVariable<float>();
+    public bool daytimeTrigger = false;
+    public BedInteraction DayCount;
+    public float currentDayTime;
+    public NetworkVariable<float> networkDayTime = new NetworkVariable<float>();
 
     public override void OnNetworkSpawn()
     {
@@ -53,6 +54,10 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         {
             Debug.LogWarning("No HDRISky found in Global Volume2.");
         }
+        if (DayCount == null)
+        {
+            DayCount = GameObject.FindWithTag("Bed").GetComponent<BedInteraction>();
+        }
     }
 
     private void Update()
@@ -63,8 +68,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             CheckAllMonstersDefeated();
 
             if (currentDayTime >= fullDayLength * 0.76f && !islandSpawnedThisCycle)
-            {
-                
+            {                
                 islandSpawnScript.SpawnIsland();
                 islandSpawnedThisCycle = true;
             }
@@ -77,9 +81,20 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             {            
                 monstersSpawned = false;
             }
+            if (currentDayTime >= 225f && currentDayTime <= 227 &&daytimeTrigger == false)
+            {
+                DayCount.dayCount.Value += 1;
+                daytimeTrigger = true;
+                StartCoroutine(DelaybeforeTrigger());
+                
+            }
         }
     }
-
+    IEnumerator DelaybeforeTrigger()
+    {
+        yield return new WaitForSeconds(5f);
+        daytimeTrigger = false;
+    }
     IEnumerator UpdateTime()
     {
         while (true)

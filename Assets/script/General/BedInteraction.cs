@@ -20,6 +20,7 @@ public class BedInteraction : NetworkBehaviour
     public NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
     public NetworkedDayNightCycle dayNightCycle;
     private bool canPressKey = false;
+    public bool isTriggerDay = false;
     //private bool isSleeping = false;
 
 
@@ -71,13 +72,9 @@ public class BedInteraction : NetworkBehaviour
         {
             PlayerWantsToSleepServerRpc();
         }
-        /*
-        else if (dayNightCycle.isDayTime())
-        {
-            Debug.Log("It's day time advance day please");
-            AdvanceDay();
-        }
-        */
+
+
+
     }
 
     private IEnumerator Sleep()
