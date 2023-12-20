@@ -8839,8 +8839,8 @@ MonoBehaviour:
   jumpForce: 6.5
   staminaConsumptionRate: 10
   swimConsumptionRate: 7
-  staminaRegenRate: 5
-  stamina: 100
+  staminaRegenRate: 7
+  stamina: 200
   StaminaBar: {fileID: 7911530268110457399}
   chipSpeed: 2
   BackStaminaBar: {fileID: 1620825798624432340}
