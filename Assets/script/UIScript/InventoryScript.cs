@@ -155,8 +155,7 @@ public class InventoryScript : NetworkBehaviour
         { 
             TutorialManualUI.SetActive(false); 
         }
-        
-        
+                
     }
     public void closeMenu()
     {
