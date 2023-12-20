@@ -71,11 +71,13 @@ public class BedInteraction : NetworkBehaviour
         {
             PlayerWantsToSleepServerRpc();
         }
+        /*
         else if (dayNightCycle.isDayTime())
         {
             Debug.Log("It's day time advance day please");
             AdvanceDay();
         }
+        */
     }
 
     private IEnumerator Sleep()
