@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Unity.Netcode;
 using UnityEngine.UI;
 
@@ -29,11 +30,19 @@ public class OtherCoreScript : NetworkBehaviour
     public EnergyHolderScript PlayerScript;
     public bool energyInitialized = false; // Flag to check if energy is initialized
 
+    private void OnEnable()
+    {
+        ButtonInteractionScript.OnEnergyButtonPressed += TransferEnergyServerRpc;
+    }
+    private void OnDisable()
+    {
+        ButtonInteractionScript.OnEnergyButtonPressed -= TransferEnergyServerRpc;
+    }
     public override void OnNetworkSpawn()
     {
         if (IsServer && !energyInitialized)
         {
-            Energy.Value = Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
+            Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
             Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
             energyInitialized = true;
         }
@@ -94,8 +103,8 @@ public class OtherCoreScript : NetworkBehaviour
             EnergyBar.fillAmount = Mathf.Lerp(EnergyBar.fillAmount, hFraction, lerptimer / chipSpeed);
         }
     }
-
-    public void TransferEnergy(float amount)
+    [ServerRpc]
+    public void TransferEnergyServerRpc(float amount)
     {
         if (IsServer)
         {

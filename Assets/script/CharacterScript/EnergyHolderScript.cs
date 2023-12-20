@@ -34,8 +34,13 @@ public class EnergyHolderScript : NetworkBehaviour
         if (Energy.Value > MaxEnergy.Value)
         {
             Energy.Value = MaxEnergy.Value;
+            Debug.Log($"Current Energy after Increaes = {Energy.Value}");
         }
-        Debug.Log($"Current Energy after Increaes = {Energy.Value}");
+        else
+        {
+            Debug.Log("You're can't hold more Energy");
+        }
+        
     }
 
 }

@@ -78,12 +78,12 @@ public class InventoryScript : NetworkBehaviour
         {
             return;
         };
-        if (Input.GetKeyDown(KeyCode.I) && IsOpeningUI == false)
+        if (Input.GetKeyDown(KeyCode.Tab) && IsOpeningUI == false)
         {
             ToggleInventory();
             UpdateInventoryUI();
         }
-        else if (IsOpeningUI == true && Input.GetKeyDown(KeyCode.I))
+        else if (IsOpeningUI == true && Input.GetKeyDown(KeyCode.Tab))
         {
             inventoryUI.SetActive(false);
             CraftingUI.SetActive(false);
