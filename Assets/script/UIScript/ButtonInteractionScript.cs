@@ -8,7 +8,7 @@ public class ButtonInteractionScript : NetworkBehaviour
     public OtherCoreScript OtherCore;
     private void Update()
     {
-        OtherCore = GameObject.FindWithTag("OtherCore").GetComponent<OtherCoreScript>();
+        OtherCore = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
     }
     public void OnTransferEnergyButtonPressed(float amount)
     {

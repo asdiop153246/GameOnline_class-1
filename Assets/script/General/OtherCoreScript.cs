@@ -26,6 +26,7 @@ public class OtherCoreScript : NetworkBehaviour
 
     public HomeCoreScript HomeCore;
     public GameObject OtherCoreObject;
+    public EnergyHolderScript PlayerScript;
     public bool energyInitialized = false; // Flag to check if energy is initialized
 
     public override void OnNetworkSpawn()
@@ -56,6 +57,10 @@ public class OtherCoreScript : NetworkBehaviour
         if (OtherCoreObject == null)
         {
             OtherCoreObject = GameObject.FindWithTag("OtherCore");
+        }
+        if (PlayerScript == null)
+        {
+            PlayerScript = GameObject.FindWithTag("Player").GetComponent<EnergyHolderScript>();
         }
 
         // Debugging the current energy value on the client
@@ -99,7 +104,7 @@ public class OtherCoreScript : NetworkBehaviour
             {
                 Debug.Log("Value > amount transfering");
                 Energy.Value -= amount;
-                HomeCore.IncreaseEnergy(amount);
+                PlayerScript.IncreaseEnergy(amount);
             }
         }
     }

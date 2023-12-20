@@ -19,6 +19,7 @@ public class BedInteraction : NetworkBehaviour
     private HashSet<NetworkBehaviour> playersInCollider = new HashSet<NetworkBehaviour>();
     public NetworkVariable<int> dayCount = new NetworkVariable<int>(1);
     public NetworkedDayNightCycle dayNightCycle;
+    private bool canPressKey = false;
     //private bool isSleeping = false;
 
 
@@ -35,12 +36,12 @@ public class BedInteraction : NetworkBehaviour
             NetworkBehaviour enteringPlayer = other.gameObject.GetComponent<NetworkBehaviour>();
             if (enteringPlayer != null)
             {
-
                 playersInCollider.Add(enteringPlayer);
                 Debug.Log($"Total players in collider: {playersInCollider.Count}");
                 Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");
                 message.text = "Press E to sleep";
                 Debug.Log($"{enteringPlayer.gameObject.name} entered. Press 'E' to sleep.");
+                canPressKey = true;
             }
         }
     }
@@ -57,16 +58,24 @@ public class BedInteraction : NetworkBehaviour
                 Debug.Log($"Total players connected: {NetworkManager.Singleton.ConnectedClients.Count}");
                 Debug.Log($"{exitingPlayer.gameObject.name} left the sleeping area.");
             }
+            if (playersInCollider.Count == 0)
+            {
+                canPressKey = false;
+            }
         }
     }
 
     private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && canPressKey == true)
         {
             PlayerWantsToSleepServerRpc();
-        }       
+        }
+        else if (dayNightCycle.isDayTime())
+        {
+            Debug.Log("It's day time advance day please");
+            AdvanceDay();
+        }
     }
 
     private IEnumerator Sleep()

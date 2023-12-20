@@ -8431,6 +8431,7 @@ GameObject:
   - component: {fileID: 2557354056857119642}
   - component: {fileID: 8765142368127680010}
   - component: {fileID: 4925811962395196891}
+  - component: {fileID: 7287741527867635580}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -8832,7 +8833,6 @@ MonoBehaviour:
   animator: {fileID: 3814001647287031206}
   equipItems: {fileID: 7532727666176547822}
   Attacksound: {fileID: 1590974587016304672}
-  damagedParticle: {fileID: 0}
 --- !u!114 &4810625852106564043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9608,6 +9608,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OtherCore: {fileID: 0}
+--- !u!114 &7287741527867635580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496384795635220035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d141f707c538e5442bf50705157a7b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxEnergy:
+    m_InternalValue: 200
+  Energy:
+    m_InternalValue: 0
 --- !u!1 &8518653682617993062
 GameObject:
   m_ObjectHideFlags: 0

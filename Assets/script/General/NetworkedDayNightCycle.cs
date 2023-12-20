@@ -28,7 +28,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     [SerializeField] private IslandSpawnScript islandSpawnScript;
     public bool islandSpawnedThisCycle = false;
-
+    public float timeRatio;   
     [SerializeField] public GameObject monsterPrefab;
     [SerializeField] public Transform[] monsterSpawnPoints;
     private List<GameObject> spawnedMonsters = new List<GameObject>();
@@ -97,14 +97,15 @@ public class NetworkedDayNightCycle : NetworkBehaviour
 
     private void UpdateSunPosition()
     {
-        float timeRatio = currentDayTime / fullDayLength;
+        timeRatio = currentDayTime / fullDayLength;
         float sunRotationAngle = timeRatio * 360f;
         Vector3 sunDirection = Quaternion.Euler(sunRotationAngle, 0, 0) * noonSunDirection.normalized;
 
         sunLight.transform.forward = -sunDirection;
         UpdateLightColor(timeRatio); 
 
-        //Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        Debug.Log($"Time Ratio: {timeRatio}, Sun Rotation Angle: {sunRotationAngle}, Sun Direction: {sunDirection}");
+        //0.76 Day
     }
 
     private void OnDayTimeChanged(float oldTime, float newTime)
@@ -196,7 +197,6 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     }
     private void CheckAllMonstersDefeated()
     {
-
         if (monstersSpawned && spawnedMonsters.All(monster => monster == null))
         {
             StartCoroutine(ResetMonsterSpawn());
@@ -205,9 +205,10 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     public bool IsNightTime()
     {   
         
-        float timeRatio = currentDayTime / fullDayLength;        
+        timeRatio = currentDayTime / fullDayLength;        
         return timeRatio > 0.25f && timeRatio < 0.75f;
     }
+
     private IEnumerator ResetMonsterSpawn()
     {
         monstersSpawned = false;

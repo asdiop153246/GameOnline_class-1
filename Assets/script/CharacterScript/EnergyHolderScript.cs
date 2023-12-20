@@ -4,15 +4,38 @@ using UnityEngine;
 using Unity.Netcode;
 public class EnergyHolderScript : NetworkBehaviour
 {
+    private OtherCoreScript OtherCore;
+    private HomeCoreScript HomeCore;
+    public NetworkVariable<float> MaxEnergy = new NetworkVariable<float>(200);
+    public NetworkVariable<float> Energy = new NetworkVariable<float>();
 
-    void Start()
+    private void Start()
+    {        
+        HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+    }
+    private void Update()
     {
-        
+        if (OtherCore == null)
+        {
+            OtherCore = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void IncreaseEnergy(float amount)
     {
-        
+        Debug.Log("Transfering Energy is in PlayerHolderScript");
+        IncreaseEnergyServerRpc(amount);
     }
+
+    [ServerRpc]
+    private void IncreaseEnergyServerRpc(float amount)
+    {
+        Energy.Value += amount;        
+        if (Energy.Value > MaxEnergy.Value)
+        {
+            Energy.Value = MaxEnergy.Value;
+        }
+        Debug.Log($"Current Energy after Increaes = {Energy.Value}");
+    }
+
 }
