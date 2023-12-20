@@ -15,6 +15,7 @@ public class EndDemoScript : NetworkBehaviour
     public GameObject PlayerCamera;
     public GameObject CameraWin;
     public GameObject CameraLose;
+    public TextMeshProUGUI EndDemoText;
     private bool isEnding = false;
     private bool isStart = false;
     public bool isCamReady = false;
@@ -44,10 +45,7 @@ public class EndDemoScript : NetworkBehaviour
             {
                 if (HomeCore.Health.Value <= 0 || HomeCore.Energy.Value <= 0)
                 {
-                    CameraLose.gameObject.SetActive(true);
-                    PlayerCamera.gameObject.SetActive(false);
-                    isEnding = true;
-                    isStart = false;
+                    LoseSceneServerRpc();
                 }
             }
         }
@@ -72,23 +70,45 @@ public class EndDemoScript : NetworkBehaviour
             }
         }
     }
-
+    [ServerRpc]
+    private void LoseSceneServerRpc()
+    {
+        isEnding = true;
+        EndDemoText.text = "Game Over";
+        StartCoroutine(HandleVictorySequence(false));
+    }
     [ServerRpc]
     private void VictorySceneServerRpc()
     {
         isEnding = true;
         Helicopter.gameObject.SetActive(true);
-        StartCoroutine(HandleVictorySequence());
+        EndDemoText.text = "Thanks for playing Demo";
+        StartCoroutine(HandleVictorySequence(true));
     }
     [ClientRpc]
     private void VictorySceneClientRpc()
     {
         CameraWin.gameObject.SetActive(true);
+        EndDemoText.gameObject.SetActive(true);
         PlayerCamera.gameObject.SetActive(false);       
     }
-    private IEnumerator HandleVictorySequence()
+    [ClientRpc]
+    private void LoseSceneClientRpc()
     {
-        VictorySceneClientRpc(); // Activate victory scene for all clients
+        CameraLose.gameObject.SetActive(true);
+        EndDemoText.gameObject.SetActive(true);
+        PlayerCamera.gameObject.SetActive(false);
+    }
+    private IEnumerator HandleVictorySequence(bool isVictory)
+    {
+        if (isVictory == true) 
+        {
+            VictorySceneClientRpc(); 
+        }
+        else
+        {
+            LoseSceneClientRpc();
+        }       
 
         yield return new WaitForSeconds(20f);
 

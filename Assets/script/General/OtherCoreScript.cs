@@ -11,7 +11,7 @@ public class OtherCoreScript : NetworkBehaviour
     [Header("Values")]
     [SerializeField] private float startingEnergyRangeMin = 300;
     [SerializeField] private float startingEnergyRangeMax = 500;
-    [SerializeField] private NetworkVariable<float> Energy = new NetworkVariable<float>();
+    public NetworkVariable<float> Energy = new NetworkVariable<float>();
 
     [Header("Rate of Decrease")]
     public float EnergyDecreaseRate = 0.80f;

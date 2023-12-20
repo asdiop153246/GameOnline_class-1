@@ -34,8 +34,8 @@ public class PlayerControllerScript : NetworkBehaviour
     public float staminaConsumptionRate = 10f;
     public float swimConsumptionRate = 7f;
     public float staminaRegenRate = 5f;
-    public float stamina = 100f;
-    private float maxStamina = 100f;
+    public float stamina = 200f;
+    private float maxStamina = 200f;
     public Image StaminaBar;
     private float lerptimer;
     public float chipSpeed = 2f;
