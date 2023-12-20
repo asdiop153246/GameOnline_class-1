@@ -31,6 +31,7 @@ public class InventoryScript : NetworkBehaviour
     public GameObject inventoryUI;
     public GameObject CraftingUI;
     public GameObject MenuUI;
+    public GameObject TutorialManualUI;
     public List<UnityEngine.UI.Image> itemImages;
     public List<TMPro.TextMeshProUGUI> itemAmountTexts;
     public GameObject MenuSelectorUI;
@@ -87,6 +88,7 @@ public class InventoryScript : NetworkBehaviour
             inventoryUI.SetActive(false);
             CraftingUI.SetActive(false);
             MenuUI.SetActive(false);
+            TutorialManualUI.SetActive(false);
             MenuSelectorUI.SetActive(false);
             IsOpeningUI = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -122,6 +124,7 @@ public class InventoryScript : NetworkBehaviour
         inventoryUI.SetActive(true);
         CraftingUI.SetActive(false);
         MenuUI.SetActive(false);
+        TutorialManualUI.SetActive(false);
         IsOpeningUI = true;
     }
     public void OpenCrafting()
@@ -129,6 +132,7 @@ public class InventoryScript : NetworkBehaviour
         inventoryUI.SetActive(false);
         CraftingUI.SetActive(true);
         MenuUI.SetActive(false);
+        TutorialManualUI.SetActive(false);
         IsOpeningUI = true;
     }
     public void OpenMenu()
@@ -136,7 +140,23 @@ public class InventoryScript : NetworkBehaviour
         inventoryUI.SetActive(false);
         CraftingUI.SetActive(false);
         MenuUI.SetActive(true);
+        TutorialManualUI.SetActive(false);
         IsOpeningUI = true;
+    }
+    public void OpenManual()
+    {
+        if (!TutorialManualUI.activeSelf) {
+            TutorialManualUI.SetActive(true);
+            CraftingUI.SetActive(false);
+            MenuUI.SetActive(false);
+            IsOpeningUI = true;
+        }
+        else 
+        { 
+            TutorialManualUI.SetActive(false); 
+        }
+        
+        
     }
     public void closeMenu()
     {
@@ -144,6 +164,7 @@ public class InventoryScript : NetworkBehaviour
         CraftingUI.SetActive(false);
         MenuUI.SetActive(false);
         MenuSelectorUI.SetActive(false);
+        TutorialManualUI.SetActive(false);
         IsOpeningUI = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

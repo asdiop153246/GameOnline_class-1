@@ -5219,7 +5219,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5494746761020175080}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5916412658624309670}
+        m_TargetAssemblyTypeName: InventoryScript, Assembly-CSharp
+        m_MethodName: OpenManual
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3396968776130298618
 GameObject:
   m_ObjectHideFlags: 0
@@ -9020,6 +9032,7 @@ MonoBehaviour:
   inventoryUI: {fileID: 590700637}
   CraftingUI: {fileID: 7089769343756523508}
   MenuUI: {fileID: 294963796573939423}
+  TutorialManualUI: {fileID: 6601625334593238678}
   itemImages:
   - {fileID: 9001586390088938359}
   - {fileID: 2097643774084948643}
