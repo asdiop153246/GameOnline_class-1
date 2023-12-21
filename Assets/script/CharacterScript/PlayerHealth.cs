@@ -50,14 +50,14 @@ public class PlayerHealth : NetworkBehaviour
         CanRegenHealth();
         if (CanRegenHealth() == true && isDamaged == false)
         {
-            RequestRestoreHealthServerRpc(0.1f);
+            RequestRestoreHealthServerRpc(0.05f);
         }
         UpdateHealthUI();
     }
 
     public bool CanRegenHealth()
     {
-        return HungerThirst.hunger.Value >= 30 && HungerThirst.thirst.Value >= 15;        
+        return HungerThirst.hunger.Value >= 70 && HungerThirst.thirst.Value >= 50;        
     }
 
     public void UpdateHealthUI()

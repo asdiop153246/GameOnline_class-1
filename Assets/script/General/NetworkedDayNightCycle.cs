@@ -68,9 +68,9 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             CheckAllMonstersDefeated();
 
             if (currentDayTime >= fullDayLength * 0.76f && !islandSpawnedThisCycle)
-            {                
-                islandSpawnScript.SpawnIsland();
+            {
                 islandSpawnedThisCycle = true;
+                islandSpawnScript.SpawnIsland();                
             }
             
             if (currentDayTime < fullDayLength * 0.76f)

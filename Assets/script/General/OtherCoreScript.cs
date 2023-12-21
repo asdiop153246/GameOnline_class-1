@@ -25,6 +25,7 @@ public class OtherCoreScript : NetworkBehaviour
     public float chipSpeed = 2f;
     public bool isUIReady = false;
 
+    public NetworkedDayNightCycle DayTime;
     public HomeCoreScript HomeCore;
     public GameObject OtherCoreObject;
     public EnergyHolderScript PlayerScript;
@@ -56,6 +57,10 @@ public class OtherCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
+            if(DayTime.daytimeTrigger == true)
+            {
+                Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
+            }
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
         }
 
