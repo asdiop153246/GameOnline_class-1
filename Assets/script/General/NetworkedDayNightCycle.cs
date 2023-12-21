@@ -68,7 +68,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             UpdateSunPosition();
             CheckAllMonstersDefeated();
 
-            if (currentDayTime >= fullDayLength * 0.76f && !islandSpawnedThisCycle)
+            if (currentDayTime >= 225f && currentDayTime <= 229 && !islandSpawnedThisCycle)
             {
                 islandSpawnedThisCycle = true;
                 islandSpawnScript.SpawnIsland();                
@@ -85,6 +85,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             if (currentDayTime >= 225f && currentDayTime <= 229 &&daytimeTrigger == false)
             {
                 DayCount.dayCount.Value += 1;
+                
                 daytimeTrigger = true;
                 StartCoroutine(DelaybeforeTrigger());
                 

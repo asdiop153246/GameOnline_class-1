@@ -32,7 +32,7 @@ public class PlayerControllerScript : NetworkBehaviour
 
     [Header("Stamina")]
     public float staminaConsumptionRate = 10f;
-    public float swimConsumptionRate = 7f;
+    public float swimConsumptionRate = 10f;
     public float staminaRegenRate = 5f;
     public float stamina = 200f;
     private float maxStamina = 200f;

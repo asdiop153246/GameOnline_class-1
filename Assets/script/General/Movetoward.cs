@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 public class Movetoward : NetworkBehaviour
 {
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed = 10.0f;
     [SerializeField] private Transform target1;
     [SerializeField] private Transform target2;
     [SerializeField] private GameObject monsterPrefab;
