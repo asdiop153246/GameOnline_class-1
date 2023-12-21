@@ -44,7 +44,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     {
         StartCoroutine(UpdateTime());
         networkDayTime.OnValueChanged += OnDayTimeChanged;
-
+        currentDayTime = 230f;
         
         if (!globalVolume1.profile.TryGet<HDRISky>(out hdriSky1))
         {
@@ -58,6 +58,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         {
             DayCount = GameObject.FindWithTag("Bed").GetComponent<BedInteraction>();
         }
+
     }
 
     private void Update()
@@ -81,7 +82,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             {            
                 monstersSpawned = false;
             }
-            if (currentDayTime >= 225f && currentDayTime <= 227 &&daytimeTrigger == false)
+            if (currentDayTime >= 225f && currentDayTime <= 230 &&daytimeTrigger == false)
             {
                 DayCount.dayCount.Value += 1;
                 daytimeTrigger = true;
@@ -92,7 +93,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     }
     IEnumerator DelaybeforeTrigger()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(20f);
         daytimeTrigger = false;
     }
     IEnumerator UpdateTime()

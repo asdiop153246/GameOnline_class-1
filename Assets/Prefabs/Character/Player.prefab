@@ -9087,6 +9087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Havespear: {fileID: 0}
+  inventory: {fileID: 0}
   Isequip: 0
   Spear: {fileID: 2038476806}
 --- !u!114 &6317562078715141195
@@ -9212,7 +9213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 6605962441980350462}
   Inventory: {fileID: 5916412658624309670}
-  Durability: 5
+  Durability: 15
   attackDamage: 25
   attackDelay: 1
   isAttacking: 0

@@ -86,7 +86,7 @@ public class BedInteraction : NetworkBehaviour
 
         AdvanceDay();
         message.text = "";
-        islandSpawnScript.SpawnIsland();
+        //islandSpawnScript.SpawnIsland();
         yield return null;
     }
 
