@@ -58,13 +58,13 @@ public class OtherCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
-            if (DayTime.daytimeTrigger == true && isIslandTrigger == true)
-            {
-                Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
-                isIslandTrigger = false;
-                Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
-            }            
+            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);                   
+        }
+        if (DayTime.daytimeTrigger == true && isIslandTrigger == true)
+        {
+            Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
+            isIslandTrigger = false;
+            Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
         }
 
         if (HomeCore == null)

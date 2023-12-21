@@ -44,7 +44,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     {
         StartCoroutine(UpdateTime());
         networkDayTime.OnValueChanged += OnDayTimeChanged;
-        currentDayTime = 230f;
+        currentDayTime = 235f;
         
         if (!globalVolume1.profile.TryGet<HDRISky>(out hdriSky1))
         {
@@ -82,7 +82,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             {            
                 monstersSpawned = false;
             }
-            if (currentDayTime >= 225f && currentDayTime <= 230 &&daytimeTrigger == false)
+            if (currentDayTime >= 225f && currentDayTime <= 229 &&daytimeTrigger == false)
             {
                 DayCount.dayCount.Value += 1;
                 daytimeTrigger = true;
