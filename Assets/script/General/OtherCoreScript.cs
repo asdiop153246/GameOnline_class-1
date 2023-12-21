@@ -114,7 +114,7 @@ public class OtherCoreScript : NetworkBehaviour
         if (IsServer)
         {
             Debug.Log("[Server]Is in TransferEnergy Function");
-            if (Energy.Value >= amount && IsLocalPlayer)
+            if (Energy.Value >= amount && PlayerScript.canHoldEnergy == true)
             {
                 Debug.Log("Value > amount transfering");
                 Energy.Value -= amount;
