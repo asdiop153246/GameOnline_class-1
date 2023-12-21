@@ -110,8 +110,8 @@ public class Movetoward : NetworkBehaviour
     {
         if (GetComponent<NetworkObject>())
         {
-            GetComponent<NetworkObject>().Despawn();
-            Debug.Log("Island despawned");
+            DespawnNetworkObjectAndChildren(GetComponent<NetworkObject>());
+            Debug.Log("Island and its resources despawned");
         }
         else
         {
@@ -119,6 +119,21 @@ public class Movetoward : NetworkBehaviour
         }
     }
 
+    private void DespawnNetworkObjectAndChildren(NetworkObject networkObject)
+    {
+        // Despawn all child NetworkObjects first
+        foreach (Transform child in networkObject.transform)
+        {
+            NetworkObject childNetworkObject = child.GetComponent<NetworkObject>();
+            if (childNetworkObject != null)
+            {
+                DespawnNetworkObjectAndChildren(childNetworkObject);
+            }
+        }
+
+        // Despawn this NetworkObject
+        networkObject.Despawn();
+    }
     private void SpawnMonsters()
     {
         if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
