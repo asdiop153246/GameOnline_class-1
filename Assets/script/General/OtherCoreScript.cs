@@ -57,11 +57,11 @@ public class OtherCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            if(DayTime.daytimeTrigger == true)
+            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
+            if (DayTime.daytimeTrigger == true)
             {
                 Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
-            }
-            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
+            }            
         }
 
         if (HomeCore == null)
