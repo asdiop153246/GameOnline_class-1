@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using System;
+
 public class PlayerHealth : NetworkBehaviour
 {
     [SerializeField] GameObject Ui;
@@ -10,7 +12,10 @@ public class PlayerHealth : NetworkBehaviour
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100f);
     public GameObject Frame;
     public Image HealthBar;
+    private HungerThirstScript HungerThirst;
+    private bool isDamaged;
     private float lerptimer;
+    private bool canRegen;
     public float chipSpeed = 2f;
     public Image BackHealthBar;
     //private bool isInitialized = false;
@@ -21,6 +26,7 @@ public class PlayerHealth : NetworkBehaviour
         {
             //Frame.SetActive(true);
             Health.Value = maxHealth.Value;
+            HungerThirst = GetComponent<HungerThirstScript>();
         }
         else
         {
@@ -33,16 +39,27 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (!IsOwner) return;
         HealthBar.fillAmount = Health.Value / maxHealth.Value;
-        if (Input.GetKeyDown(KeyCode.G))
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    RequestTakeDamageServerRpc(10);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    RequestRestoreHealthServerRpc(10);
+        //}
+        CanRegenHealth();
+        if (CanRegenHealth() == true && isDamaged == false)
         {
-            RequestTakeDamageServerRpc(10);
-        }
-        else if (Input.GetKeyDown(KeyCode.H))
-        {
-            RequestRestoreHealthServerRpc(10);
+            RequestRestoreHealthServerRpc(0.1f);
         }
         UpdateHealthUI();
     }
+
+    public bool CanRegenHealth()
+    {
+        return HungerThirst.hunger.Value >= 30 && HungerThirst.thirst.Value >= 15;        
+    }
+
     public void UpdateHealthUI()
     {
         float fillF = HealthBar.fillAmount;
@@ -69,12 +86,32 @@ public class PlayerHealth : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void RequestTakeDamageServerRpc(float damage)
     {
-        TakeDamage(damage);
+        Health.Value -= damage;
+        Health.Value = Mathf.Max(Health.Value, 0);
+        
+        Debug.Log("Current Health: " + Health.Value);
+        if (Health.Value <= 0)
+        {
+            Debug.Log("Player should die now");
+            DieServerRpc();
+        }
+        StartCoroutine(DelaybeforecanRegen());
+        //Debug.Log(Health.Value);
+        //TakeDamage(damage);
+    }
+    IEnumerator DelaybeforecanRegen()
+    {
+        isDamaged = true;
+        yield return new WaitForSeconds(10f);
+        isDamaged = false;
+
     }
     [ServerRpc(RequireOwnership = false)]
     public void RequestRestoreHealthServerRpc(float health)
     {
-        RestoreHealth(health);
+        Health.Value += health;
+        Health.Value = Mathf.Min(Health.Value, maxHealth.Value);
+        //RestoreHealth(health);
     }
     public void TakeDamage(float damage)
     {

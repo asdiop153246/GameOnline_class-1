@@ -32,7 +32,7 @@ public class TutorialScript : NetworkBehaviour
             StartTypingText("Welcome to the Island. You can press WASD to walk around. You can press SHIFT to run", 0.05f);
             isInitialised = false;
         }
-        else if (!isOpenInventory && Input.GetKeyDown(KeyCode.I))
+        else if (!isOpenInventory && Input.GetKeyDown(KeyCode.Tab))
         {
             StartTypingText("Welcome to Inventory UI", 0.05f);
             isOpenInventory = true;
