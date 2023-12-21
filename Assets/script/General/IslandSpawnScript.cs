@@ -14,7 +14,7 @@ public class IslandSpawnScript : NetworkBehaviour
     [SerializeField] private Vector3 spawnPosition5;
     [SerializeField] private Vector3 spawnPosition6;
 
-    public GameObject OtherCore;
+    public GameObject OtherIsland;
     public bool isSpawned = false;
     [Header("Item Spawning")]
     [SerializeField] private GameObject[] itemPrefabs;
@@ -31,14 +31,17 @@ public class IslandSpawnScript : NetworkBehaviour
         }
     }
 
+    private void Update()
+    {
+        OtherIsland = GameObject.FindWithTag("OtherIsland");        
+    }
     public void SpawnIsland()
     {        
-        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || isSpawned == true)
         {
             Debug.LogError("Network is not ready.");
             return;
         }
-              
         int randomIndex = Random.Range(1, islandPrefabs.Length);
         Debug.Log("Currentlly island = "+ randomIndex);
         GameObject island = null;
@@ -156,7 +159,14 @@ public class IslandSpawnScript : NetworkBehaviour
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
         }
-        
+        if(OtherIsland != null)
+        {
+            isSpawned = true;
+        }
+        else
+        {
+            isSpawned = false;
+        }
 
     }
     private void SpawnRandomItemsAround(GameObject island)

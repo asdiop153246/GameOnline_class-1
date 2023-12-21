@@ -48,10 +48,6 @@ public class TutorialScript : NetworkBehaviour
             isOpenHomeUI = true;
         }
 
-
-
-
-
     }
 
     private IEnumerator DelaybeforeNextText(float time)

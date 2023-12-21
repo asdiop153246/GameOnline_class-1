@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a3584c10e6769d44a57b4a4d0c473b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   target1: {fileID: 5077081356632962817}
   target2: {fileID: 1789989731480279945}
   monsterPrefab: {fileID: 1924439643053029929, guid: f2fd8739e06fdb9479ce0005523d41eb, type: 3}

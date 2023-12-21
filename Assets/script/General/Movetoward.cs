@@ -25,11 +25,11 @@ public class Movetoward : NetworkBehaviour
         //{
         if (target1 != null && target2 != null)
         {
-            OtherCoreScript = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
             DayTime = GameObject.FindWithTag("DayNightCycle").GetComponent<NetworkedDayNightCycle>();
+            OtherCoreScript = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();           
             target1Position = target1.position;  // Store global coordinates
             target2Position = target2.position;  // Store global coordinates
-            currentTarget = target1;
+            currentTarget = target1;           
         }
         else
         {
