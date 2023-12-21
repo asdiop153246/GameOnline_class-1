@@ -29,22 +29,22 @@ public class TutorialScript : NetworkBehaviour
 
         if (isInitialised)
         {
-            StartTypingText("Welcome to the Island. You can press WASD to walk around. You can press SHIFT to run", 0.05f);
+            StartTypingText("Welcome to the Island. You can press 'WASD' to walk around. Press 'SHIFT' to run and press 'Space' to jump. You can look at items and press 'E' to collect.", 0.05f);
             isInitialised = false;
         }
         else if (!isOpenInventory && Input.GetKeyDown(KeyCode.Tab))
         {
-            StartTypingText("Welcome to Inventory UI", 0.05f);
+            StartTypingText("Welcome to Inventory UI. You can see your item and consume your food / water here.", 0.05f);
             isOpenInventory = true;
         }
         else if (!isOpenCrafting && CraftingUI.activeInHierarchy)
         {
-            StartTypingText("Welcome to Crafting UI", 0.05f);
+            StartTypingText("Welcome to Crafting UI. You can craft tool / weapon here.", 0.05f);
             isOpenCrafting = true;
         }
         else if (!isOpenHomeUI && HomeUI.isOpeningHouseUI)
         {
-            StartTypingText("Welcome to HomeCore UI", 0.05f);
+            StartTypingText("Welcome to HomeCore UI.", 0.05f);
             isOpenHomeUI = true;
         }
 
