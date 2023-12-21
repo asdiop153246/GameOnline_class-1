@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 6712.451, g: 7982, b: 9437.047, a: 1}
+  m_IndirectSpecularColor: {r: 209.7641, g: 249.4375, b: 294.9077, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22112,6 +22112,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 43155185, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b82cfe7a714d95a45afcbdeba6a93734, type: 2}
+    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7935597347011099830, guid: b82cfe7a714d95a45afcbdeba6a93734, type: 2}
+    - target: {fileID: 669969952, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 669969954, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 669969957, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2900233170
@@ -22144,6 +22176,18 @@ PrefabInstance:
       propertyPath: BackHealthBar
       value: 
       objectReference: {fileID: 1173659313}
+    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2025980522, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1716826248
@@ -48585,6 +48629,7 @@ MonoBehaviour:
   BackEnergyBar: {fileID: 1363873872}
   chipSpeed: 2
   isUIReady: 0
+  DayTime: {fileID: 0}
   HomeCore: {fileID: 0}
   OtherCoreObject: {fileID: 0}
   PlayerScript: {fileID: 0}
