@@ -99,6 +99,10 @@ public class InteractionScript : NetworkBehaviour
         {
             HaveSpear = true;
         }
+        else
+        {
+            HaveSpear = false;
+        }
         if (IsLookingAtHomeCore() || IsLookingAtCore() || IsLookingAtResource().HasValue)
         {
             ShowInteractionNotification("Press E to interact");

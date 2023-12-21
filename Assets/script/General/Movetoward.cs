@@ -49,7 +49,7 @@ public class Movetoward : NetworkBehaviour
             // Check if the island is close to the target position
             if (Vector3.Distance(transform.position, targetPosition) < 1f) 
             {
-                float Seconds = OtherCoreScript.Energy.Value / 2.5f;
+                float Seconds = OtherCoreScript.Energy.Value / 2f;
                 Debug.Log($"The island will stay for {Seconds} Seconds");
                 StartCoroutine(WaitAndMove(Seconds));
             }

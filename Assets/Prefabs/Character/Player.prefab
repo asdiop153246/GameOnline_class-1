@@ -9211,8 +9211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 6605962441980350462}
-  Inventory: {fileID: 0}
-  Durability: 10
+  Inventory: {fileID: 5916412658624309670}
+  Durability: 5
   attackDamage: 25
   attackDelay: 1
   isAttacking: 0
@@ -10828,6 +10828,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1748905957, guid: d4386a4cede49244f8180b265b0844fa, type: 3}
+      propertyPath: equipItems
+      value: 
+      objectReference: {fileID: 7532727666176547822}
     - target: {fileID: 1748905957, guid: d4386a4cede49244f8180b265b0844fa, type: 3}
       propertyPath: playerController
       value: 

@@ -235,7 +235,7 @@ public class InventoryScript : NetworkBehaviour
     {
         if (items[3].name == "Food")
         {
-            items[3].amount += newCount;
+            items[3].amount = newCount;
 
         }
         UpdateInventoryUI();
@@ -244,8 +244,7 @@ public class InventoryScript : NetworkBehaviour
     {
         if (items[4].name == "Water")
         {
-            items[4].amount += newCount;
-
+            items[4].amount = newCount;
         }
         UpdateInventoryUI();
     }
@@ -253,7 +252,7 @@ public class InventoryScript : NetworkBehaviour
     {
         if (items[5].name == "Cola")
         {
-            items[5].amount += newCount;
+            items[5].amount = newCount;
 
         }
         UpdateInventoryUI();
@@ -262,7 +261,7 @@ public class InventoryScript : NetworkBehaviour
     {
         if (items[1].name == "Rope")
         {
-            items[1].amount += newCount;
+            items[1].amount = newCount;
 
         }
         UpdateInventoryUI();

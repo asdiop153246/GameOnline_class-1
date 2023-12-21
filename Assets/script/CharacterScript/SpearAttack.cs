@@ -7,8 +7,8 @@ public class SpearAttack : NetworkBehaviour
 {
     public PlayerControllerScript playerController;
     public InventoryScript Inventory;
-    private int MaxDurability = 10;
-    public int Durability = 10;
+    private int MaxDurability = 5;
+    public int Durability = 5;
     public int attackDamage = 25;  
     public float attackDelay = 1f; 
     public bool isAttacking = false;
@@ -50,13 +50,26 @@ public class SpearAttack : NetworkBehaviour
                 isAttacking = false;
                 if(Durability == 0)
                 {
+                    equipItems.RequestUnEquipSpearServerRpc();
                     Inventory.DeductItemServerRpc("Spear", 1);
+                    DeductItem("Spear", 1);
                     Durability = MaxDurability;
                 }
             }
         }
     }
+    public void DeductItem(string itemName, int amount)
+    {
 
+        Item itemToDeduct = Inventory.items.Find(item => item.name == itemName);
+        if (itemToDeduct != null)
+        {
+            itemToDeduct.amount -= amount;
+
+        }
+
+        Inventory.UpdateInventoryUI();
+    }
     private IEnumerator AttackDelay()
     {
         canAttack = false;

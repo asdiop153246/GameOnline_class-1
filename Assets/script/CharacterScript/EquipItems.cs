@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class EquipItems : NetworkBehaviour
 {
     public InteractionScript Havespear;
+    public InventoryScript inventory;
     public bool Isequip = false;
     [SerializeField]
     public NetworkObject Spear; 
@@ -14,6 +15,7 @@ public class EquipItems : NetworkBehaviour
     {
         
         Havespear = this.GetComponent<InteractionScript>();
+        inventory = this.GetComponent<InventoryScript>();
         Spear.gameObject.SetActive(false); 
     }
 
@@ -22,7 +24,7 @@ public class EquipItems : NetworkBehaviour
         if (!IsOwner)
             return; 
 
-        if (Havespear.HaveSpear && Input.GetKeyDown(KeyCode.Q))
+        if (inventory.spearCount.Value >= 1 && Input.GetKeyDown(KeyCode.Q))
         {
             if (!Isequip)
             {
@@ -40,12 +42,14 @@ public class EquipItems : NetworkBehaviour
     [ServerRpc]
     public void RequestEquipSpearServerRpc()
     {
+        Isequip = true;
         EquipSpearClientRpc();
     }
 
     [ServerRpc]
     public void RequestUnEquipSpearServerRpc()
     {
+        Isequip = false;
         UnEquipSpearClientRpc();
     }
 

@@ -30,6 +30,7 @@ public class OtherCoreScript : NetworkBehaviour
     public GameObject OtherCoreObject;
     public EnergyHolderScript PlayerScript;
     public bool energyInitialized = false; // Flag to check if energy is initialized
+    public bool isIslandTrigger = false;
 
     private void OnEnable()
     {
@@ -58,8 +59,10 @@ public class OtherCoreScript : NetworkBehaviour
         if (IsServer)
         {
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
-            if (DayTime.daytimeTrigger == true)
+            if (DayTime.daytimeTrigger == true && isIslandTrigger == true)
             {
+                Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
+                isIslandTrigger = false;
                 Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
             }            
         }
