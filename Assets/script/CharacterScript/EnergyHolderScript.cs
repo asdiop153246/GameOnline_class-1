@@ -24,6 +24,10 @@ public class EnergyHolderScript : NetworkBehaviour
         {
             canHoldEnergy = false;
         }
+        else
+        {
+            canHoldEnergy = true;
+        }
     }
 
     public void IncreaseEnergy(float amount)
