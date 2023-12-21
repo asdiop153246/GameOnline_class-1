@@ -14,7 +14,7 @@ public class Movetoward : NetworkBehaviour
     private Vector3 target1Position;
     private Vector3 target2Position;
     private float stoppingDistance;
-
+    public NetworkedDayNightCycle DayTime;
     public Transform currentTarget;
     private bool isWaiting = false;
     //private bool isFlooding = false;
@@ -26,6 +26,7 @@ public class Movetoward : NetworkBehaviour
         if (target1 != null && target2 != null)
         {
             OtherCoreScript = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
+            DayTime = GameObject.FindWithTag("DayNightCycle").GetComponent<NetworkedDayNightCycle>();
             target1Position = target1.position;  // Store global coordinates
             target2Position = target2.position;  // Store global coordinates
             currentTarget = target1;
@@ -55,7 +56,7 @@ public class Movetoward : NetworkBehaviour
             }
 
             // If it is close to target2, despawn the island
-            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f) 
+            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f || DayTime.IsNightTime() == true) 
             {
                 DespawnIsland();
             }

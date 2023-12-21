@@ -13,6 +13,7 @@ public class OtherCoreScript : NetworkBehaviour
     [SerializeField] private float startingEnergyRangeMin = 300;
     [SerializeField] private float startingEnergyRangeMax = 500;
     public NetworkVariable<float> Energy = new NetworkVariable<float>();
+    public float Energycount;
 
     [Header("Rate of Decrease")]
     public float EnergyDecreaseRate = 0.80f;
@@ -58,28 +59,29 @@ public class OtherCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);                   
-        }
-        if (DayTime.daytimeTrigger == true && isIslandTrigger == true)
+            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
+            Energycount = Energy.Value;
+        }        
+        if (OtherCoreObject != null && energyInitialized == false && DayTime.currentDayTime >= 225)
         {
-            Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
-            isIslandTrigger = false;
             Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
+            Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
+            energyInitialized = true;
         }
-
         if (HomeCore == null)
         {
             HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
         }
         if (OtherCoreObject == null)
         {
+            energyInitialized = false;
             OtherCoreObject = GameObject.FindWithTag("OtherCore");
         }
         if (PlayerScript == null)
         {
             PlayerScript = GameObject.FindWithTag("Player").GetComponent<EnergyHolderScript>();
         }
-
+        
         // Debugging the current energy value on the client
         //Debug.Log($"Current Energy (Update): {Energy.Value}");
     }
