@@ -6,6 +6,7 @@ public class EnergyHolderScript : NetworkBehaviour
 {
     private OtherCoreScript OtherCore;
     private HomeCoreScript HomeCore;
+    public bool canHoldEnergy = true;
     public NetworkVariable<float> MaxEnergy = new NetworkVariable<float>(200);
     public NetworkVariable<float> Energy = new NetworkVariable<float>();
 
@@ -18,6 +19,14 @@ public class EnergyHolderScript : NetworkBehaviour
         if (OtherCore == null)
         {
             OtherCore = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
+        }
+        if (Energy.Value == MaxEnergy.Value)
+        {
+            canHoldEnergy = false;
+        }
+        else
+        {
+            canHoldEnergy = true;
         }
     }
 
@@ -38,7 +47,7 @@ public class EnergyHolderScript : NetworkBehaviour
         }
         else
         {
-            Debug.Log("You're can't hold more Energy");
+            Debug.Log("You can't hold more Energy");
         }
         
     }
