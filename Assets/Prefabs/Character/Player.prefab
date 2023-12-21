@@ -9211,6 +9211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 6605962441980350462}
+  Inventory: {fileID: 0}
+  Durability: 10
   attackDamage: 25
   attackDelay: 1
   isAttacking: 0
@@ -10007,6 +10009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d141f707c538e5442bf50705157a7b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHoldEnergy: 1
   MaxEnergy:
     m_InternalValue: 200
   Energy:
@@ -10817,6 +10820,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 3814001647287031206}
+    - target: {fileID: 1748905957, guid: d4386a4cede49244f8180b265b0844fa, type: 3}
+      propertyPath: Inventory
+      value: 
+      objectReference: {fileID: 5916412658624309670}
     - target: {fileID: 1748905957, guid: d4386a4cede49244f8180b265b0844fa, type: 3}
       propertyPath: m_Enabled
       value: 0

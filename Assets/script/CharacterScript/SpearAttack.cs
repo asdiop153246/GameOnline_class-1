@@ -6,6 +6,9 @@ using Unity.Netcode;
 public class SpearAttack : NetworkBehaviour
 {
     public PlayerControllerScript playerController;
+    public InventoryScript Inventory;
+    private int MaxDurability = 10;
+    public int Durability = 10;
     public int attackDamage = 25;  
     public float attackDelay = 1f; 
     public bool isAttacking = false;
@@ -43,7 +46,13 @@ public class SpearAttack : NetworkBehaviour
             {
                 Debug.Log("Detected enemy for attack");
                 InformServerOfAttackServerRpc(monster.NetworkObject.NetworkObjectId, attackDamage);
+                Durability -= 1;
                 isAttacking = false;
+                if(Durability == 0)
+                {
+                    Inventory.DeductItemServerRpc("Spear", 1);
+                    Durability = MaxDurability;
+                }
             }
         }
     }
