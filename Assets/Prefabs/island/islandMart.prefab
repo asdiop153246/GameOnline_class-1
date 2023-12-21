@@ -56901,7 +56901,7 @@ GameObject:
   - component: {fileID: 4337509138417912616}
   m_Layer: 0
   m_Name: islandMart
-  m_TagString: Untagged
+  m_TagString: OtherIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57027,6 +57027,8 @@ MonoBehaviour:
   - {fileID: 2919816059699273492}
   - {fileID: 657174314785409428}
   OtherCore: {fileID: 0}
+  OtherCoreScript: {fileID: 0}
+  DayTime: {fileID: 0}
   currentTarget: {fileID: 0}
 --- !u!1 &8189390268432433296
 GameObject:

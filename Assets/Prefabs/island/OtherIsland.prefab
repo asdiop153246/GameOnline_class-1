@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 6463443098715019825}
   m_Layer: 3
   m_Name: OtherIsland
-  m_TagString: Untagged
+  m_TagString: OtherIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -496,6 +496,9 @@ MonoBehaviour:
   - {fileID: 3851239543463394617}
   - {fileID: 3851239543633820307}
   - {fileID: 3851239543689660534}
+  OtherCore: {fileID: 0}
+  OtherCoreScript: {fileID: 0}
+  DayTime: {fileID: 0}
   currentTarget: {fileID: 0}
 --- !u!114 &3851239543924977348
 MonoBehaviour:

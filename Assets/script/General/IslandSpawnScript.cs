@@ -15,6 +15,7 @@ public class IslandSpawnScript : NetworkBehaviour
     [SerializeField] private Vector3 spawnPosition6;
 
     public GameObject OtherCore;
+    public bool isSpawned = false;
     [Header("Item Spawning")]
     [SerializeField] private GameObject[] itemPrefabs;
     [SerializeField] private GameObject woodPrefabs;
@@ -37,7 +38,7 @@ public class IslandSpawnScript : NetworkBehaviour
             Debug.LogError("Network is not ready.");
             return;
         }
-
+              
         int randomIndex = Random.Range(1, islandPrefabs.Length);
         Debug.Log("Currentlly island = "+ randomIndex);
         GameObject island = null;
@@ -155,6 +156,7 @@ public class IslandSpawnScript : NetworkBehaviour
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
         }
+        
 
     }
     private void SpawnRandomItemsAround(GameObject island)

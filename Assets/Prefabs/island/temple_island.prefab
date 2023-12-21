@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 8549281193809435129}
   m_Layer: 0
   m_Name: temple_island
-  m_TagString: Untagged
+  m_TagString: OtherIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -332,6 +332,8 @@ MonoBehaviour:
   - {fileID: 356780446440004096}
   - {fileID: 4120800450583445461}
   OtherCore: {fileID: 0}
+  OtherCoreScript: {fileID: 0}
+  DayTime: {fileID: 0}
   currentTarget: {fileID: 0}
 --- !u!114 &8549281193809435129
 MonoBehaviour:

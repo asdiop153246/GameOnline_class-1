@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4745636140318540033}
   m_Layer: 3
   m_Name: island_Cafe
-  m_TagString: Untagged
+  m_TagString: OtherIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,6 +141,8 @@ MonoBehaviour:
   - {fileID: 7971048755886333168}
   - {fileID: 4344833864202785413}
   OtherCore: {fileID: 0}
+  OtherCoreScript: {fileID: 0}
+  DayTime: {fileID: 0}
   currentTarget: {fileID: 0}
 --- !u!114 &4745636140318540033
 MonoBehaviour:

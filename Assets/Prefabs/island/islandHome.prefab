@@ -823,6 +823,7 @@ MonoBehaviour:
   dayCount:
     m_InternalValue: 1
   dayNightCycle: {fileID: 0}
+  isTriggerDay: 0
 --- !u!1 &1015741091231067345
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2419,7 @@ GameObject:
   - component: {fileID: 1306063719}
   m_Layer: 8
   m_Name: islandHome
-  m_TagString: Untagged
+  m_TagString: OtherIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
