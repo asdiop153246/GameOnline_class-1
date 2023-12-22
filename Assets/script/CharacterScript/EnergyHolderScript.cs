@@ -40,7 +40,7 @@ public class EnergyHolderScript : NetworkBehaviour
     private void IncreaseEnergyServerRpc(float amount)
     {
         Energy.Value += amount;        
-        if (Energy.Value <= MaxEnergy.Value && canHoldEnergy)
+        if (Energy.Value < MaxEnergy.Value && canHoldEnergy == true)
         {
             Energy.Value = MaxEnergy.Value;
             Debug.Log($"Current Energy after Increaes = {Energy.Value}");

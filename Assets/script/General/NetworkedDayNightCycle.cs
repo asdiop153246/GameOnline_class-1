@@ -241,7 +241,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
     {
         if (IsServer)  
         {       
-            currentDayTime = fullDayLength * 0.76f;
+            currentDayTime = fullDayLength * 0.79f;
             networkDayTime.Value = currentDayTime;              
             UpdateSunPosition();
             UpdateHDRISky(currentDayTime / fullDayLength);
