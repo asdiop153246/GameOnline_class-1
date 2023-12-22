@@ -25,7 +25,7 @@ public class OtherCoreScript : NetworkBehaviour
     private float lerptimer;
     public float chipSpeed = 2f;
     public bool isUIReady = false;
-
+    private bool isGameStarted = false;
     public NetworkedDayNightCycle DayTime;
     public HomeCoreScript HomeCore;
     public GameObject OtherCoreObject;
@@ -48,7 +48,10 @@ public class OtherCoreScript : NetworkBehaviour
             Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
             Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
             energyInitialized = true;
+            isGameStarted = true;
+
         }
+
 
         Energy.OnValueChanged += UpdateEnergyUI;
     }
@@ -61,26 +64,30 @@ public class OtherCoreScript : NetworkBehaviour
         {
             DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
             Energycount = Energy.Value;
-        }        
-        if (OtherCoreObject != null && energyInitialized == false && DayTime.currentDayTime >= 225)
-        {
-            Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
-            Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
-            energyInitialized = true;
         }
-        if (HomeCore == null)
+        if (isGameStarted == true)
         {
-            HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+            if (OtherCoreObject != null && energyInitialized == false && DayTime.currentDayTime >= 225)
+            {
+                Energy.Value = UnityEngine.Random.Range(startingEnergyRangeMin, startingEnergyRangeMax);
+                Debug.Log($"[Server] Setting starting energy to: {Energy.Value}");
+                energyInitialized = true;
+            }
+            if (HomeCore == null)
+            {
+                HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+            }
+            if (OtherCoreObject == null)
+            {
+                energyInitialized = false;
+                OtherCoreObject = GameObject.FindWithTag("OtherCore");
+            }
+            if (PlayerScript == null)
+            {
+                PlayerScript = GameObject.FindWithTag("Player").GetComponent<EnergyHolderScript>();
+            }
         }
-        if (OtherCoreObject == null)
-        {
-            energyInitialized = false;
-            OtherCoreObject = GameObject.FindWithTag("OtherCore");
-        }
-        if (PlayerScript == null)
-        {
-            PlayerScript = GameObject.FindWithTag("Player").GetComponent<EnergyHolderScript>();
-        }
+
         
         // Debugging the current energy value on the client
         //Debug.Log($"Current Energy (Update): {Energy.Value}");

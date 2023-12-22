@@ -76,6 +76,11 @@ public class NetworkedDayNightCycle : NetworkBehaviour
                 //islandSpawnScript.SpawnIsland();
                 StartCoroutine(DelaybeforeTrigger());
             }
+            else if (currentDayTime <= 224 && currentDayTime >= 231)
+            {
+                daytimeTrigger = false;
+                islandSpawnedThisCycle = false;
+            }
             
             if (monstersSpawned && monsterSpawnPoints.All(monster => !monster.gameObject.activeSelf))
             {            

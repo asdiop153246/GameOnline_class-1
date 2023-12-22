@@ -33,7 +33,15 @@ public class IslandSpawnScript : NetworkBehaviour
 
     private void Update()
     {
-        OtherIsland = GameObject.FindWithTag("OtherIsland");        
+        OtherIsland = GameObject.FindWithTag("OtherIsland");
+        if (OtherIsland != null)
+        {
+            isSpawned = true;
+        }
+        else
+        {
+            isSpawned = false;
+        }
     }
     public void SpawnIsland()
     {        
@@ -158,14 +166,6 @@ public class IslandSpawnScript : NetworkBehaviour
             {
                 Debug.LogWarning("No NavMeshSurface component found on the island prefab.");
             }
-        }
-        if(OtherIsland != null)
-        {
-            isSpawned = true;
-        }
-        else
-        {
-            isSpawned = false;
         }
 
     }

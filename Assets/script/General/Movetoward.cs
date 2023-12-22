@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
@@ -9,6 +10,7 @@ public class Movetoward : NetworkBehaviour
     [SerializeField] private Transform target2;
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Transform[] monsterSpawnPoints;
+    private List<NetworkObject> spawnedMonsters = new List<NetworkObject>();
     public GameObject OtherCore;
     public OtherCoreScript OtherCoreScript;
     private Vector3 target1Position;
@@ -41,26 +43,33 @@ public class Movetoward : NetworkBehaviour
 
     private void Update()
     {
-        if (IsServer && !isWaiting)
+        if (IsServer)
         {
-            MoveToTarget();
-
-            Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;
-
-            // Check if the island is close to the target position
-            if (Vector3.Distance(transform.position, targetPosition) < 1f) 
+            if (!isWaiting)
             {
-                float Seconds = OtherCoreScript.Energy.Value / 2f;
-                Debug.Log($"The island will stay for {Seconds} Seconds");
-                StartCoroutine(WaitAndMove(Seconds));
-            }
+                MoveToTarget();
 
-            // If it is close to target2, despawn the island
-            if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f || DayTime.IsNightTime() == true) 
+                Vector3 targetPosition = currentTarget == target1 ? target1Position : target2Position;
+                // Check if the island is close to the target position
+                if (Vector3.Distance(transform.position, targetPosition) < 1f)
+                {
+                    float Seconds = OtherCoreScript.Energy.Value / 2f;
+                    Debug.Log($"The island will stay for {Seconds} Seconds");
+                    StartCoroutine(WaitAndMove(Seconds));
+                }
+                // If it is close to target2, despawn the island
+                if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f || (DayTime.IsNightTime() == true))
+                {
+                    DespawnIsland();
+                }
+            }
+            if (DayTime.IsNightTime() == true)
             {
                 DespawnIsland();
             }
         }
+
+
     }
 
     private void MoveToTarget()
@@ -108,6 +117,7 @@ public class Movetoward : NetworkBehaviour
 
     private void DespawnIsland()
     {
+        DespawnAllMonsters();
         if (GetComponent<NetworkObject>())
         {
             DespawnNetworkObjectAndChildren(GetComponent<NetworkObject>());
@@ -138,26 +148,18 @@ public class Movetoward : NetworkBehaviour
     {
         if (monsterSpawnPoints.Length > 0 && monsterPrefab != null)
         {
-            Transform parentTransform = transform.parent;  // Get the parent of the current GameObject
-
-            if (parentTransform != null)
-            {
-                Debug.Log("Parent detected: " + parentTransform.name);
-            }
-            else
-            {
-                Debug.Log("No parent detected.");
-            }
-
             foreach (var spawnPoint in monsterSpawnPoints)
             {
                 var monster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
-                monster.GetComponent<NetworkObject>().Spawn();
-
-                if (parentTransform != null)  // Check if a parent exists
+                var networkObject = monster.GetComponent<NetworkObject>();
+                if (networkObject != null)
                 {
-                    monster.transform.SetParent(parentTransform);  
-                    Debug.Log("Monster parent set to: " + monster.transform.parent.name);
+                    networkObject.Spawn();
+                    spawnedMonsters.Add(networkObject); // Add the monster to the list
+                }
+                else
+                {
+                    Debug.LogError("Monster prefab does not have a NetworkObject component.");
                 }
             }
         }
@@ -166,4 +168,16 @@ public class Movetoward : NetworkBehaviour
             Debug.LogError("Monster Spawn Points or Monster Prefab is not assigned.");
         }
     }
+    private void DespawnAllMonsters()
+    {
+        foreach (var monster in spawnedMonsters)
+        {
+            if (monster != null && monster.IsSpawned)
+            {
+                monster.Despawn();
+            }
+        }
+        spawnedMonsters.Clear(); 
+    }
+
 }
