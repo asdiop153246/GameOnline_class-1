@@ -32,7 +32,7 @@ public class TutorialScript : NetworkBehaviour
 
         if (isInitialised)
         {
-            StartTypingText("Welcome to the Island. You can press 'WASD' to walk around. Press 'SHIFT' to run and press 'Space' to jump. You can look at items and press 'E' to collect.", 0.05f);
+            StartTypingText("Welcome to the Island. You can press 'WASD' to walk around. Press 'SHIFT' to run and press 'Space' to jump. You can look at items and press 'E' to collect. You can Press Tab to Open Inventory", 0.05f);
             isInitialised = false;
         }
         else if (!isOpenInventory && Input.GetKeyDown(KeyCode.Tab))

@@ -86,13 +86,6 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             {            
                 monstersSpawned = false;
             }
-            //if (currentDayTime >= 225f && currentDayTime <= 229 && daytimeTrigger == false)
-            //{
-            //    DayCount.dayCount.Value += 1;                
-            //    daytimeTrigger = true;
-            //    StartCoroutine(DelaybeforeTrigger());
-                
-            //}
         }
     }
     IEnumerator DelaybeforeTrigger()

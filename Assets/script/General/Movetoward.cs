@@ -60,7 +60,8 @@ public class Movetoward : NetworkBehaviour
                 // If it is close to target2, despawn the island
                 if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f)
                 {
-                    DespawnIsland();
+                    DespawnIslandServerRpc();
+
                 }
             }
             if (DayTime.IsNightTime() == true)
@@ -129,8 +130,8 @@ public class Movetoward : NetworkBehaviour
             Debug.LogError("The new current target is not assigned.");
         }
     }
-
-    private void DespawnIsland()
+    [ServerRpc]
+    private void DespawnIslandServerRpc()
     {
         DespawnAllMonsters();
         if (GetComponent<NetworkObject>())
