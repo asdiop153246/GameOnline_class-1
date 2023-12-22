@@ -7,6 +7,7 @@ using System;
 
 public class EndDemoScript : NetworkBehaviour
 {
+    public Animator HomeIsland;
     public HomeCoreScript HomeCore;
     public BedInteraction Daycount;
     public TextMeshProUGUI DayText;
@@ -23,6 +24,7 @@ public class EndDemoScript : NetworkBehaviour
     {
         Daycount = GameObject.FindWithTag("Bed").GetComponent<BedInteraction>();
         HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
+        HomeIsland = GameObject.FindWithTag("HomeIsland").GetComponent<Animator>();
     }
     private void Update()
     {
@@ -75,6 +77,8 @@ public class EndDemoScript : NetworkBehaviour
     {
         isEnding = true;
         EndDemoText.text = "Game Over";
+        HomeIsland.gameObject.SetActive(false);
+        HomeIsland.SetTrigger("EndAnimation");
         StartCoroutine(HandleVictorySequence(false));
     }
     [ServerRpc]

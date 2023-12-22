@@ -58,14 +58,15 @@ public class Movetoward : NetworkBehaviour
                     StartCoroutine(WaitAndMove(Seconds));
                 }
                 // If it is close to target2, despawn the island
-                if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f || (DayTime.IsNightTime() == true))
+                if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f)
                 {
                     DespawnIsland();
                 }
             }
             if (DayTime.IsNightTime() == true)
             {
-                DespawnIsland();
+                isWaiting = false;
+                currentTarget = target2;
             }
         }
 
