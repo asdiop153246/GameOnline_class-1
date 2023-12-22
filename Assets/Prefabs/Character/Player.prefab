@@ -9525,6 +9525,7 @@ MonoBehaviour:
   - {fileID: 2082638595}
   - {fileID: 8765142368127680010}
   - {fileID: 4925811962395196891}
+  - {fileID: 7287741527867635580}
 --- !u!114 &8416183665076312939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10460,6 +10461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3aabadd7ec24d7468f4deeecf03cc77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HomeIsland: {fileID: 0}
   HomeCore: {fileID: 0}
   Daycount: {fileID: 0}
   DayText: {fileID: 5979181857739319092}
@@ -10502,6 +10504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OtherCore: {fileID: 0}
+  EnergyHolder: {fileID: 7287741527867635580}
 --- !u!114 &7287741527867635580
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -130,7 +130,7 @@ public class OtherCoreScript : NetworkBehaviour
             {
                 Debug.Log("Value > amount transfering");
                 Energy.Value -= amount;
-                PlayerScript.IncreaseEnergy(amount);
+                HomeCore.IncreaseEnergy(amount / 3f);
             }
         }
     }

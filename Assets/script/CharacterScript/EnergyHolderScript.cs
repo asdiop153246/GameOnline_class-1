@@ -8,10 +8,23 @@ public class EnergyHolderScript : NetworkBehaviour
     private HomeCoreScript HomeCore;
     public bool canHoldEnergy = true;
     public NetworkVariable<float> MaxEnergy = new NetworkVariable<float>(200);
-    public NetworkVariable<float> Energy = new NetworkVariable<float>(0);
+    public NetworkVariable<float> energy = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> _energy = new NetworkVariable<float>();
+    public float Energy
+    {
+        get
+        {
+            return _energy.Value;
+        }
+        set
+        {
+            _energy.Value = value;
+        }
+    }
 
     private void Start()
-    {        
+    {
+        Energy = 101f;
         HomeCore = GameObject.FindWithTag("HomeCore").GetComponent<HomeCoreScript>();
     }
     private void Update()
@@ -19,8 +32,8 @@ public class EnergyHolderScript : NetworkBehaviour
         if (OtherCore == null)
         {
             OtherCore = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
-        }
-        if (Energy.Value == MaxEnergy.Value)
+        }        
+        if (_energy.Value == MaxEnergy.Value)
         {
             canHoldEnergy = false;
         }
@@ -32,24 +45,22 @@ public class EnergyHolderScript : NetworkBehaviour
 
     public void IncreaseEnergy(float amount)
     {
-        Debug.Log("Transfering Energy is in PlayerHolderScript");
+        Debug.Log($"Transfering {amount} Energy into PlayerHolderScript");
         IncreaseEnergyServerRpc(amount);
     }
 
     [ServerRpc]
-    private void IncreaseEnergyServerRpc(float amount)
+    public void IncreaseEnergyServerRpc(float amount)
     {
-        Energy.Value += amount;        
-        if (Energy.Value < MaxEnergy.Value && canHoldEnergy == true)
-        {
-            Energy.Value = MaxEnergy.Value;
-            Debug.Log($"Current Energy after Increaes = {Energy.Value}");
-        }
-        else
-        {
-            Debug.Log("You can't hold more Energy");
-        }
         
+        _energy.Value += amount;
+        Debug.Log($"Current Energy in Holder = {_energy.Value}");
+        if (_energy.Value > MaxEnergy.Value)
+        {
+            _energy.Value = MaxEnergy.Value;
+            Debug.Log("You can't hold more Energy than 200");
+        }
+
     }
 
 }

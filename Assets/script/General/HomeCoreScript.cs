@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
@@ -29,6 +30,14 @@ public class HomeCoreScript : NetworkBehaviour
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<float> Energy = new NetworkVariable<float>(500f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private void OnEnable()
+    {
+        ButtonInteractionScript.OnReplenishButtonPressed += IncreaseEnergy;
+    }
+    private void OnDisable()
+    {
+        ButtonInteractionScript.OnReplenishButtonPressed -= IncreaseEnergy;
+    }
     public override void OnNetworkSpawn()
     {
         if (IsServer)
@@ -146,7 +155,7 @@ public class HomeCoreScript : NetworkBehaviour
     {
         HomeCoreUI.SetActive(true);
         playerMovement.canMove = false;
-        cameraControl.canRotate = false;
+        //cameraControl.canRotate = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -155,7 +164,7 @@ public class HomeCoreScript : NetworkBehaviour
     {
         HomeCoreUI.SetActive(false);
         playerMovement.canMove = true;
-        cameraControl.canRotate = true;
+        //cameraControl.canRotate = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

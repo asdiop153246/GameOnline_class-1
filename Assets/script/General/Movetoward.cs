@@ -53,9 +53,9 @@ public class Movetoward : NetworkBehaviour
                 // Check if the island is close to the target position
                 if (Vector3.Distance(transform.position, targetPosition) < 1f)
                 {
-                    float Seconds = OtherCoreScript.Energy.Value / 2f;
-                    Debug.Log($"The island will stay for {Seconds} Seconds");
-                    StartCoroutine(WaitAndMove(Seconds));
+
+                    Debug.Log($"The island will stay for {OtherCoreScript.Energy.Value} Seconds");
+                    StartCoroutine(WaitAndMove(OtherCoreScript.Energy.Value));
                 }
                 // If it is close to target2, despawn the island
                 if (currentTarget == target2 && Vector3.Distance(transform.position, target2Position) < 1f)
@@ -87,11 +87,25 @@ public class Movetoward : NetworkBehaviour
         }
     }
 
-    IEnumerator WaitAndMove(float seconds)
+    IEnumerator WaitAndMove(float initialWaitTime)
     {
         isWaiting = true;
-        SpawnMonsters();       
-        yield return new WaitForSeconds(seconds);
+        SpawnMonsters();
+        float elapsedTime = 0;
+        float remainingTime = initialWaitTime;
+
+        while (elapsedTime < initialWaitTime)
+        {
+            float currentWaitTime = OtherCoreScript.Energy.Value / 2f;
+            if (currentWaitTime != remainingTime)
+            {
+                remainingTime = currentWaitTime;
+                initialWaitTime = elapsedTime + remainingTime;
+            }
+
+            yield return new WaitForSeconds(1.0f);
+            elapsedTime += 1.0f;
+        }
 
         isWaiting = false;
         SwitchTarget();
