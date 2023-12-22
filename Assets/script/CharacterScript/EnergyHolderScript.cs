@@ -8,7 +8,7 @@ public class EnergyHolderScript : NetworkBehaviour
     private HomeCoreScript HomeCore;
     public bool canHoldEnergy = true;
     public NetworkVariable<float> MaxEnergy = new NetworkVariable<float>(200);
-    public NetworkVariable<float> Energy = new NetworkVariable<float>();
+    public NetworkVariable<float> Energy = new NetworkVariable<float>(0);
 
     private void Start()
     {        
@@ -40,7 +40,7 @@ public class EnergyHolderScript : NetworkBehaviour
     private void IncreaseEnergyServerRpc(float amount)
     {
         Energy.Value += amount;        
-        if (Energy.Value > MaxEnergy.Value)
+        if (Energy.Value <= MaxEnergy.Value && canHoldEnergy)
         {
             Energy.Value = MaxEnergy.Value;
             Debug.Log($"Current Energy after Increaes = {Energy.Value}");

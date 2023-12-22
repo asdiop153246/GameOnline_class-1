@@ -10,6 +10,8 @@ public class TutorialScript : NetworkBehaviour
     public TextMeshProUGUI TutorialText;
     public GameObject CraftingUI;
     private InteractionScript HomeUI;
+    public GameObject[] manuals; 
+    private int currentManualIndex = 0;
     private bool isInitialised = false;
     private bool isOpenInventory = false;
     private bool isOpenCrafting = false;
@@ -23,6 +25,7 @@ public class TutorialScript : NetworkBehaviour
         HomeUI = gameObject.GetComponent<InteractionScript>();
         TutorialText.gameObject.SetActive(true);
         typingCancellationTokenSource = new CancellationTokenSource();
+        UpdateManualDisplay();
     }
     private void Update()
     {
@@ -78,6 +81,29 @@ public class TutorialScript : NetworkBehaviour
         {
             yield return new WaitForSeconds(3f); // Wait for a moment after the complete text is displayed
             TutorialText.gameObject.SetActive(false);
+        }
+    }
+    public void NextManual()
+    {
+        ChangeManual(1); // Move to next manual
+    }
+
+    public void PreviousManual()
+    {
+        ChangeManual(-1); // Move to previous manual
+    }
+    private void ChangeManual(int change)
+    {
+        currentManualIndex += change;
+        currentManualIndex = Mathf.Clamp(currentManualIndex, 0, manuals.Length - 1);
+        UpdateManualDisplay();
+    }
+
+    private void UpdateManualDisplay()
+    {
+        for (int i = 0; i < manuals.Length; i++)
+        {
+            manuals[i].SetActive(i == currentManualIndex);
         }
     }
 }

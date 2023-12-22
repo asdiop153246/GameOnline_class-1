@@ -68,9 +68,11 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             UpdateSunPosition();
             CheckAllMonstersDefeated();
 
-            if (currentDayTime >= 225f && currentDayTime <= 226f && !islandSpawnedThisCycle)
+            if (currentDayTime >= 225f && currentDayTime <= 230f && !islandSpawnedThisCycle && daytimeTrigger == false)
             {
                 islandSpawnedThisCycle = true;
+                DayCount.dayCount.Value += 1;
+                daytimeTrigger = true;
                 //islandSpawnScript.SpawnIsland();
                 StartCoroutine(DelaybeforeTrigger());
             }
@@ -79,13 +81,13 @@ public class NetworkedDayNightCycle : NetworkBehaviour
             {            
                 monstersSpawned = false;
             }
-            if (currentDayTime >= 225f && currentDayTime <= 229 &&daytimeTrigger == false)
-            {
-                DayCount.dayCount.Value += 1;                
-                daytimeTrigger = true;
-                StartCoroutine(DelaybeforeTrigger());
+            //if (currentDayTime >= 225f && currentDayTime <= 229 && daytimeTrigger == false)
+            //{
+            //    DayCount.dayCount.Value += 1;                
+            //    daytimeTrigger = true;
+            //    StartCoroutine(DelaybeforeTrigger());
                 
-            }
+            //}
         }
     }
     IEnumerator DelaybeforeTrigger()
@@ -93,7 +95,7 @@ public class NetworkedDayNightCycle : NetworkBehaviour
         islandSpawnScript.SpawnIsland();
         yield return new WaitForSeconds(20f);
         daytimeTrigger = false;
-        islandSpawnedThisCycle = true;
+        islandSpawnedThisCycle = false;
     }
     IEnumerator UpdateTime()
     {

@@ -31,6 +31,9 @@ TagManager:
   - CoreUIManager
   - PlayerText
   - OtherCoreManager
+  - DayNightCycle
+  - OtherIsland
+  - HomeIsland
   layers:
   - Default
   - TransparentFX

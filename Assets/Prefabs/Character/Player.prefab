@@ -2277,7 +2277,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3312093822081443448}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8765142368127680010}
+        m_TargetAssemblyTypeName: TutorialScript, Assembly-CSharp
+        m_MethodName: PreviousManual
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &518865856271437454
 GameObject:
   m_ObjectHideFlags: 0
@@ -5341,7 +5353,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6003041123235326743}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8765142368127680010}
+        m_TargetAssemblyTypeName: TutorialScript, Assembly-CSharp
+        m_MethodName: NextManual
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3384409033395831472
 GameObject:
   m_ObjectHideFlags: 0
@@ -7683,7 +7707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2552590587635807173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10460,6 +10484,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TutorialText: {fileID: 1161844024712433845}
   CraftingUI: {fileID: 7089769343756523508}
+  manuals:
+  - {fileID: 2858468034227906320}
+  - {fileID: 5861539781892330765}
+  - {fileID: 5578452253196302841}
+  - {fileID: 4284168174099966169}
 --- !u!114 &4925811962395196891
 MonoBehaviour:
   m_ObjectHideFlags: 0

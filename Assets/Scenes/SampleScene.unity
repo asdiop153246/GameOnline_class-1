@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 209.7641, g: 249.4375, b: 294.9077, a: 1}
+  m_IndirectSpecularColor: {r: 6712.451, g: 7982, b: 9437.047, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22212,6 +22212,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Home
       objectReference: {fileID: 0}
+    - target: {fileID: 4580794354036246060, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
+      propertyPath: m_TagString
+      value: HomeIsland
+      objectReference: {fileID: 0}
     - target: {fileID: 4580794354036246061, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -24566,7 +24570,8 @@ MonoBehaviour:
   spawnPosition4: {x: -144.5, y: 2.3, z: -588.9}
   spawnPosition5: {x: 603.9, y: -3.9, z: 0}
   spawnPosition6: {x: -222.7, y: -10.6, z: -397.2}
-  OtherCore: {fileID: 0}
+  OtherIsland: {fileID: 0}
+  isSpawned: 0
   itemPrefabs:
   - {fileID: 4601531565221700946, guid: 81bdaa2ac817a894fbfe2c867a8d85c9, type: 3}
   - {fileID: 2917468501397498799, guid: 11d66030302598a40ba30d2b27369558, type: 3}
@@ -43957,6 +43962,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973961053}
   m_Mesh: {fileID: 4300000, guid: 3da23cdf512599b42881988944f3918c, type: 2}
+--- !u!114 &977923728 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2501804623575413409, guid: 8325c601f06d7d84ea8580db385f1490, type: 3}
+  m_PrefabInstance: {fileID: 2501804622897600676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2c2885e1721942b3f66e3b97b6b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &977929164
 GameObject:
   m_ObjectHideFlags: 0
@@ -48624,16 +48640,18 @@ MonoBehaviour:
   startingEnergyRangeMax: 500
   Energy:
     m_InternalValue: 0
+  Energycount: 0
   EnergyDecreaseRate: 0.8
   EnergyBar: {fileID: 1513700977}
   BackEnergyBar: {fileID: 1363873872}
   chipSpeed: 2
   isUIReady: 0
-  DayTime: {fileID: 0}
-  HomeCore: {fileID: 0}
+  DayTime: {fileID: 1243456994}
+  HomeCore: {fileID: 977923728}
   OtherCoreObject: {fileID: 0}
   PlayerScript: {fileID: 0}
   energyInitialized: 0
+  isIslandTrigger: 0
 --- !u!1 &1074447711
 GameObject:
   m_ObjectHideFlags: 0
@@ -58716,7 +58734,7 @@ GameObject:
   - component: {fileID: 1243456993}
   m_Layer: 0
   m_Name: DayNightCycle
-  m_TagString: Untagged
+  m_TagString: DayNightCycle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
