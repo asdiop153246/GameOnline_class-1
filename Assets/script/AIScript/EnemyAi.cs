@@ -28,7 +28,14 @@ public class EnemyAi : NetworkBehaviour
     private NetworkVariable<Quaternion> rotation = new NetworkVariable<Quaternion>(new Quaternion());
     private GameObject homeCore;
     private bool isHomeCoreSet = false;
+    private bool isPlaySound = false;
     private MonsterHP monsterHP;
+    [Header("Audio")]
+    [SerializeField] private AudioSource MonsterSound;
+    [SerializeField] private AudioSource MonsterAttack;
+    [SerializeField] private AudioSource MonsterSkill;
+    private Coroutine randomSoundCoroutine;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -36,12 +43,24 @@ public class EnemyAi : NetworkBehaviour
         monsterHP = GetComponent<MonsterHP>();
         SetMovementSpeed(MoveSpeed);
         FindHomeCore();
+        randomSoundCoroutine = StartCoroutine(PlayRandomMonsterSound());        
     }
 
+    public override void OnDestroy()
+    {
+        // Stop the random sound coroutine when the object is destroyed
+        if (randomSoundCoroutine != null)
+        {
+            StopCoroutine(randomSoundCoroutine);
+        }
+
+        // Call the base class OnDestroy to ensure any base behavior is executed
+        base.OnDestroy();
+    }
     void Update()
     {
         if (!IsServer || monsterHP.isStunned) return;
-        animator.SetBool("Walk", false);        
+        animator.SetBool("Walk", false);       
         Collider[] playersInSightRange = Physics.OverlapSphere(transform.position, sightRange, playerMask);
         if (playersInSightRange.Length != 0)
         {
@@ -106,6 +125,17 @@ public class EnemyAi : NetworkBehaviour
         }
 
     }
+    private IEnumerator PlayRandomMonsterSound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(10f, 30f));
+            if (MonsterSound != null)
+            {
+                MonsterSound.Play();
+            }
+        }
+    }
     public void SetMovementSpeed(float newSpeed)
     {
         if (agent != null)
@@ -134,6 +164,7 @@ public class EnemyAi : NetworkBehaviour
         
         //hitbox.SetActive(true);
         Debug.Log("Attacking player!");
+        MonsterAttack.Play();
         animator.SetTrigger("Punch");
         StartCoroutine(DelaybeforeHitbox());
         //isAttacking = true;
@@ -152,6 +183,7 @@ public class EnemyAi : NetworkBehaviour
     {
         Vector3 directionToPlayer = (targetPosition - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        MonsterSkill.Play();
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         yield return new WaitForSeconds(0.5f);
         agent.isStopped = true;
