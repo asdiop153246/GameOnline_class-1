@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 209.7641, g: 249.4375, b: 294.9077, a: 1}
+  m_IndirectSpecularColor: {r: 6712.451, g: 7982, b: 9437.047, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22246,38 +22246,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 43155185, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_fontSize
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: b82cfe7a714d95a45afcbdeba6a93734, type: 2}
-    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 43155186, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7935597347011099830, guid: b82cfe7a714d95a45afcbdeba6a93734, type: 2}
-    - target: {fileID: 669969952, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 669969954, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 669969957, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2900233170
@@ -22285,42 +22253,6 @@ PrefabInstance:
     - target: {fileID: 1306063717, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 323167830
-      objectReference: {fileID: 0}
-    - target: {fileID: 1481675136, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 1868127478
-      objectReference: {fileID: 0}
-    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: EnergyBar
-      value: 
-      objectReference: {fileID: 759451310}
-    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: HealthBar
-      value: 
-      objectReference: {fileID: 973458776}
-    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: HomeCoreUI
-      value: 
-      objectReference: {fileID: 1277473858}
-    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: BackEnergyBar
-      value: 
-      objectReference: {fileID: 149318108}
-    - target: {fileID: 1893523975, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: BackHealthBar
-      value: 
-      objectReference: {fileID: 1173659313}
-    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914106436, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2025980522, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -22345,10 +22277,6 @@ PrefabInstance:
     - target: {fileID: 4580794354036246060, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_Name
       value: Home
-      objectReference: {fileID: 0}
-    - target: {fileID: 4580794354036246060, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: m_TagString
-      value: HomeIsland
       objectReference: {fileID: 0}
     - target: {fileID: 4580794354036246061, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_RootOrder
@@ -22393,10 +22321,6 @@ PrefabInstance:
     - target: {fileID: 4580794354036246061, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7809681978383704024, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 727355033
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddc4bfc76dfa46c4282504f2497cd454, type: 3}

@@ -9473,7 +9473,7 @@ MonoBehaviour:
   jumpCooldown: 2
   jumpForce: 6.5
   staminaConsumptionRate: 10
-  swimConsumptionRate: 7
+  swimConsumptionRate: 8
   staminaRegenRate: 7
   stamina: 200
   StaminaBar: {fileID: 7911530268110457399}
@@ -10520,7 +10520,9 @@ MonoBehaviour:
   canHoldEnergy: 1
   MaxEnergy:
     m_InternalValue: 200
-  Energy:
+  energy:
+    m_InternalValue: 0
+  _energy:
     m_InternalValue: 0
 --- !u!1 &8518653682617993062
 GameObject:

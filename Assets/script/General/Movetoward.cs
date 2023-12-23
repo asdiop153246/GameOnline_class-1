@@ -121,8 +121,7 @@ public class Movetoward : NetworkBehaviour
         }
         else
         {
-            currentTarget = target1;
-            Debug.Log("Switched to Target 1");
+            DespawnIslandServerRpc();
         }
 
         if (currentTarget == null)
@@ -137,6 +136,7 @@ public class Movetoward : NetworkBehaviour
         if (GetComponent<NetworkObject>())
         {
             DespawnNetworkObjectAndChildren(GetComponent<NetworkObject>());
+            Destroy(gameObject);
             Debug.Log("Island and its resources despawned");
         }
         else
@@ -154,6 +154,7 @@ public class Movetoward : NetworkBehaviour
             if (childNetworkObject != null)
             {
                 DespawnNetworkObjectAndChildren(childNetworkObject);
+                Destroy(childNetworkObject);
             }
         }
 
