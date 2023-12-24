@@ -16,7 +16,7 @@ public class MonsterHitbox : NetworkBehaviour
             {
                 Debug.Log("Detected player in hitbox");
                 float attackDamage = parentMonster.GetComponent<EnemyAi>().attackDamage;
-                playerHealth.RequestTakeDamageServerRpc(attackDamage);
+                playerHealth.RequestTakeDamageServerRpc(attackDamage, OwnerClientId);
                 playersHitThisAttack.Add(other.gameObject);
             }
         }
@@ -27,13 +27,10 @@ public class MonsterHitbox : NetworkBehaviour
             {
                 Debug.Log("Successfully hit Core");
                 float CoreDamage = parentMonster.GetComponent<EnemyAi>().attackDamage;
-                CoreHealth.DecreaseHealth(CoreDamage);
+                CoreHealth.DecreaseHealthServerRpc(CoreDamage);
             }
-
         }
-
     }
-
     public void ResetHitList()
     {
         playersHitThisAttack.Clear();

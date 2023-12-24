@@ -214,7 +214,7 @@ public class PlayerControllerScript : NetworkBehaviour
             }
             if (stamina <= 0)
             {
-                health.RequestTakeDamageServerRpc(0.03f);  
+                health.RequestTakeDamageServerRpc(0.03f, OwnerClientId);  
             }
         }
     }

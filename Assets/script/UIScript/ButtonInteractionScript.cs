@@ -18,7 +18,7 @@ public class ButtonInteractionScript : NetworkBehaviour
         {
             OtherCore = GameObject.FindWithTag("OtherCoreManager").GetComponent<OtherCoreScript>();
         }
-        Debug.Log($"Energy in ButtonInter = {EnergyHolder._energy.Value}");
+        //Debug.Log($"Energy in ButtonInter = {EnergyHolder._energy.Value}");
         //OnReplenishEnergyButtonPressed(1f);
     }
 

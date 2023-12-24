@@ -22,7 +22,7 @@ public class PlayerSpawnScript : NetworkBehaviour
     private void SetPlayerState(bool state)
     {
         foreach (var script in scripts) { script.enabled = state; }
-        foreach (var renderer in renderers) { renderer.enabled = state; }
+        foreach (var renderer in renderers) { renderer.enabled = state; }      
     }
     private Vector3 GetRandPos()
     {
@@ -37,21 +37,28 @@ public class PlayerSpawnScript : NetworkBehaviour
     public void Respawn()
     {
         Debug.Log("Client requesting respawn");
-        RespawnServerRpc();
+        RespawnServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
     //2 Server Send to Client (Run on server)
-    [ServerRpc]
-    private void RespawnServerRpc()
+    [ServerRpc(RequireOwnership = false)]
+    private void RespawnServerRpc(ulong clientId)
     {
         Debug.Log("Server processing respawn");
-        RespawnClientRpc(GetRandPos());
+        Vector3 spawnPos = GetRandPos();
+        RespawnClientRpc(spawnPos, clientId);
+
+        // Update the server-side position and health
+        transform.position = spawnPos;
+        playerHealth.Health.Value = playerHealth.maxHealth.Value;
     }
 
     //3 Client Set player
     [ClientRpc]
-    private void RespawnClientRpc(Vector3 spawnPos)
+    private void RespawnClientRpc(Vector3 spawnPos, ulong clientId)
     {
+        if (NetworkManager.Singleton.LocalClientId != clientId) return;
+
         Debug.Log("Client received respawn RPC with position: " + spawnPos);
         StartCoroutine(RespawnCoroutine(spawnPos));
     }
@@ -62,7 +69,8 @@ public class PlayerSpawnScript : NetworkBehaviour
         transform.position = spawnPos;
         yield return new WaitForSeconds(3);
         SetPlayerState(true);
-        GetComponent<PlayerHealth>().Health.Value = GetComponent<PlayerHealth>().maxHealth.Value;
+        playerHealth.Health.Value = playerHealth.maxHealth.Value;
         playerHealth.UpdateHealthUI();
     }
 }
+

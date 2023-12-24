@@ -59,8 +59,8 @@ public class HomeCoreScript : NetworkBehaviour
 
         if (IsServer)
         {
-            DecreaseHealth(Time.deltaTime * HealthDecreaseRate);
-            DecreaseEnergy(Time.deltaTime * EnergyDecreaseRate);
+            DecreaseHealthServerRpc(Time.deltaTime * HealthDecreaseRate);
+            DecreaseEnergyServerRpc(Time.deltaTime * EnergyDecreaseRate);
         }
         HealthBar.fillAmount = Health.Value / startingHealth;
         EnergyBar.fillAmount = Energy.Value / startingEnergy;
@@ -68,8 +68,8 @@ public class HomeCoreScript : NetworkBehaviour
         UpdateHealthUI();
         UpdateEnergyUI();
     }
-
-    public void DecreaseHealth(float amount)
+    [ServerRpc]
+    public void DecreaseHealthServerRpc(float amount)
     {
         Health.Value -= amount;
         Health.Value = Mathf.Clamp(Health.Value, 0, 500);
@@ -79,8 +79,8 @@ public class HomeCoreScript : NetworkBehaviour
             Debug.Log("Island is out of Health");
         }
     }
-
-    public void DecreaseEnergy(float amount)
+    [ServerRpc]
+    public void DecreaseEnergyServerRpc(float amount)
     {
         Energy.Value -= amount;
         Energy.Value = Mathf.Clamp(Energy.Value, 0, 500);

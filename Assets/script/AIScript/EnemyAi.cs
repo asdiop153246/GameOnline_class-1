@@ -43,7 +43,8 @@ public class EnemyAi : NetworkBehaviour
         monsterHP = GetComponent<MonsterHP>();
         SetMovementSpeed(MoveSpeed);
         FindHomeCore();
-        randomSoundCoroutine = StartCoroutine(PlayRandomMonsterSound());        
+        randomSoundCoroutine = StartCoroutine(PlayRandomMonsterSound());
+        Physics.IgnoreLayerCollision(6, 7);
     }
 
     public override void OnDestroy()
