@@ -44,7 +44,6 @@ public class EnemyAi : NetworkBehaviour
         SetMovementSpeed(MoveSpeed);
         FindHomeCore();
         randomSoundCoroutine = StartCoroutine(PlayRandomMonsterSound());
-        Physics.IgnoreLayerCollision(6, 7);
     }
 
     public override void OnDestroy()
@@ -192,7 +191,7 @@ public class EnemyAi : NetworkBehaviour
         yield return new WaitForSeconds(windUpDuration);
 
         float startTime = Time.time;
-
+        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Player"), true);
         Vector3 direction = (targetPosition - transform.position).normalized;
         Vector3 finalTargetPosition = targetPosition + direction * extraDashDistance;
 
@@ -203,7 +202,7 @@ public class EnemyAi : NetworkBehaviour
             hitbox.SetActive(true);
             yield return null;
         }
-
+        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Player"), false);
         agent.velocity = Vector3.zero;
         agent.isStopped = false;
         hitbox.SetActive(false);

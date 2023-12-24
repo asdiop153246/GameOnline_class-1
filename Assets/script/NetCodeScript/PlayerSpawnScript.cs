@@ -5,7 +5,6 @@ using Unity.Netcode;
 
 public class PlayerSpawnScript : NetworkBehaviour
 {
-    MainPlayerScript mainPlayer;
     public Behaviour[] scripts;
     private Renderer[] renderers;
     int spawnedPoint = 2;
