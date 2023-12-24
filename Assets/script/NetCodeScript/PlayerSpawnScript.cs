@@ -35,41 +35,39 @@ public class PlayerSpawnScript : NetworkBehaviour
     //1 Client Send to Server
     public void Respawn()
     {
-        Debug.Log("Client requesting respawn");
-        RespawnServerRpc(NetworkManager.Singleton.LocalClientId);
+            Debug.Log("Player is in RespawnPlayerScript");
+            RespawnServerRpc();       
     }
 
     //2 Server Send to Client (Run on server)
     [ServerRpc(RequireOwnership = false)]
-    private void RespawnServerRpc(ulong clientId)
+    private void RespawnServerRpc(ServerRpcParams rpcParams = default)
     {
-        Debug.Log("Server processing respawn");
+        Debug.Log("Player is in RespawnServerRPC");
         Vector3 spawnPos = GetRandPos();
-        RespawnClientRpc(spawnPos, clientId);
-
-        // Update the server-side position and health
-        transform.position = spawnPos;
-        playerHealth.Health.Value = playerHealth.maxHealth.Value;
+        transform.position = spawnPos; 
+        playerHealth.Health.Value = playerHealth.respawnHealth.Value; 
+        RespawnClientRpc(spawnPos, rpcParams.Receive.SenderClientId); 
     }
 
     //3 Client Set player
     [ClientRpc]
     private void RespawnClientRpc(Vector3 spawnPos, ulong clientId)
     {
-        if (NetworkManager.Singleton.LocalClientId != clientId) return;
-
-        Debug.Log("Client received respawn RPC with position: " + spawnPos);
-        StartCoroutine(RespawnCoroutine(spawnPos));
+        Debug.Log($"Current ClientID = {clientId}");
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            StartCoroutine(RespawnCoroutine(spawnPos));
+        }
     }
     IEnumerator RespawnCoroutine(Vector3 spawnPos)
     {
         Debug.Log("Starting respawn coroutine with position: " + spawnPos);
         SetPlayerState(false);
-        transform.position = spawnPos;
-        yield return new WaitForSeconds(3);
-        SetPlayerState(true);
-        playerHealth.Health.Value = playerHealth.maxHealth.Value;
-        playerHealth.UpdateHealthUI();
+        yield return new WaitForSeconds(3); 
+        transform.position = spawnPos; 
+        SetPlayerState(true); 
+        playerHealth.UpdateHealthUI(); 
     }
 }
 

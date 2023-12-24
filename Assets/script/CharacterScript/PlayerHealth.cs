@@ -10,6 +10,7 @@ public class PlayerHealth : NetworkBehaviour
     [SerializeField] GameObject Ui;
     public NetworkVariable<float> Health = new NetworkVariable<float>(100f);
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100f);
+    public NetworkVariable<float> respawnHealth = new NetworkVariable<float>(50f);
     public GameObject Frame;
     public Image HealthBar;
     private HungerThirstScript HungerThirst;
