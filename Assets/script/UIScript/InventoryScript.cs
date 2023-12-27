@@ -394,4 +394,74 @@ public class InventoryScript : NetworkBehaviour
             StaminaScript.IncreaseStamina(25);
         }
     }
+    [ServerRpc(RequireOwnership = false)]
+    public void ModifyItemCountServerRpc(string itemName, int amount)
+    {
+        Item item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null)
+        {
+            item.amount += amount;
+            UpdateItemCountClientRpc(itemName, item.amount);
+        }
+    }
+
+    [ClientRpc]
+    private void UpdateItemCountClientRpc(string itemName, int newAmount)
+    {
+        Item item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null)
+        {
+            item.amount = newAmount;
+            UpdateInventoryUI(); // Method to update the UI accordingly
+        }
+    }
+
+    // Call this from client to add or deduct items
+    public void RequestModifyItemCount(string itemName, int amount)
+    {
+        ModifyItemCountServerRpc(itemName, amount);
+    }
+    [ServerRpc(RequireOwnership = false)]
+    public void ModifyItemAndNetworkVariableServerRpc(string itemName, int amount)
+    {
+        var item = items.FirstOrDefault(i => i.name == itemName);
+        if (item != null)
+        {
+            item.amount += amount;
+            UpdateNetworkVariable(itemName, item.amount);
+            UpdateInventoryClientRpc();
+        }
+        else
+        {
+            Debug.LogError($"[Server] Item {itemName} not found in inventory.");
+        }
+    }
+
+    private void UpdateNetworkVariable(string itemName, int newAmount)
+    {
+        switch (itemName)
+        {
+            case "Wood":
+                woodCount.Value = newAmount;
+                break;
+            case "Food":
+                foodCount.Value = newAmount;
+                break;
+            case "Spear":
+                spearCount.Value = newAmount;
+                break;
+            case "Water":
+                waterCount.Value = newAmount;
+                break;
+            case "Cola":
+                colaCount.Value = newAmount;
+                break;
+            case "Rope":
+                ropeCount.Value = newAmount;
+                break;
+            default:
+                Debug.LogWarning($"Item {itemName} does not have a corresponding NetworkVariable.");
+                break;
+        }
+    }
 }

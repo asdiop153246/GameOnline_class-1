@@ -7,8 +7,8 @@ public class SpearAttack : NetworkBehaviour
 {
     public PlayerControllerScript playerController;
     public InventoryScript Inventory;
-    private int MaxDurability = 15;
-    public int Durability = 15;
+    private int MaxDurability = 5;
+    public int Durability = 5;
     public int attackDamage = 25;  
     public float attackDelay = 1f; 
     public bool isAttacking = false;
@@ -52,6 +52,7 @@ public class SpearAttack : NetworkBehaviour
                 {
                     equipItems.RequestUnEquipSpearServerRpc();
                     Inventory.DeductItemServerRpc("Spear", 1);
+                    Inventory.ModifyItemAndNetworkVariableServerRpc("Spear", -1);
                     DeductItem("Spear", 1);
                     Durability = MaxDurability;
                 }

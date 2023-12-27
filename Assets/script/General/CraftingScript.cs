@@ -86,39 +86,14 @@ public class CraftingScript : NetworkBehaviour
         Debug.Log("StartCrafting called.");
         if (selectedRecipe != null && !isCrafting && selectedRecipeIndex >= 0)
         {
-            if (HasRequiredItems(selectedRecipe))
-            {
-                Debug.Log($"Starting crafting process for {selectedRecipe.result.name}.");
-                int recipeIndex = craftingRecipes.IndexOf(selectedRecipe);
-                craftingTimerSlider.maxValue = selectedRecipe.craftingTime;
-                craftingTimerSlider.value = craftingTimerSlider.maxValue;
-                StartCraftingServerRpc(recipeIndex);
-            }
-            else
-            {
-                Debug.LogError("Not enough required items to craft.");
-            }
+            Debug.Log($"Requesting server to start crafting process for {selectedRecipe.result.name}.");
+            RequestCraftItemServerRpc(selectedRecipe.result.name, selectedRecipe.result.amount, selectedRecipeIndex);
         }
         else
         {
             Debug.LogError("Crafting process cannot start. Either crafting is already in process or no recipe is selected.");
         }
     }
-    [ServerRpc(RequireOwnership = false)]
-    private void StartCraftingServerRpc(int recipeIndex, ServerRpcParams rpcParams = default)
-    {
-        Debug.Log($"StartCraftingServerRpc called on server with recipe index: {recipeIndex}");
-        if (!isCrafting)
-        {
-            CraftingRecipe recipe = craftingRecipes[recipeIndex];
-            StartCoroutine(CraftingProcess(recipe));
-        }
-        else
-        {
-            Debug.LogError("ServerRPC called, but is already crafting.");
-        }
-    }
-
     private IEnumerator CraftingProcess(CraftingRecipe recipe)
     {
         Debug.Log("CraftingProcess coroutine started.");
@@ -149,27 +124,26 @@ public class CraftingScript : NetworkBehaviour
     }
 
 
-    public void AddItem(string itemName, int amount)
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestCraftItemServerRpc(string itemName, int amountCrafted, int recipeIndex)
     {
-        
-        Item itemToAdd = inventoryScript.items.Find(item => item.name == itemName);
-        if (itemToAdd != null)
+        Debug.Log($"RequestCraftItemServerRpc called on server for item: {itemName}");
+        CraftingRecipe recipe = craftingRecipes[recipeIndex];
+        if (!isCrafting && HasRequiredItemsServerSide(recipe))
         {
-            itemToAdd.amount += amount;            
-        }      
-        inventoryScript.UpdateInventoryUI();
-    }
-    public void DeductItem(string itemName, int amount)
-    {
-        
-        Item itemToDeduct = inventoryScript.items.Find(item => item.name == itemName);
-        if (itemToDeduct != null)
-        {
-            itemToDeduct.amount -= amount;
+            // Deduct required items
+            foreach (var item in recipe.requiredItems)
+            {
+                inventoryScript.ModifyItemAndNetworkVariableServerRpc(item.name, -item.amount);
+            }
 
+            // Start the crafting process
+            StartCoroutine(CraftingProcess(recipe));
         }
-       
-        inventoryScript.UpdateInventoryUI();
+        else
+        {
+            Debug.LogError("Server: Cannot start crafting. Either already crafting or insufficient items.");
+        }
     }
     [ClientRpc]
     private void UpdateCraftingStatusClientRpc(bool crafting, float time, ClientRpcParams rpcParams = default)
@@ -216,18 +190,16 @@ public class CraftingScript : NetworkBehaviour
         requiredItemsText.text = requiredItemsInfo;
         Debug.Log($"Required items text updated: {requiredItemsInfo}");
     }
-    private bool HasRequiredItems(CraftingRecipe recipe)
+    private bool HasRequiredItemsServerSide(CraftingRecipe recipe)
     {
         foreach (var item in recipe.requiredItems)
         {
             Item inventoryItem = inventoryScript.items.Find(x => x.name == item.name);
             if (inventoryItem == null || inventoryItem.amount < item.amount)
             {
-                Debug.Log("You not have enough items");
                 return false;
             }
         }
-        
         return true;
     }
 }
